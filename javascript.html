@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Learning Guide</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #252526;
+            --text-primary: #e1e1e1;
+            --text-secondary: #a0a0a0;
+            --accent-primary: #f7df1e;
+            --accent-secondary: #ffeb70;
+            --accent-tertiary: #ebebeb;
+            --border-color: #3c3c3c;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            color: var(--accent-primary);
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+        }
+
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        .logo {
+            font-size: 3.5rem;
+            color: var(--accent-primary);
+        }
+
+        .card {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+        }
+
+        h2 {
+            color: var(--accent-secondary);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        h3 {
+            color: var(--accent-primary);
+            margin: 20px 0 10px;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        .code-block {
+            background-color: var(--bg-tertiary);
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            overflow-x: auto;
+            border-left: 4px solid var(--accent-primary);
+        }
+
+        code {
+            font-family: 'Fira Code', monospace;
+            color: var(--accent-tertiary);
+            display: block;
+            line-height: 1.5;
+        }
+
+        .code-comment {
+            color: #6a9955;
+        }
+
+        .code-keyword {
+            color: #569cd6;
+        }
+
+        .code-function {
+            color: #dcdcaa;
+        }
+
+        .code-string {
+            color: #ce9178;
+        }
+
+        .code-number {
+            color: #b5cea8;
+        }
+
+        .code-operator {
+            color: #d4d4d4;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .step-card {
+            background-color: var(--bg-tertiary);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid var(--accent-secondary);
+            transition: transform 0.3s ease;
+        }
+
+        .step-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .step-number {
+            background-color: var(--accent-secondary);
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .features-list {
+            list-style-type: none;
+        }
+
+        .features-list li {
+            margin-bottom: 10px;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .features-list li:before {
+            content: "➤";
+            color: var(--accent-primary);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        .elements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .element-card {
+            background-color: var(--bg-tertiary);
+            padding: 15px;
+            border-radius: 5px;
+            border-top: 3px solid var(--accent-primary);
+        }
+
+        .element-name {
+            color: var(--accent-secondary);
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .element-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 40px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        .nav-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .nav-tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+        }
+
+        .nav-tab.active {
+            border-bottom: 3px solid var(--accent-primary);
+            color: var(--accent-primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--accent-primary);
+            color: #333;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #d6bc0e;
+        }
+
+        .btn-secondary {
+            background-color: var(--accent-secondary);
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background-color: #e6d45c;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: var(--bg-tertiary);
+            color: var(--accent-secondary);
+        }
+
+        tr:hover {
+            background-color: var(--bg-tertiary);
+        }
+
+        .example-container {
+            background-color: var(--bg-tertiary);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .example-preview {
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 15px;
+            min-height: 100px;
+        }
+
+        .interactive-demo {
+            background-color: var(--bg-tertiary);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .demo-controls {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+
+        .demo-button {
+            padding: 8px 16px;
+            background-color: var(--accent-primary);
+            color: #333;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .demo-button:hover {
+            background-color: #d6bc0e;
+        }
+
+        .demo-output {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: var(--bg-secondary);
+            border-radius: 4px;
+            min-height: 50px;
+        }
+
+        .console {
+            background-color: #1e1e1e;
+            color: #ccc;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: 'Fira Code', monospace;
+            margin: 15px 0;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .console-line {
+            margin-bottom: 5px;
+        }
+
+        .console-command {
+            color: #569cd6;
+        }
+
+        .console-comment {
+            color: #6a9955;
+        }
+
+        @media (max-width: 768px) {
+            .steps, .elements-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .logo-container {
+                flex-wrap: wrap;
+            }
+            
+            .nav-tabs {
+                flex-direction: column;
+            }
+            
+            .demo-controls {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>JavaScript Learning Guide</h1>
+            <p class="subtitle">The programming language for interactive web content</p>
+            <div class="logo-container">
+                <i class="fab fa-html5 logo" style="color: #e34f26"></i>
+                <i class="fab fa-css3-alt logo" style="color: #1572b6"></i>
+                <i class="fab fa-js-square logo" style="color: var(--accent-primary)"></i>
+            </div>
+        </header>
+
+        <div class="card">
+            <h2>What is JavaScript?</h2>
+            <p>JavaScript is a high-level, interpreted programming language that conforms to the ECMAScript specification. It is a language that is also characterized as dynamic, weakly typed, prototype-based and multi-paradigm.</p>
+            
+            <h3>Key Features of JavaScript:</h3>
+            <ul class="features-list">
+                <li>Makes web pages dynamic and interactive</li>
+                <li>Runs on the client side (browser) and server side (Node.js)</li>
+                <li>Works seamlessly with HTML and CSS</li>
+                <li>Has a large ecosystem of libraries and frameworks</li>
+                <li>Supports object-oriented, functional, and imperative programming styles</li>
+            </ul>
+            
+            <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" class="btn" target="_blank">MDN JavaScript Documentation</a>
+        </div>
+
+        <div class="card">
+            <h2>JavaScript Syntax Basics</h2>
+            <p>JavaScript syntax is the set of rules that define how JavaScript programs are constructed:</p>
+            
+            <div class="code-block">
+                <code><span class="code-comment">// Variables</span></code>
+                <code><span class="code-keyword">let</span> message = <span class="code-string">"Hello, World!"</span>;</code>
+                <code><span class="code-keyword">const</span> pi = <span class="code-number">3.14159</span>;</code>
+                <code></code>
+                <code><span class="code-comment">// Functions</span></code>
+                <code><span class="code-keyword">function</span> <span class="code-function">greet</span>(name) {</code>
+                <code>  <span class="code-keyword">return</span> <span class="code-string">`Hello, </span><span class="code-operator">${</span>name<span class="code-operator">}</span><span class="code-string">!`</span>;</code>
+                <code>}</code>
+                <code></code>
+                <code><span class="code-comment">// Output</span></code>
+                <code>console.<span class="code-function">log</span>(<span class="code-function">greet</span>(<span class="code-string">"Developer"</span>));</code>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Adding JavaScript to HTML</h2>
+            
+            <div class="nav-tabs">
+                <div class="nav-tab active" onclick="switchTab(event, 'inline-js')">Inline JavaScript</div>
+                <div class="nav-tab" onclick="switchTab(event, 'internal-js')">Internal JavaScript</div>
+                <div class="nav-tab" onclick="switchTab(event, 'external-js')">External JavaScript</div>
+            </div>
+            
+            <div id="inline-js" class="tab-content active">
+                <h3>Inline JavaScript</h3>
+                <p>Add JavaScript directly to HTML elements using event attributes:</p>
+                
+                <div class="code-block">
+                    <code><span class="code-tag">&lt;button</span> <span class="code-attribute">onclick</span>=<span class="code-value">"alert('Hello World!')"</span><span class="code-tag">&gt;</span></code>
+                    <code>  Click Me</code>
+                    <code><span class="code-tag">&lt;/button&gt;</span></code>
+                </div>
+                
+                <p class="warning">Note: Inline JavaScript is not recommended for complex code as it mixes structure with behavior.</p>
+            </div>
+            
+            <div id="internal-js" class="tab-content">
+                <h3>Internal JavaScript</h3>
+                <p>Place JavaScript code inside a &lt;script&gt; element in the HTML document:</p>
+                
+                <div class="code-block">
+                    <code><span class="code-tag">&lt;!DOCTYPE html&gt;</span></code>
+                    <code><span class="code-tag">&lt;html&gt;</span></code>
+                    <code><span class="code-tag">&lt;head&gt;</span></code>
+                    <code>  <span class="code-tag">&lt;title&gt;</span>JavaScript Example<span class="code-tag">&lt;/title&gt;</span></code>
+                    <code>  <span class="code-tag">&lt;script&gt;</span></code>
+                    <code>    <span class="code-keyword">function</span> <span class="code-function">showAlert</span>() {</code>
+                    <code>      alert(<span class="code-string">'Hello from internal JavaScript!'</span>);</code>
+                    <code>    }</code>
+                    <code>  <span class="code-tag">&lt;/script&gt;</span></code>
+                    <code><span class="code-tag">&lt;/head&gt;</span></code>
+                    <code><span class="code-tag">&lt;body&gt;</span></code>
+                    <code>  <span class="code-tag">&lt;button</span> <span class="code-attribute">onclick</span>=<span class="code-value">"showAlert()"</span><span class="code-tag">&gt;</span>Click Me<span class="code-tag">&lt;/button&gt;</span></code>
+                    <code><span class="code-tag">&lt;/body&gt;</span></code>
+                    <code><span class="code-tag">&lt;/html&gt;</span></code>
+                </div>
+            </div>
+            
+            <div id="external-js" class="tab-content">
+                <h3>External JavaScript</h3>
+                <p>Link to an external JavaScript file (recommended approach):</p>
+                
+                <div class="code-block">
+                    <code><span class="code-comment">// In your HTML file</span></code>
+                    <code><span class="code-tag">&lt;head&gt;</span></code>
+                    <code>  <span class="code-tag">&lt;script</span> <span class="code-attribute">src</span>=<span class="code-value">"script.js"</span> <span class="code-attribute">defer</span><span class="code-tag">&gt;&lt;/script&gt;</span></code>
+                    <code><span class="code-tag">&lt;/head&gt;</span></code>
+                    <code></code>
+                    <code><span class="code-comment">// In script.js</span></code>
+                    <code><span class="code-keyword">function</span> <span class="code-function">showAlert</span>() {</code>
+                    <code>  alert(<span class="code-string">'Hello from external JavaScript!'</span>);</code>
+                    <code>}</code>
+                    <code></code>
+                    <code><span class="code-comment">// Wait for DOM to load</span></code>
+                    <code>document.addEventListener(<span class="code-string">'DOMContentLoaded'</span>, () => {</code>
+                    <code>  <span class="code-keyword">const</span> button = document.<span class="code-function">querySelector</span>(<span class="code-string">'button'</span>);</code>
+                    <code>  button.addEventListener(<span class="code-string">'click'</span>, showAlert);</code>
+                    <code>});</code>
+                </div>
+                
+                <p>External JavaScript is the most maintainable approach as it separates behavior from structure.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Essential JavaScript Concepts</h2>
+            <p>Master these fundamental JavaScript concepts to build interactive web applications:</p>
+            
+            <div class="elements-grid">
+                <div class="element-card">
+                    <div class="element-name">Variables & Data Types</div>
+                    <div class="element-desc">let, const, var, strings, numbers, booleans, objects, arrays</div>
+                </div>
+                <div class="element-card">
+                    <div class="element-name">Functions</div>
+                    <div class="element-desc">Declarations, expressions, arrow functions, parameters, return values</div>
+                </div>
+                <div class="element-card">
+                    <div class="element-name">Control Flow</div>
+                    <div class="element-desc">if/else, switch, for loops, while loops, ternary operator</div>
+                </div>
+                <div class="element-card">
+                    <div class="element-name">DOM Manipulation</div>
+                    <div class="element-desc">Selecting elements, modifying content, handling events</div>
+                </div>
+                <div class="element-card">
+                    <div class="element-name">Objects & Arrays</div>
+                    <div class="element-desc">Creating, accessing, and manipulating complex data structures</div>
+                </div>
+                <div class="element-card">
+                    <div class="element-name">Async JavaScript</div>
+                    <div class="element-desc">Callbacks, promises, async/await, fetching data from APIs</div>
+                </div>
+                <div class="element-card">
+                    <div class="element-name">ES6+ Features</div>
+                    <div class="element-desc">Arrow functions, template literals, destructuring, modules</div>
+                </div>
+                <div class="element-card">
+                    <div class="element-name">Error Handling</div>
+                    <div class="element-desc">try/catch blocks, throwing custom errors</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>JavaScript Data Types</h2>
+            <p>JavaScript has dynamic types and seven fundamental data types:</p>
+            
+            <table>
+                <tr>
+                    <th>Type</th>
+                    <th>Example</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>Number</td>
+                    <td>42, 3.14</td>
+                    <td>Integer and floating point numbers</td>
+                </tr>
+                <tr>
+                    <td>String</td>
+                    <td>"Hello"</td>
+                    <td>Textual data enclosed in quotes</td>
+                </tr>
+                <tr>
+                    <td>Boolean</td>
+                    <td>true, false</td>
+                    <td>Logical true/false values</td>
+                </tr>
+                <tr>
+                    <td>Null</td>
+                    <td>null</td>
+                    <td>Intentional absence of any value</td>
+                </tr>
+                <tr>
+                    <td>Undefined</td>
+                    <td>undefined</td>
+                    <td>Variable that has not been assigned a value</td>
+                </tr>
+                <tr>
+                    <td>Object</td>
+                    <td>{name: "John"}</td>
+                    <td>Collection of key-value pairs</td>
+                </tr>
+                <tr>
+                    <td>Symbol</td>
+                    <td>Symbol('id')</td>
+                    <td>Unique and immutable primitive value</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="card">
+            <h2>Interactive JavaScript Demo</h2>
+            <p>Try these examples to see JavaScript in action:</p>
+            
+            <div class="interactive-demo">
+                <h3>DOM Manipulation</h3>
+                <div class="example-preview" id="demo-element">
+                    <p>Click the buttons to change this text.</p>
+                </div>
+                
+                <div class="demo-controls">
+                    <button class="demo-button" onclick="changeText()">Change Text</button>
+                    <button class="demo-button" onclick="changeColor()">Change Color</button>
+                    <button class="demo-button" onclick="addItem()">Add Item</button>
+                    <button class="demo-button" onclick="resetDemo()">Reset</button>
+                </div>
+                
+                <div class="code-block">
+                    <code><span class="code-comment">// JavaScript code for the demo</span></code>
+                    <code><span class="code-keyword">function</span> <span class="code-function">changeText</span>() {</code>
+                    <code>  <span class="code-keyword">const</span> element = document.<span class="code-function">getElementById</span>(<span class="code-string">'demo-element'</span>);</code>
+                    <code>  element.innerHTML = <span class="code-string">'Text changed with JavaScript!'</span>;</code>
+                    <code>}</code>
+                    <code></code>
+                    <code><span class="code-keyword">function</span> <span class="code-function">changeColor</span>() {</code>
+                    <code>  <span class="code-keyword">const</span> element = document.<span class="code-function">getElementById</span>(<span class="code-string">'demo-element'</span>);</code>
+                    <code>  element.style.color = <span class="code-string">'#f7df1e'</span>;</code>
+                    <code>  element.style.backgroundColor = <span class="code-string">'#2c2c2c'</span>;</code>
+                    <code>}</code>
+                </div>
+            </div>
+            
+            <div class="interactive-demo">
+                <h3>Simple Calculator</h3>
+                <div class="demo-controls">
+                    <input type="number" id="num1" placeholder="First number" style="padding: 8px; background: var(--bg-tertiary); border: 1px solid var(--border-color); color: var(--text-primary); border-radius: 4px;">
+                    <input type="number" id="num2" placeholder="Second number" style="padding: 8px; background: var(--bg-tertiary); border: 1px solid var(--border-color); color: var(--text-primary); border-radius: 4px;">
+                </div>
+                
+                <div class="demo-controls">
+                    <button class="demo-button" onclick="calculate('add')">Add</button>
+                    <button class="demo-button" onclick="calculate('subtract')">Subtract</button>
+                    <button class="demo-button" onclick="calculate('multiply')">Multiply</button>
+                    <button class="demo-button" onclick="calculate('divide')">Divide</button>
+                </div>
+                
+                <div class="demo-output" id="calc-result">
+                    Result will appear here
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>JavaScript Console</h2>
+            <p>The browser console is a powerful tool for testing JavaScript code and debugging:</p>
+            
+            <div class="console">
+                <div class="console-line"><span class="console-command">> </span>let message = "Hello, Console!";</div>
+                <div class="console-line"><span class="console-command">> </span>console.log(message);</div>
+                <div class="console-line">Hello, Console!</div>
+                <div class="console-line"><span class="console-command">> </span>const numbers = [1, 2, 3, 4, 5];</div>
+                <div class="console-line"><span class="console-command">> </span>numbers.forEach(n => console.log(n * 2));</div>
+                <div class="console-line">2</div>
+                <div class="console-line">4</div>
+                <div class="console-line">6</div>
+                <div class="console-line">8</div>
+                <div class="console-line">10</div>
+            </div>
+            
+            <p>To open the console:</p>
+            <ul class="features-list">
+                <li><strong>Chrome:</strong> Ctrl+Shift+J (Windows/Linux) or Cmd+Opt+J (Mac)</li>
+                <li><strong>Firefox:</strong> Ctrl+Shift+K (Windows/Linux) or Cmd+Opt+K (Mac)</li>
+                <li><strong>Safari:</strong> Cmd+Opt+C (First enable Develop menu in Preferences)</li>
+                <li><strong>Edge:</strong> F12 then click on Console tab</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>Modern JavaScript (ES6+)</h2>
+            <p>ECMAScript 2015 (ES6) introduced many new features that modernized JavaScript:</p>
+            
+            <div class="code-block">
+                <code><span class="code-comment">// Arrow functions</span></code>
+                <code><span class="code-keyword">const</span> add = (a, b) => a + b;</code>
+                <code></code>
+                <code><span class="code-comment">// Template literals</span></code>
+                <code><span class="code-keyword">const</span> name = <span class="code-string">"Sarah"</span>;</code>
+                <code><span class="code-keyword">const</span> greeting = <span class="code-string">`Hello, </span><span class="code-operator">${</span>name<span class="code-operator">}</span><span class="code-string">!`</span>;</code>
+                <code></code>
+                <code><span class="code-comment">// Destructuring</span></code>
+                <code><span class="code-keyword">const</span> person = { firstName: <span class="code-string">'John'</span>, age: <span class="code-number">30</span> };</code>
+                <code><span class="code-keyword">const</span> { firstName, age } = person;</code>
+                <code></code>
+                <code><span class="code-comment">// Spread operator</span></code>
+                <code><span class="code-keyword">const</span> arr1 = [1, 2, 3];</code>
+                <code><span class="code-keyword">const</span> arr2 = [...arr1, 4, 5]; <span class="code-comment">// [1, 2, 3, 4, 5]</span></code>
+                <code></code>
+                <code><span class="code-comment">// Modules</span></code>
+                <code><span class="code-keyword">import</span> { functionName } <span class="code-keyword">from</span> <span class="code-string">'./module.js'</span>;</code>
+                <code><span class="code-keyword">export</span> <span class="code-keyword">const</span> myVariable = <span class="code-number">42</span>;</code>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Learning Resources</h2>
+            
+            <div class="steps">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3>MDN Web Docs</h3>
+                    <p>Comprehensive JavaScript documentation and tutorials.</p>
+                    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" class="btn" target="_blank">Visit MDN</a>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3>JavaScript.info</h3>
+                    <p>Modern JavaScript tutorial from the basics to advanced topics.</p>
+                    <a href="https://javascript.info/" class="btn" target="_blank">Visit JavaScript.info</a>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h3>FreeCodeCamp</h3>
+                    <p>Free interactive JavaScript courses and projects.</p>
+                    <a href="https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/" class="btn" target="_blank">Start Learning</a>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <h3>Eloquent JavaScript</h3>
+                    <p>Well-regarded book available free online with interactive examples.</p>
+                    <a href="https://eloquentjavascript.net/" class="btn" target="_blank">Read the Book</a>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>JavaScript Learning Guide - The programming language for interactive web content</p>
+            <p>Practice by building small projects and experimenting with code!</p>
+        </footer>
+    </div>
+
+    <script>
+        // Tab switching functionality
+        function switchTab(event, tabId) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(tab => tab.classList.remove('active'));
+            
+            // Show the selected tab content
+            document.getElementById(tabId).classList.add('active');
+            
+            // Update active tab
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+        }
+
+        // Demo functions
+        function changeText() {
+            const element = document.getElementById('demo-element');
+            element.innerHTML = '<p>Text changed with JavaScript! The current time is: ' + new Date().toLocaleTimeString() + '</p>';
+        }
+
+        function changeColor() {
+            const element = document.getElementById('demo-element');
+            element.style.color = '#f7df1e';
+            element.style.backgroundColor = '#2c2c2c';
+            element.style.padding = '15px';
+            element.style.borderRadius = '4px';
+        }
+
+        function addItem() {
+            const element = document.getElementById('demo-element');
+            const newItem = document.createElement('div');
+            newItem.textContent = 'New item added: ' + Math.floor(Math.random() * 100);
+            newItem.style.margin = '5px 0';
+            element.appendChild(newItem);
+        }
+
+        function resetDemo() {
+            const element = document.getElementById('demo-element');
+            element.innerHTML = '<p>Click the buttons to change this text.</p>';
+            element.style = '';
+        }
+
+        function calculate(operation) {
+            const num1 = parseFloat(document.getElementById('num1').value) || 0;
+            const num2 = parseFloat(document.getElementById('num2').value) || 0;
+            let result;
+            
+            switch(operation) {
+                case 'add':
+                    result = num1 + num2;
+                    break;
+                case 'subtract':
+                    result = num1 - num2;
+                    break;
+                case 'multiply':
+                    result = num1 * num2;
+                    break;
+                case 'divide':
+                    result = num2 !== 0 ? num1 / num2 : 'Cannot divide by zero';
+                    break;
+                default:
+                    result = 'Invalid operation';
+            }
+            
+            document.getElementById('calc-result').textContent = `Result: ${result}`;
+        }
+
+        // Initialize interactive examples
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('JavaScript Learning Guide loaded successfully!');
+        });
+    </script>
+</body>
+</html>

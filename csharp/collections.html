@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>C# Collections & Generics Guide</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0b0f14 0%, #1a1f29 100%);
+      color: #e5e7eb;
+      line-height: 1.6;
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding: 30px;
+      background: rgba(17, 24, 39, 0.8);
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    }
+    
+    h1 {
+      color: #60a5fa;
+      margin-bottom: 10px;
+      font-size: 2.8rem;
+    }
+    
+    .subtitle {
+      color: #93c5fd;
+      font-size: 1.3rem;
+      margin-top: 15px;
+    }
+    
+    .intro {
+      text-align: center;
+      margin-bottom: 40px;
+      padding: 20px;
+      background: rgba(31, 41, 55, 0.6);
+      border-radius: 10px;
+    }
+    
+    .container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+    }
+    
+    @media (max-width: 900px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .section {
+      background: linear-gradient(145deg, #111827 0%, #1f2937 100%);
+      border: 1px solid #374151;
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .section:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+    }
+    
+    h2 {
+      color: #93c5fd;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #374151;
+      font-size: 1.8rem;
+    }
+    
+    h3 {
+      color: #60a5fa;
+      margin: 25px 0 15px 0;
+      font-size: 1.4rem;
+    }
+    
+    .definition {
+      background: rgba(31, 41, 55, 0.7);
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+    
+    .pros-cons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin: 20px 0;
+    }
+    
+    .pros, .cons {
+      padding: 15px;
+      border-radius: 10px;
+    }
+    
+    .pros {
+      background: rgba(16, 185, 129, 0.15);
+      border-left: 4px solid #10b981;
+    }
+    
+    .cons {
+      background: rgba(239, 68, 68, 0.15);
+      border-left: 4px solid #ef4444;
+    }
+    
+    .pros h4, .cons h4 {
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+    }
+    
+    .pros h4::before {
+      content: "✓";
+      color: #10b981;
+      margin-right: 8px;
+      font-weight: bold;
+    }
+    
+    .cons h4::before {
+      content: "✗";
+      color: #ef4444;
+      margin-right: 8px;
+      font-weight: bold;
+    }
+    
+    ul {
+      padding-left: 20px;
+      margin: 15px 0;
+    }
+    
+    li {
+      margin-bottom: 8px;
+    }
+    
+    pre {
+      background: #1f2937 !important;
+      border-radius: 10px;
+      padding: 18px;
+      overflow: auto;
+      font-size: 14px;
+      border-left: 4px solid #60a5fa;
+      margin: 20px 0;
+    }
+    
+    .code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    
+    .code-title {
+      color: #93c5fd;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+    
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 25px 0;
+      background: rgba(31, 41, 55, 0.7);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    
+    .comparison-table th, .comparison-table td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #374151;
+    }
+    
+    .comparison-table th {
+      background-color: rgba(17, 24, 39, 0.9);
+      color: #93c5fd;
+    }
+    
+    .comparison-table tr:last-child td {
+      border-bottom: none;
+    }
+    
+    .type-tag {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 15px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      margin-right: 8px;
+    }
+    
+    .non-generic {
+      background-color: rgba(239, 68, 68, 0.2);
+      color: #fca5a5;
+    }
+    
+    .generic {
+      background-color: rgba(16, 185, 129, 0.2);
+      color: #6ee7b7;
+    }
+    
+    footer {
+      text-align: center;
+      margin-top: 50px;
+      padding: 20px;
+      color: #9ca3af;
+      font-size: 0.9rem;
+    }
+    
+    .note {
+      background: rgba(245, 158, 11, 0.15);
+      border-left: 4px solid #f59e0b;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>C# Collections & Generics</h1>
+    <p class="subtitle">A Comprehensive Guide to Non-Generic and Generic Collections</p>
+  </header>
+
+  <div class="intro">
+    <p>This guide covers both the older non-generic collections and the modern generic collections in C#, with detailed explanations, examples, and comparisons.</p>
+  </div>
+
+  <div class="container">
+    <div class="section">
+      <h2>Non-Generic Collections</h2>
+      
+      <div class="definition">
+        <p><b>Non-generic collections</b> store elements as <code>object</code> types, which means they can store any type of data but require casting when retrieving items. They are found in the <code>System.Collections</code> namespace.</p>
+      </div>
+      
+      <div class="pros-cons">
+        <div class="pros">
+          <h4>Advantages</h4>
+          <ul>
+            <li>Can store different types in the same collection</li>
+            <li>Available in older .NET versions</li>
+            <li>Useful for compatibility with legacy code</li>
+          </ul>
+        </div>
+        <div class="cons">
+          <h4>Disadvantages</h4>
+          <ul>
+            <li>Performance overhead due to boxing/unboxing</li>
+            <li>No type safety at compile time</li>
+            <li>Casting exceptions at runtime</li>
+            <li>Less readable code</li>
+          </ul>
+        </div>
+      </div>
+      
+      <h3>ArrayList</h3>
+      <p>Dynamic array that can grow and shrink automatically.</p>
+      <pre><code class="language-csharp">using System.Collections;
+
+ArrayList list = new ArrayList();
+list.Add("Hello");
+list.Add(42);
+list.Add(DateTime.Now);
+
+// Must cast when retrieving
+string first = (string)list[0];
+int second = (int)list[1];
+
+// This will compile but cause runtime error
+// int invalid = (int)list[0];</code></pre>
+      
+      <h3>Hashtable</h3>
+      <p>Collection of key-value pairs organized by hash code.</p>
+      <pre><code class="language-csharp">Hashtable table = new Hashtable();
+table.Add("key1", "value1");
+table.Add(123, "value2");
+table.Add(45.6, "value3");
+
+// Retrieving values
+string val1 = (string)table["key1"];
+string val2 = (string)table[123];
+
+// Iterating through hashtable
+foreach (DictionaryEntry entry in table) {
+    Console.WriteLine($"{entry.Key}: {entry.Value}");
+}</code></pre>
+      
+      <h3>Queue & Stack</h3>
+      <p>First-In-First-Out (FIFO) and Last-In-First-Out (LIFO) collections.</p>
+      <pre><code class="language-csharp">// Queue example
+Queue queue = new Queue();
+queue.Enqueue("first");
+queue.Enqueue("second");
+queue.Enqueue(123);
+
+string firstItem = (string)queue.Dequeue();
+
+// Stack example
+Stack stack = new Stack();
+stack.Push("bottom");
+stack.Push("middle");
+stack.Push(456);
+
+string topItem = (string)stack.Pop();</code></pre>
+    </div>
+    
+    <div class="section">
+      <h2>Generic Collections</h2>
+      
+      <div class="definition">
+        <p><b>Generic collections</b> are type-safe collections that specify the type of elements they contain. They are found in the <code>System.Collections.Generic</code> namespace and provide better performance and type safety.</p>
+      </div>
+      
+      <div class="pros-cons">
+        <div class="pros">
+          <h4>Advantages</h4>
+          <ul>
+            <li>Type safety at compile time</li>
+            <li>Better performance (no boxing/unboxing)</li>
+            <li>Cleaner code with no casting needed</li>
+            <li>IntelliSense support for specific types</li>
+          </ul>
+        </div>
+        <div class="cons">
+          <h4>Disadvantages</h4>
+          <ul>
+            <li>Can only store one type of element</li>
+            <li>Not available in very old .NET versions</li>
+          </ul>
+        </div>
+      </div>
+      
+      <h3>List&lt;T&gt;</h3>
+      <p>Strongly typed list of objects that can be accessed by index.</p>
+      <pre><code class="language-csharp">using System.Collections.Generic;
+
+List<string> stringList = new List<string>();
+stringList.Add("first");
+stringList.Add("second");
+// stringList.Add(123); // Compile error!
+
+string first = stringList[0]; // No casting needed
+
+List<int> intList = new List<int> { 1, 2, 3, 4, 5 };
+int sum = 0;
+foreach (int num in intList) {
+    sum += num; // No unboxing overhead
+}</code></pre>
+      
+      <h3>Dictionary&lt;TKey, TValue&gt;</h3>
+      <p>Collection of key-value pairs with fast lookups by key.</p>
+      <pre><code class="language-csharp">Dictionary<string, int> ages = new Dictionary<string, int>();
+ages.Add("John", 25);
+ages.Add("Jane", 30);
+// ages.Add(123, 45); // Compile error - wrong key type
+
+int johnAge = ages["John"]; // No casting needed
+
+// Iterating with type safety
+foreach (KeyValuePair<string, int> entry in ages) {
+    Console.WriteLine($"{entry.Key} is {entry.Value} years old");
+}</code></pre>
+      
+      <h3>Queue&lt;T&gt; & Stack&lt;T&gt;</h3>
+      <p>Generic versions of FIFO and LIFO collections.</p>
+      <pre><code class="language-csharp">// Generic Queue
+Queue<string> stringQueue = new Queue<string>();
+stringQueue.Enqueue("first");
+stringQueue.Enqueue("second");
+// stringQueue.Enqueue(123); // Compile error
+
+string first = stringQueue.Dequeue(); // No casting
+
+// Generic Stack
+Stack<int> intStack = new Stack<int>();
+intStack.Push(1);
+intStack.Push(2);
+// intStack.Push("three"); // Compile error
+
+int top = intStack.Pop(); // No casting</code></pre>
+      
+      <h3>HashSet&lt;T&gt; & SortedSet&lt;T&gt;</h3>
+      <p>Collections that store unique elements with high-performance set operations.</p>
+      <pre><code class="language-csharp">HashSet<int> set1 = new HashSet<int> { 1, 2, 3, 4, 5 };
+HashSet<int> set2 = new HashSet<int> { 4, 5, 6, 7, 8 };
+
+// Set operations
+set1.UnionWith(set2);        // set1 becomes {1,2,3,4,5,6,7,8}
+set1.IntersectWith(set2);    // set1 becomes {4,5}
+set1.ExceptWith(set2);       // set1 becomes {1,2,3}
+
+// SortedSet maintains order
+SortedSet<string> sortedSet = new SortedSet<string> { "zebra", "apple", "banana" };
+// sortedSet is { "apple", "banana", "zebra" }</code></pre>
+    </div>
+  </div>
+  
+  <div class="section">
+    <h2>Comparison & Recommendations</h2>
+    
+    <table class="comparison-table">
+      <thead>
+        <tr>
+          <th>Collection Type</th>
+          <th>Namespace</th>
+          <th>Type Safety</th>
+          <th>Performance</th>
+          <th>When to Use</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="type-tag non-generic">Non-Generic</span> ArrayList</td>
+          <td>System.Collections</td>
+          <td>❌ No</td>
+          <td>❌ Slow (boxing)</td>
+          <td>Legacy code, mixed types</td>
+        </tr>
+        <tr>
+          <td><span class="type-tag generic">Generic</span> List&lt;T&gt;</td>
+          <td>System.Collections.Generic</td>
+          <td>✅ Yes</td>
+          <td>✅ Fast</td>
+          <td>Most cases needing a list</td>
+        </tr>
+        <tr>
+          <td><span class="type-tag non-generic">Non-Generic</span> Hashtable</td>
+          <td>System.Collections</td>
+          <td>❌ No</td>
+          <td>❌ Slow (boxing)</td>
+          <td>Legacy code, mixed types</td>
+        </tr>
+        <tr>
+          <td><span class="type-tag generic">Generic</span> Dictionary&lt;TKey, TValue&gt;</td>
+          <td>System.Collections.Generic</td>
+          <td>✅ Yes</td>
+          <td>✅ Fast</td>
+          <td>Key-value lookups</td>
+        </tr>
+        <tr>
+          <td><span class="type-tag non-generic">Non-Generic</span> Queue/Stack</td>
+          <td>System.Collections</td>
+          <td>❌ No</td>
+          <td>❌ Slow (boxing)</td>
+          <td>Legacy code</td>
+        </tr>
+        <tr>
+          <td><span class="type-tag generic">Generic</span> Queue&lt;T&gt;/Stack&lt;T&gt;</td>
+          <td>System.Collections.Generic</td>
+          <td>✅ Yes</td>
+          <td>✅ Fast</td>
+          <td>FIFO/LIFO collections</td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <div class="note">
+      <p><strong>Recommendation:</strong> For new development, always prefer generic collections over non-generic ones for better performance, type safety, and code clarity.</p>
+    </div>
+    
+    <h3>Specialized Collections</h3>
+    <p>.NET provides several specialized collections for specific scenarios:</p>
+    
+    <pre><code class="language-csharp">// ObservableCollection<T> - notifies when changes occur
+ObservableCollection<string> observable = new ObservableCollection<string>();
+observable.CollectionChanged += (s, e) => {
+    Console.WriteLine("Collection changed!");
+};
+
+// Concurrent Collections - thread-safe
+ConcurrentDictionary<int, string> concurrentDict = new ConcurrentDictionary<int, string>();
+ConcurrentQueue<int> concurrentQueue = new ConcurrentQueue<int>();
+ConcurrentStack<int> concurrentStack = new ConcurrentStack<int>();
+
+// ReadOnlyCollection<T> - provides a read-only wrapper
+List<int> originalList = new List<int> { 1, 2, 3 };
+ReadOnlyCollection<int> readOnly = new ReadOnlyCollection<int>(originalList);
+// readOnly.Add(4); // Compile error - collection is read-only</code></pre>
+  </div>
+
+  <footer>
+    <p>C# Collections & Generics Guide | Created with HTML, CSS, and Prism.js</p>
+  </footer>
+</body>
+</html>

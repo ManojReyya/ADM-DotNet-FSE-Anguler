@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LINQ in C# — Dark Theme Guide</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
+  <style>
+    :root {
+      --bg: #0b0f14;
+      --panel: #111827;
+      --panel-2: #0f172a;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --accent: #34d399;
+      --border: #1f2937;
+      --shadow: 0 10px 25px rgba(0,0,0,.35);
+    }
+    body { margin: 0; font-family: Segoe UI, sans-serif; background: var(--bg); color: var(--text); }
+    .container { max-width: 1000px; margin: 0 auto; padding: 2rem 1rem; }
+    h1 { font-size: 2rem; margin-bottom: 1rem; }
+    h2 { font-size: 1.5rem; margin-top: 1.5rem; color: var(--accent); }
+    p { line-height: 1.6; }
+    .card { background: linear-gradient(180deg, var(--panel), var(--panel-2)); border-radius: 16px; border: 1px solid var(--border); padding: 1.2rem; margin-top: 1rem; box-shadow: var(--shadow); }
+    pre { background: #111827 !important; border-radius: 12px; border: 1px solid var(--border); padding: 1rem; overflow: auto; }
+    ul { line-height: 1.6; }
+    footer { margin-top: 2rem; text-align: center; font-size: .9rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>LINQ in C# (Language Integrated Query)</h1>
+    <p>LINQ lets you query and manipulate collections (arrays, lists, DB data) in a readable and expressive way. Think of it as SQL-like queries directly in C# code.</p>
+
+    <div class="card">
+      <h2>1. Basic LINQ Query</h2>
+      <p>Fetch items from a collection using a query syntax or method syntax.</p>
+      <pre><code class="language-csharp">using System;
+using System.Linq;
+
+class Program
+{
+    static void Main()
+    {
+        int[] numbers = { 1, 2, 3, 4, 5, 6 };
+
+        // Query Syntax
+        var evens = from n in numbers
+                    where n % 2 == 0
+                    select n;
+
+        // Method Syntax
+        var odds = numbers.Where(n => n % 2 != 0);
+
+        Console.WriteLine("Even numbers: " + string.Join(", ", evens));
+        Console.WriteLine("Odd numbers: " + string.Join(", ", odds));
+    }
+}</code></pre>
+    </div>
+
+    <div class="card">
+      <h2>2. Filtering (Where)</h2>
+      <p><b>Where</b> is used to filter data based on conditions.</p>
+      <pre><code class="language-csharp">var result = numbers.Where(n => n > 3);
+// Output: 4, 5, 6</code></pre>
+    </div>
+
+    <div class="card">
+      <h2>3. Projection (Select)</h2>
+      <p><b>Select</b> is used to transform each element into a new form.</p>
+      <pre><code class="language-csharp">string[] names = { "Manoj", "Ravi", "Kiran" };
+var upper = names.Select(n => n.ToUpper());
+// Output: MANOJ, RAVI, KIRAN</code></pre>
+    </div>
+
+    <div class="card">
+      <h2>4. Ordering (OrderBy, ThenBy)</h2>
+      <p><b>OrderBy</b> sorts ascending, <b>OrderByDescending</b> sorts descending.</p>
+      <pre><code class="language-csharp">var sorted = numbers.OrderByDescending(n => n);
+// Output: 6, 5, 4, 3, 2, 1</code></pre>
+    </div>
+
+    <div class="card">
+      <h2>5. Grouping (GroupBy)</h2>
+      <p><b>GroupBy</b> organizes data into groups based on a key.</p>
+      <pre><code class="language-csharp">string[] words = { "apple", "ant", "banana", "ball" };
+var groups = words.GroupBy(w => w[0]);
+
+foreach (var g in groups)
+{
+    Console.WriteLine($"Words starting with {g.Key}:");
+    foreach (var word in g)
+        Console.WriteLine("  " + word);
+}</code></pre>
+    </div>
+
+    <div class="card">
+      <h2>6. Aggregation (Count, Sum, Avg)</h2>
+      <p>LINQ provides aggregate functions like <b>Count</b>, <b>Sum</b>, <b>Average</b>, <b>Min</b>, <b>Max</b>.</p>
+      <pre><code class="language-csharp">Console.WriteLine(numbers.Sum()); // 21
+Console.WriteLine(numbers.Average()); // 3.5
+Console.WriteLine(numbers.Max()); // 6</code></pre>
+    </div>
+
+    <div class="card">
+      <h2>7. Joining</h2>
+      <p><b>Join</b> is used to combine data from two collections based on a key.</p>
+      <pre><code class="language-csharp">var students = new[] {
+    new { Id = 1, Name = "Manoj" },
+    new { Id = 2, Name = "Ravi" }
+};
+var scores = new[] {
+    new { Id = 1, Score = 90 },
+    new { Id = 2, Score = 85 }
+};
+
+var result = from s in students
+             join sc in scores on s.Id equals sc.Id
+             select new { s.Name, sc.Score };
+
+foreach (var r in result)
+    Console.WriteLine($"{r.Name} scored {r.Score}");</code></pre>
+    </div>
+
+    <div class="card">
+      <h2>8. Deferred Execution</h2>
+      <p>LINQ queries are not executed immediately. They run only when you iterate over them.</p>
+      <pre><code class="language-csharp">var query = numbers.Where(n => n > 3);
+// Nothing happens yet
+
+foreach (var n in query)
+    Console.WriteLine(n); // Now executes and prints 4, 5, 6</code></pre>
+    </div>
+
+    <div class="card">
+      <h2>9. Immediate Execution (ToList, ToArray)</h2>
+      <p>To force immediate execution, use <b>ToList()</b>, <b>ToArray()</b>, etc.</p>
+      <pre><code class="language-csharp">var list = numbers.Where(n => n > 3).ToList();
+// Executes immediately</code></pre>
+    </div>
+
+    <div class="card">
+      <h2>10. Mixed Example</h2>
+      <p>A practical LINQ query combining filtering, ordering, and projection.</p>
+      <pre><code class="language-csharp">var names = new[] { "Ravi", "Kiran", "Manoj", "Anil" };
+var result = names
+                .Where(n => n.Length > 4)
+                .OrderBy(n => n)
+                .Select(n => n.ToUpper());
+
+foreach (var r in result)
+    Console.WriteLine(r);
+// Output: KIRAN, MANOJ</code></pre>
+    </div>
+
+    <footer>
+      Tip: LINQ makes code shorter and more readable. Master <b>Where, Select, OrderBy, GroupBy</b>, and you can solve 80% of problems!
+    </footer>
+  </div>
+</body>
+</html>

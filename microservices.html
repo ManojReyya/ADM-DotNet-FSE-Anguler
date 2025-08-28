@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Microservices with ASP.NET Core & Ocelot</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #252526;
+            --text-primary: #e1e1e1;
+            --text-secondary: #a0a0a0;
+            --accent-primary: #4ec9b0;
+            --accent-secondary: #569cd6;
+            --accent-tertiary: #c586c0;
+            --border-color: #3c3c3c;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: var(--accent-primary);
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        .logo {
+            font-size: 3rem;
+            color: var(--accent-secondary);
+        }
+
+        .card {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+        }
+
+        h2 {
+            color: var(--accent-secondary);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        h3 {
+            color: var(--accent-primary);
+            margin: 20px 0 10px;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        .code-block {
+            background-color: var(--bg-tertiary);
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            overflow-x: auto;
+            border-left: 4px solid var(--accent-secondary);
+        }
+
+        code {
+            font-family: 'Fira Code', monospace;
+            color: var(--accent-primary);
+        }
+
+        .architecture {
+            display: flex;
+            justify-content: center;
+            margin: 40px 0;
+        }
+
+        .architecture-diagram {
+            width: 100%;
+            max-width: 900px;
+            height: 400px;
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .gateway {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120px;
+            height: 120px;
+            background-color: var(--accent-secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            z-index: 10;
+            box-shadow: 0 0 0 10px rgba(86, 156, 214, 0.2);
+        }
+
+        .service {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background-color: var(--accent-primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            transform: rotate(45deg);
+        }
+
+        .service-content {
+            transform: rotate(-45deg);
+        }
+
+        .service-1 {
+            top: 20%;
+            left: 20%;
+        }
+
+        .service-2 {
+            top: 20%;
+            right: 20%;
+        }
+
+        .service-3 {
+            bottom: 20%;
+            left: 20%;
+        }
+
+        .service-4 {
+            bottom: 20%;
+            right: 20%;
+        }
+
+        .service-5 {
+            top: 50%;
+            left: 10%;
+            transform: translateY(-50%) rotate(45deg);
+        }
+
+        .service-6 {
+            top: 50%;
+            right: 10%;
+            transform: translateY(-50%) rotate(45deg);
+        }
+
+        .connection {
+            position: absolute;
+            background-color: var(--text-secondary);
+            height: 2px;
+            transform-origin: 0 0;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .step-card {
+            background-color: var(--bg-tertiary);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid var(--accent-tertiary);
+        }
+
+        .step-number {
+            background-color: var(--accent-tertiary);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .benefits-list {
+            list-style-type: none;
+        }
+
+        .benefits-list li {
+            margin-bottom: 10px;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .benefits-list li:before {
+            content: "✓";
+            color: var(--success);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        .package-list {
+            list-style-type: none;
+        }
+
+        .package-list li {
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: var(--bg-tertiary);
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .package-list li i {
+            margin-right: 10px;
+            color: var(--accent-secondary);
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 40px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .architecture-diagram {
+                height: 300px;
+            }
+            
+            .service {
+                width: 70px;
+                height: 70px;
+                font-size: 0.8rem;
+            }
+            
+            .gateway {
+                width: 80px;
+                height: 80px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Microservices Architecture with ASP.NET Core</h1>
+            <p class="subtitle">Implementing API Gateway Pattern using Ocelot</p>
+            <div class="logo-container">
+                <i class="fab fa-microsoft logo"></i>
+                <i class="fas fa-plus"></i>
+                <i class="fas fa-code logo"></i>
+                <i class="fas fa-plus"></i>
+                <i class="fas fa-route logo"></i>
+            </div>
+        </header>
+
+        <div class="card">
+            <h2>What is Microservices Architecture?</h2>
+            <p>Microservices architecture is an approach to developing a single application as a suite of small services, each running in its own process and communicating with lightweight mechanisms, often an HTTP resource API.</p>
+            
+            <h3>Benefits of Microservices:</h3>
+            <ul class="benefits-list">
+                <li>Independent development and deployment of each service</li>
+                <li>Improved fault isolation</li>
+                <li>Mixed technology stack</li>
+                <li>Better scalability</li>
+                <li>Smaller and faster deployments</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>API Gateway Pattern with Ocelot</h2>
+            <p>Ocelot is a .NET API Gateway that provides routing, authentication, rate limiting, and other cross-cutting concerns for microservices architectures.</p>
+            
+            <div class="architecture">
+                <div class="architecture-diagram">
+                    <div class="gateway">API Gateway<br>(Ocelot)</div>
+                    <div class="service service-1"><div class="service-content">User<br>Service</div></div>
+                    <div class="service service-2"><div class="service-content">Product<br>Service</div></div>
+                    <div class="service service-3"><div class="service-content">Order<br>Service</div></div>
+                    <div class="service service-4"><div class="service-content">Payment<br>Service</div></div>
+                    <div class="service service-5"><div class="service-content">Auth<br>Service</div></div>
+                    <div class="service service-6"><div class="service-content">Inventory<br>Service</div></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Required NuGet Packages</h2>
+            <ul class="package-list">
+                <li><i class="fas fa-box"></i> Ocelot</li>
+                <li><i class="fas fa-box"></i> Microsoft.AspNetCore.Authentication.JwtBearer (for JWT support)</li>
+                <li><i class="fas fa-box"></i> Swashbuckle.AspNetCore (for API documentation)</li>
+                <li><i class="fas fa-box"></i> Consul (for service discovery)</li>
+                <li><i class="fas fa-box"></i> Polly (for resilience and fault handling)</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>Implementation Steps</h2>
+            <div class="steps">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3>Create API Gateway Project</h3>
+                    <p>Create a new ASP.NET Core Web API project and install the Ocelot package.</p>
+                    <div class="code-block">
+                        <code>dotnet new webapi -n ApiGateway</code><br>
+                        <code>cd ApiGateway</code><br>
+                        <code>dotnet add package Ocelot</code>
+                    </div>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3>Configure Ocelot</h3>
+                    <p>Create an ocelot.json configuration file to define your routes and services.</p>
+                    <div class="code-block">
+                        <code>{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/users",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5001
+        }
+      ],
+      "UpstreamPathTemplate": "/users",
+      "UpstreamHttpMethod": [ "Get" ]
+    }
+  ]
+}</code>
+                    </div>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h3>Program.cs Setup</h3>
+                    <p>Configure Ocelot in your Program.cs file.</p>
+                    <div class="code-block">
+                        <code>var builder = WebApplication.CreateBuilder(args);
+<br>builder.Configuration.AddJsonFile("ocelot.json");
+<br>builder.Services.AddOcelot();
+<br>var app = builder.Build();
+<br>app.UseOcelot().Wait();
+<br>app.Run();</code>
+                    </div>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <h3>Create Microservices</h3>
+                    <p>Create individual microservices as separate ASP.NET Core Web API projects.</p>
+                    <div class="code-block">
+                        <code>dotnet new webapi -n UserService</code><br>
+                        <code>dotnet new webapi -n ProductService</code><br>
+                        <code>dotnet new webapi -n OrderService</code>
+                    </div>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-number">5</div>
+                    <h3>Configure Routing</h3>
+                    <p>Define all routes in the ocelot.json file to map incoming requests to appropriate microservices.</p>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-number">6</div>
+                    <h3>Add Authentication & Authorization</h3>
+                    <p>Implement JWT authentication in the API Gateway to secure your microservices.</p>
+                    <div class="code-block">
+                        <code>builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+<br>&nbsp;&nbsp;&nbsp;&nbsp;.AddJwtBearer(options => {
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Configuration here
+<br>&nbsp;&nbsp;&nbsp;&nbsp;});</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Sample ocelot.json Configuration</h2>
+            <div class="code-block">
+                <code>{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/users",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5001
+        }
+      ],
+      "UpstreamPathTemplate": "/users",
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/products",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5002
+        }
+      ],
+      "UpstreamPathTemplate": "/products",
+      "UpstreamHttpMethod": [ "Get", "Post" ]
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost:5000"
+  }
+}</code>
+            </div>
+        </div>
+
+        <footer>
+            <p>Microservices Architecture with ASP.NET Core and Ocelot</p>
+            <p>Designed for learning and demonstration purposes</p>
+        </footer>
+    </div>
+</body>
+</html>

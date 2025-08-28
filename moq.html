@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Moq — Dark Theme Guide</title>
+  <style>
+    :root{--bg:#0b1220;--panel:#0f172a;--muted:#94a3b8;--text:#e5e7eb;--accent:#22d3ee;--border:#1f2a44;--code-bg:#0a0f1a;--code-border:#1c2a42}
+    *{box-sizing:border-box} html,body{height:100%}
+    body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial; background:radial-gradient(1200px 1200px at 10% -10%, rgba(96,165,250,.12), transparent),radial-gradient(1000px 1000px at 110% 10%, rgba(34,211,238,.10), transparent),var(--bg); color:var(--text); line-height:1.6}
+    .container{max-width:980px;margin:0 auto;padding:32px 16px 80px}
+    header{padding:24px 0 8px;margin-bottom:16px;border-bottom:1px solid var(--border)}
+    h1{margin:0;font-size:2rem} h2{margin-top:28px;margin-bottom:12px;font-size:1.35rem;color:#cfe7ff}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.0)); border:1px solid var(--border); border-radius:12px; padding:16px}
+    pre{margin:12px 0;background:var(--code-bg);border:1px solid var(--code-border);border-radius:12px;overflow:auto}
+    pre code{display:block;padding:14px;font-size:.92rem}
+    .muted{color:var(--muted)} a{color:#22d3ee}
+    .footer{margin-top:36px;border-top:1px solid var(--border);padding-top:16px;color:var(--muted);font-size:.9rem}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Moq — Essentials</h1>
+      <p>How to mock dependencies to unit test behavior without real implementations.</p>
+    </header>
+
+    <section class="card">
+      <h2>Setup</h2>
+      <ol>
+        <li>Add packages to your test project:
+          <pre><code>dotnet add HandsOn.Tests package Moq
+# NUnit already present if you used 'dotnet new nunit'</code></pre>
+        </li>
+      </ol>
+    </section>
+
+    <section class="card">
+      <h2>Example: Service with repository (mocked)</h2>
+      <pre><code class="language-csharp">// Domain model
+public class Doctor
+{
+    public int DoctorId { get; set; }
+    public string Name { get; set; } = string.Empty;
+}
+
+// Dependency to mock
+public interface IDoctorRepository
+{
+    Doctor? GetById(int id);
+    void Add(Doctor doctor);
+}
+
+// SUT (System Under Test)
+public class DoctorService
+{
+    private readonly IDoctorRepository _repo;
+    public DoctorService(IDoctorRepository repo) => _repo = repo;
+
+    public Doctor Register(string name)
+    {
+        var doc = new Doctor { Name = name };
+        _repo.Add(doc);
+        return doc;
+    }
+
+    public string Describe(int id)
+    {
+        var d = _repo.GetById(id);
+        return d == null ? "Not found" : $"#{d.DoctorId} {d.Name}";
+    }
+}
+
+// Tests (NUnit + Moq)
+using Moq;
+using NUnit.Framework;
+
+[TestFixture]
+public class DoctorServiceTests
+{
+    [Test]
+    public void Register_AddsDoctor_AndReturnsIt()
+    {
+        // Arrange
+        var mockRepo = new Mock<IDoctorRepository>();
+        var service = new DoctorService(mockRepo.Object);
+
+        // Act
+        var result = service.Register("Dr. Ada");
+
+        // Assert
+        mockRepo.Verify(r => r.Add(It.Is<Doctor>(d => d.Name == "Dr. Ada")), Times.Once);
+        Assert.That(result.Name, Is.EqualTo("Dr. Ada"));
+    }
+
+    [Test]
+    public void Describe_ReturnsFormatted_WhenDoctorExists()
+    {
+        // Arrange
+        var mockRepo = new Mock<IDoctorRepository>();
+        mockRepo.Setup(r => r.GetById(5)).Returns(new Doctor { DoctorId = 5, Name = "Dr. Bob" });
+        var service = new DoctorService(mockRepo.Object);
+
+        // Act
+        var text = service.Describe(5);
+
+        // Assert
+        Assert.That(text, Is.EqualTo("#5 Dr. Bob"));
+    }
+
+    [Test]
+    public void Describe_ReturnsNotFound_WhenMissing()
+    {
+        var mockRepo = new Mock<IDoctorRepository>();
+        mockRepo.Setup(r => r.GetById(It.IsAny<int>())).Returns((Doctor?)null);
+        var service = new DoctorService(mockRepo.Object);
+
+        var text = service.Describe(99);
+        Assert.That(text, Is.EqualTo("Not found"));
+    }
+}
+</code></pre>
+      <p class="muted">Common Moq patterns: <code>Setup</code> to define behavior, <code>Verify</code> to assert calls, <code>It.Is</code>/<code>It.IsAny</code> for argument matching, and <code>Times</code> for call count.</p>
+    </section>
+
+    <section class="card">
+      <h2>Extra: Throwing and async setups</h2>
+      <pre><code class="language-csharp">var mock = new Moq.Mock<IDoctorRepository>();
+mock.Setup(r => r.GetById(-1)).Throws(new ArgumentException("Invalid id"));
+
+// Async example
+public interface IAsyncDoctorRepository { Task<Doctor?> GetAsync(int id); }
+var m2 = new Moq.Mock<IAsyncDoctorRepository>();
+m2.Setup(r => r.GetAsync(1)).ReturnsAsync(new Doctor { DoctorId = 1, Name = "Async Doc" });
+</code></pre>
+    </section>
+
+    <div class="footer">
+      <span>Need a related topic? See <a href="index.html">Index</a>.</span>
+    </div>
+  </div>
+</body>
+</html>

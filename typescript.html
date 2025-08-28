@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TypeScript Comprehensive Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Custom styles for code blocks */
+        .code-block {
+            font-family: 'Fira Code', monospace;
+            background-color: #1e293b;
+            border-left: 4px solid #3b82f6;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #3b82f6;
+            border-radius: 4px;
+        }
+        
+        /* Animation for cards */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        
+        /* Custom tooltip */
+        .tooltip {
+            position: relative;
+        }
+        
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        .tooltip-text {
+            visibility: hidden;
+            width: 200px;
+            background-color: #1e293b;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            border: 1px solid #334155;
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-200 min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <!-- Header Section -->
+        <header class="text-center mb-12">
+            <div class="flex justify-center items-center mb-6">
+                <i class="fab fa-js-square text-5xl mr-4 text-yellow-400"></i>
+                <i class="fas fa-arrow-right text-3xl mx-4 text-blue-400"></i>
+                <i class="fab fa-microsoft text-5xl ml-4 text-blue-500"></i>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold text-blue-400 mb-4">TypeScript Mastery Guide</h1>
+            <p class="text-xl text-slate-400 mb-6">Elevate your JavaScript with static types and modern tooling</p>
+            <div class="bg-gradient-to-r from-blue-900 to-slate-800 p-1 rounded-lg inline-block">
+                <div class="bg-slate-900 px-6 py-3 rounded-lg">
+                    <code class="text-blue-400">npm install -g typescript</code>
+                </div>
+            </div>
+        </header>
+
+        <!-- Introduction Card -->
+        <section class="bg-slate-800 rounded-xl p-6 mb-8 shadow-lg border border-slate-700 animate-fade-in">
+            <h2 class="text-2xl font-bold text-blue-400 mb-4 pb-2 border-b border-slate-700">
+                <i class="fas fa-info-circle mr-2"></i>What is TypeScript?
+            </h2>
+            <p class="mb-4">TypeScript is a strongly typed superset of JavaScript that compiles to plain JavaScript. Developed and maintained by Microsoft, it adds optional static typing and class-based object-oriented programming to JavaScript.</p>
+            
+            <div class="grid md:grid-cols-2 gap-6 mt-6">
+                <div>
+                    <h3 class="text-xl font-semibold text-blue-300 mb-3">Why TypeScript?</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-400 mt-1 mr-2"></i>
+                            <span>Catch errors during development rather than runtime</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-400 mt-1 mr-2"></i>
+                            <span>Enhanced code editor support with IntelliSense</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-400 mt-1 mr-2"></i>
+                            <span>Better documentation through type definitions</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-400 mt-1 mr-2"></i>
+                            <span>Easier refactoring of large codebases</span>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-blue-300 mb-3">Key Features</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-blue-900/50 text-blue-300 px-3 py-1 rounded-full text-sm">Static Typing</span>
+                        <span class="bg-blue-900/50 text-blue-300 px-3 py-1 rounded-full text-sm">Interfaces</span>
+                        <span class="bg-blue-900/50 text-blue-300 px-3 py-1 rounded-full text-sm">Classes</span>
+                        <span class="bg-blue-900/50 text-blue-300 px-3 py-1 rounded-full text-sm">Generics</span>
+                        <span class="bg-blue-900/50 text-blue-300 px-3 py-1 rounded-full text-sm">Decorators</span>
+                        <span class="bg-blue-900/50 text-blue-300 px-3 py-1 rounded-full text-sm">Modules</span>
+                        <span class="bg-blue-900/50 text-blue-300 px-3 py-1 rounded-full text-sm">ES6+ Support</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Basic Types Section -->
+        <section class="bg-slate-800 rounded-xl p-6 mb-8 shadow-lg border border-slate-700 animate-fade-in">
+            <h2 class="text-2xl font-bold text-blue-400 mb-4 pb-2 border-b border-slate-700">
+                <i class="fas fa-cubes mr-2"></i>Basic Types
+            </h2>
+            
+            <div class="overflow-x-auto mb-6">
+                <table class="w-full border-collapse">
+                    <thead>
+                        <tr class="bg-slate-700">
+                            <th class="p-3 text-left">Type</th>
+                            <th class="p-3 text-left">Description</th>
+                            <th class="p-3 text-left">Example</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-slate-700 hover:bg-slate-700/50">
+                            <td class="p-3"><code class="text-blue-400">string</code></td>
+                            <td class="p-3">Textual data</td>
+                            <td class="p-3"><code>let name: string = "Alice";</code></td>
+                        </tr>
+                        <tr class="border-b border-slate-700 hover:bg-slate-700/50">
+                            <td class="p-3"><code class="text-blue-400">number</code></td>
+                            <td class="p-3">Numeric values (int/float)</td>
+                            <td class="p-3"><code>let age: number = 30;</code></td>
+                        </tr>
+                        <tr class="border-b border-slate-700 hover:bg-slate-700/50">
+                            <td class="p-3"><code class="text-blue-400">boolean</code></td>
+                            <td class="p-3">True/false values</td>
+                            <td class="p-3"><code>let isActive: boolean = true;</code></td>
+                        </tr>
+                        <tr class="border-b border-slate-700 hover:bg-slate-700/50">
+                            <td class="p-3"><code class="text-blue-400">any</code></td>
+                            <td class="p-3">Opt-out of type checking</td>
+                            <td class="p-3"><code>let dynamic: any = "could be anything";</code></td>
+                        </tr>
+                        <tr class="border-b border-slate-700 hover:bg-slate-700/50">
+                            <td class="p-3"><code class="text-blue-400">unknown</code></td>
+                            <td class="p-3">Type-safe counterpart of any</td>
+                            <td class="p-3"><code>let notSure: unknown = 4;</code></td>
+                        </tr>
+                        <tr class="border-b border-slate-700 hover:bg-slate-700/50">
+                            <td class="p-3"><code class="text-blue-400">void</code></td>
+                            <td class="p-3">Absence of any type (functions)</td>
+                            <td class="p-3"><code>function log(): void { console.log('hi'); }</code></td>
+                        </tr>
+                        <tr class="hover:bg-slate-700/50">
+                            <td class="p-3"><code class="text-blue-400">never</code></td>
+                            <td class="p-3">Values that never occur</td>
+                            <td class="p-3"><code>function error(message: string): never { throw new Error(message); }</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="code-block p-4 rounded-lg mb-6 overflow-x-auto">
+                <code class="text-green-400">// Type annotations with different basic types</code><br>
+                <code class="text-blue-400">let</code> <code>username</code>: <code class="text-blue-400">string</code> = <code class="text-yellow-300">"typescript_user"</code>;<br>
+                <code class="text-blue-400">let</code> <code>userAge</code>: <code class="text-blue-400">number</code> = <code class="text-green-400">25</code>;<br>
+                <code class="text-blue-400">let</code> <code>isAdmin</code>: <code class="text-blue-400">boolean</code> = <code class="text-blue-400">true</code>;<br>
+                <code class="text-blue-400">let</code> <code>userData</code>: <code class="text-blue-400">any</code> = <code class="text-yellow-300">"Can be anything"</code>;<br>
+                <code class="text-blue-400">let</code> <code>response</code>: <code class="text-blue-400">unknown</code> = <code class="text-yellow-300">"Needs type checking"</code>;<br>
+                <br>
+                <code class="text-green-400">// Arrays</code><br>
+                <code class="text-blue-400">let</code> <code>numbers</code>: <code class="text-blue-400">number</code>[] = [<code class="text-green-400">1</code>, <code class="text-green-400">2</code>, <code class="text-green-400">3</code>];<br>
+                <code class="text-blue-400">let</code> <code>names</code>: <code class="text-blue-400">Array</code>&lt;<code class="text-blue-400">string</code>&gt; = [<code class="text-yellow-300">"Alice"</code>, <code class="text-yellow-300">"Bob"</code>];<br>
+                <br>
+                <code class="text-green-400">// Tuples - fixed length arrays</code><br>
+                <code class="text-blue-400">let</code> <code>user</code>: [<code class="text-blue-400">string</code>, <code class="text-blue-400">number</code>, <code class="text-blue-400">boolean</code>] = [<code class="text-yellow-300">"Alice"</code>, <code class="text-green-400">30</code>, <code class="text-blue-400">true</code>];<br>
+            </div>
+        </section>
+
+        <!-- Functions Section -->
+        <section class="bg-slate-800 rounded-xl p-6 mb-8 shadow-lg border border-slate-700 animate-fade-in">
+            <h2 class="text-2xl font-bold text-blue-400 mb-4 pb-2 border-b border-slate-700">
+                <i class="fas fa-function mr-2"></i>Functions in TypeScript
+            </h2>
+            
+            <p class="mb-4">TypeScript enhances JavaScript functions with parameter types, return types, and function overloading.</p>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-xl font-semibold text-blue-300 mb-3">Basic Function</h3>
+                    <div class="code-block p-4 rounded-lg overflow-x-auto">
+                        <code class="text-green-400">// Function with typed parameters and return type</code><br>
+                        <code class="text-blue-400">function</code> <code>add</code>(<code>x</code>: <code class="text-blue-400">number</code>, <code>y</code>: <code class="text-blue-400">number</code>): <code class="text-blue-400">number</code> {<br>
+                        &nbsp;&nbsp;<code class="text-blue-400">return</code> <code>x</code> + <code>y</code>;<br>
+                        }<br>
+                        <br>
+                        <code class="text-green-400">// Arrow function with types</code><br>
+                        <code class="text-blue-400">const</code> <code>multiply</code> = (<code>a</code>: <code class="text-blue-400">number</code>, <code>b</code>: <code class="text-blue-400">number</code>): <code class="text-blue-400">number</code> => <code>a</code> * <code>b</code>;<br>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-semibold text-blue-300 mb-3">Optional & Default Parameters</h3>
+                    <div class="code-block p-4 rounded-lg overflow-x-auto">
+                        <code class="text-green-400">// Optional parameter (with ?)</code><br>
+                        <code class="text-blue-400">function</code> <code>greet</code>(<code>name</code>: <code class="text-blue-400">string</code>, <code>title</code>?: <code class="text-blue-400">string</code>): <code class="text-blue-400">string</code> {<br>
+                        &nbsp;&nbsp;<code class="text-blue-400">return</code> <code>title</code> ? <code>`Hello, ${title} ${name}!`</code> : <code>`Hello, ${name}!`</code>;<br>
+                        }<br>
+                        <br>
+                        <code class="text-green-400">// Default parameter</code><br>
+                        <code class="text-blue-400">function</code> <code>createUser</code>(<br>
+                        &nbsp;&nbsp;<code>name</code>: <code class="text-blue-400">string</code>, <br>
+                        &nbsp;&nbsp;<code>role</code>: <code class="text-blue-400">string</code> = <code class="text-yellow-300">"user"</code><br>
+                        ): <code class="text-blue-400">void</code> {<br>
+                        &nbsp;&nbsp;<code class="text-blue-400">console</code>.<code class="text-blue-400">log</code>(<code>`Created ${name} with role ${role}`</code>);<br>
+                        }<br>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-6">
+                <h3 class="text-xl font-semibold text-blue-300 mb-3">Function Overloading</h3>
+                <div class="code-block p-4 rounded-lg overflow-x-auto">
+                    <code class="text-green-400">// Function overload signatures</code><br>
+                    <code class="text-blue-400">function</code> <code>getData</code>(<code>id</code>: <code class="text-blue-400">number</code>): <code class="text-blue-400">string</code>;<br>
+                    <code class="text-blue-400">function</code> <code>getData</code>(<code>name</code>: <code class="text-blue-400">string</code>): <code class="text-blue-400">string</code>[];<br>
+                    <br>
+                    <code class="text-green-400">// Implementation</code><br>
+                    <code class="text-blue-400">function</code> <code>getData</code>(<code>input</code>: <code class="text-blue-400">number</code> | <code class="text-blue-400">string</code>): <code class="text-blue-400">string</code> | <code class="text-blue-400">string</code>[] {<br>
+                    &nbsp;&nbsp;<code class="text-blue-400">if</code> (<code class="text-blue-400">typeof</code> <code>input</code> === <code class="text-yellow-300">"number"</code>) {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<code class="text-blue-400">return</code> <code>`Data for ID ${input}`</code>;<br>
+                    &nbsp;&nbsp;} <code class="text-blue-400">else</code> {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<code class="text-blue-400">return</code> [<code class="text-yellow-300">"Data 1"</code>, <code class="text-yellow-300">"Data 2"</code>];<br>
+                    &nbsp;&nbsp;}<br>
+                    }<br>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interfaces and Types Section -->
+        <section class="bg-slate-800 rounded-xl p-6 mb-8 shadow-lg border border-slate-700 animate-fade-in">
+            <h2 class="text-2xl font-bold text-blue-400 mb-4 pb-2 border-b border-slate-700">
+                <i class="fas fa-project-diagram mr-2"></i>Interfaces & Type Aliases
+            </h2>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-xl font-semibold text-blue-300 mb-3">Interfaces</h3>
+                    <p class="mb-3">Interfaces define contracts for object shapes and can be extended.</p>
+                    <div class="code-block p-4 rounded-lg overflow-x-auto">
+                        <code class="text-green-400">// Basic interface</code><br>
+                        <code class="text-blue-400">interface</code> <code>User</code> {<br>
+                        &nbsp;&nbsp;<code>id</code>: <code class="text-blue-400">number</code>;<br>
+                        &nbsp;&nbsp;<code>name</code>: <code class="text-blue-400">string</code>;<br>
+                        &nbsp;&nbsp;<code>email</code>?: <code class="text-blue-400">string</code>; <code class="text-green-400">// Optional property</code><br>
+                        }<br>
+                        <br>
+                        <code class="text-green-400">// Using the interface</code><br>
+                        <code class="text-blue-400">const</code> <code>currentUser</code>: <code>User</code> = {<br>
+                        &nbsp;&nbsp;<code>id</code>: <code class="text-green-400">1</code>,<br>
+                        &nbsp;&nbsp;<code>name</code>: <code class="text-yellow-300">"Alice"</code><br>
+                        };<br>
+                        <br>
+                        <code class="text-green-400">// Extending interfaces</code><br>
+                        <code class="text-blue-400">interface</code> <code>Admin</code> <code class="text-blue-400">extends</code> <code>User</code> {<br>
+                        &nbsp;&nbsp;<code>privileges</code>: <code class="text-blue-400">string</code>[];<br>
+                        }<br>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-semibold text-blue-300 mb-3">Type Aliases</h3>
+                    <p class="mb-3">Type aliases can represent primitives, unions, tuples, and more.</p>
+                    <div class="code-block p-4 rounded-lg overflow-x-auto">
+                        <code class="text-green-400">// Basic type alias</code><br>
+                        <code class="text-blue-400">type</code> <code>Point</code> = {<br>
+                        &nbsp;&nbsp;<code>x</code>: <code class="text-blue-400">number</code>;<br>
+                        &nbsp;&nbsp;<code>y</code>: <code class="text-blue-400">number</code>;<br>
+                        };<br>
+                        <br>
+                        <code class="text-green-400">// Union types</code><br>
+                        <code class="text-blue-400">type</code> <code>ID</code> = <code class="text-blue-400">number</code> | <code class="text-blue-400">string</code>;<br>
+                        <br>
+                        <code class="text-green-400">// Tuple type</code><br>
+                        <code class="text-blue-400">type</code> <code>Data</code> = [<code class="text-blue-400">string</code>, <code class="text-blue-400">number</code>];<br>
+                        <br>
+                        <code class="text-green-400">// Function type</code><br>
+                        <code class="text-blue-400">type</code> <code>GreetFunction</code> = (<code>name</code>: <code class="text-blue-400">string</code>) => <code class="text-blue-400">string</code>;<br>
+                        <br>
+                        <code class="text-green-400">// Intersection types</code><br>
+                        <code class="text-blue-400">type</code> <code>AdminUser</code> = <code>User</code> & { <code>isAdmin</code>: <code class="text-blue-400">true</code> };<br>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-6">
+                <h3 class="text-xl font-semibold text-blue-300 mb-3">Interface vs Type</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full border-collapse">
+                        <thead>
+                            <tr class="bg-slate-700">
+                                <th class="p-3 text-left">Feature</th>
+                                <th class="p-3 text-left">Interface</th>
+                                <th class="p-3 text-left">Type</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-slate-700 hover:bg-slate-700/50">
+                                <td class="p-3">Extending</td>
+                                <td class="p-3"><code class="text-blue-400">extends</code> keyword</td>
+                                <td class="p-3">Intersection (<code class="text-blue-400">&</code>)</td>
+                            </tr>
+                            <tr class="border-b border-slate-700 hover:bg-slate-700/50">
+                                <td class="p-3">Implementing</td>
+                                <td class="p-3">Can be implemented by class</td>
+                                <td class="p-3">Cannot be implemented</td>
+                            </tr>
+                            <tr class="border-b border-slate-700 hover:bg-slate-700/50">
+                                <td class="p-3">Declaration merging</td>
+                                <td class="p-3">Multiple declarations merge</td>
+                                <td class="p-3">Cannot be re-declared</td>
+                            </tr>
+                            <tr class="border-b border-slate-700 hover:bg-slate-700/50">
+                                <td class="p-3">Primitives/unions/tuples</td>
+                                <td class="p-3">No</td>
+                                <td class="p-3">Yes</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Classes Section -->
+        <section class="bg-slate-800 rounded-xl p-6 mb-8 shadow-lg border border-slate-700 animate-fade-in">
+            <h2 class="text-2xl font-bold text-blue-400 mb-4 pb-2 border-b border-slate-700">
+                <i class="fas fa-cogs mr-2"></i>Classes in TypeScript
+            </h2>
+            
+            <p class="mb-4">TypeScript adds type annotations and visibility modifiers to ES6 classes.</p>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-xl font-semibold text-blue-300 mb-3">Basic Class</h3>
+                    <div class="code-block p-4 rounded-lg overflow-x-auto">
+                        <code class="text-blue-400">class</code> <code>Person</code> {<br>
+                        &nbsp;&nbsp;<code class="text-green-400">// Properties with types</code><br>
+                        &nbsp;&nbsp;<code>name</code>: <code class="text-blue-400">string</code>;<br>
+                        &nbsp;&nbsp;<code>age</code>: <code class="text-blue-400">number</code>;<br>
+                        <br>
+                        &nbsp;&nbsp;<code class="text-green-400">// Constructor with parameter properties</code><br>
+                        &nbsp;&nbsp;<code class="text-blue-400">constructor</code>(<code>name</code>: <code class="text-blue-400">string</code>, <code>age</code>: <code class="text-blue-400">number</code>) {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<code class="text-blue-400">this</code>.<code>name</code> = <code>name</code>;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<code class="text-blue-400">this</code>.<code>age</code> = <code>age</code>;<br>
+                        &nbsp;&nbsp;}<br>
+                        <br>
+                        &nbsp;&nbsp;<code class="text-green-400">// Method with return type</code><br>
+                        &nbsp;&nbsp;<code>describe</code>(): <code class="text-blue-400">string</code> {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<code class="text-blue-400">return</code> <code>`${this.name} is ${this.age} years old.`</code>;<br>
+                        &nbsp;&nbsp;}<br>
+                        }<br>
+                        <br>
+                        <code class="text-green-400">// Usage</code><br>
+                        <code class="text-blue-400">const</code> <code>person</code> = <code class="text-blue-400">new</code> <code>Person</code>(<code class="text-yellow-300">"Alice"</code>, <code class="text-green-400">30</code>);<br>
+                        <code class="text-blue-400">console</code>.<code class="text-blue-400">log</code>(<code>person</code>.<code>describe</code>());<br>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-semibold text-blue-300 mb-3">Access Modifiers</h3>
+                    <div class="code-block p-4 rounded-lg overflow-x-auto">
+                        <code class="text-blue-400">class</code> <code>Employee</code> {<br>
+                        &nbsp;&nbsp;<code class="text-green-400">// Public by default</code><br>
+                        &nbsp;&nbsp;<code class="text-blue-400">public</code> <code>name</code>: <code class="text-blue-400">string</code>;<br>
+                        <br>
+                        &nbsp;&nbsp;<code class="text-green-400">// Private - only accessible within class</code><br>
+                        &nbsp;&nbsp;<code class="text-blue-400">private</code> <code>salary</code>: <code class="text-blue-400">number</code>;<br>
+                        <br>
+                        &nbsp;&nbsp;<code class="text-green-400">// Protected - accessible in subclasses</code><br>
+                        &nbsp;&nbsp;<code class="text-blue-400">protected</code> <code>department</code>: <code class="text-blue-400">string</code>;<br>
+                        <br>
+                        &nbsp;&nbsp;<code class="text-blue-400">constructor</code>(<code>name</code>: <code class="text-blue-400">string</code>, <code>salary</code>: <code class="text-blue-400">number</code>, <code>department</code>: <code class="text-blue-400">string</code>) {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<code class="text-blue-400">this</code>.<code>name</code> = <code>name</code>;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<code class="text-blue-400">this</code>.<code>salary</code> = <code>salary</code>;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<code class="text-blue-400">this</code>.<code>department</code> = <code>department</code>;<br>
+                        &nbsp;&nbsp;}<br>
+                        <br>
+                        &nbsp;&nbsp;<code class="text-green-400">// Readonly - can't be modified after initialization</code><br>
+                        &nbsp;&nbsp;<code class="text-blue-400">readonly</code> <code>id</code>: <code class="text-blue-400">number</code> = <code class="text-blue-400">Math</code>.<code class="text-blue-400">floor</code>(<code class="text-blue-400">Math</code>.<code class="text-blue-400">random</code>() * <code class="text-green-400">1000</code>);<br>
+                        }<br>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-6">
+                <h3 class="text-xl font-semibold text-blue-300 mb-3">Inheritance & Interfaces</h3>
+                <div class="code-block p-4 rounded-lg overflow-x-auto">
+                    <code class="text-blue-400">interface</code> <code>ClockInterface</code> {<br>
+                    &nbsp;&nbsp;<code>currentTime</code>: <code class="text-blue-400">Date</code>;<br>
+                    &nbsp;&nbsp;<code>setTime</code>(<code>d</code>: <code class="text-blue-400">Date</code>): <code class="text-blue-400">void</code>;<br>
+                    }<br>
+                    <br>
+                    <code class="text-blue-400">class</code> <code>Clock</code> <code class="text-blue-400">implements</code> <code>ClockInterface</code> {<br>
+                    &nbsp;&nbsp;<code>currentTime</code>: <code class="text-blue-400">Date</code> = <code class="text-blue-400">new</code> <code class="text-blue-400">Date</code>();<br>
+                    &nbsp;&nbsp;<code>setTime</code>(<code>d</code>: <code class="text-blue-400">Date</code>) {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<code class="text-blue-400">this</code>.<code>currentTime</code> = <code>d</code>;<br>
+                    &nbsp;&nbsp;}<br>
+                    &nbsp;&nbsp;<code class="text-blue-400">constructor</code>(<code class="text-blue-400">public</code> <code>hour</code>: <code class="text-blue-400">number</code>, <code class="text-blue-400">public</code> <code>minute</code>: <code class="text-blue-400">number</code>) {}<br>
+                    }<br>
+                    <br>
+                    <code class="text-blue-400">class</code> <code>DigitalClock</code> <code class="text-blue-400">extends</code> <code>Clock</code> {<br>
+                    &nbsp;&nbsp;<code>display</code>(): <code class="text-blue-400">string</code> {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<code class="text-blue-400">return</code> <code>`${this.hour}:${this.minute}`</code>;<br>
+                    &nbsp;&nbsp;}<br>
+                    }<br>
+                </div>
+            </div>
+        </section>
+
+        <!-- Generics Section -->
+        <section class="bg-slate-800 rounded-xl p-6 mb-8 shadow-lg border border-slate-700 animate-fade-in">
+            <h2 class="text-2xl font-bold text-blue-400 mb-4 pb-2 border-b border-slate-700">
+                <i class="fas fa-code-branch mr-2"></i>Generics
+            </h2>
+            
+            <p class="mb-4">Generics allow creating reusable components that work with multiple types while maintaining type safety.</p>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-xl font-semibold text-blue-300 mb-3">Generic Functions</h3>
+                    <div class="code-block p-4 rounded-lg overflow-x-auto">
+                        <code class="text-green-400">// Simple generic function</code><br>
+                        <code class="text-blue-400">function</code> <code>identity</code>&lt;<code>T</code>&gt;(<code>arg</code>: <code>T</code>): <code>T</code> {<br>
+                        &nbsp;&nbsp;<code class="text-blue-400">return</code> <code>arg</code>;<br>
+                        }<br>
+                        <br>
+                        <code class="text-green-400">// Usage with explicit type</code><br>
+                        <code class="text-blue-400">let</code> <code>output1</code> = <code>identity</code>&lt;<code class="text-blue-400">string</code>&gt;(<code class="text-yellow-300">"Hello"</code>);<br>
+                        <code class="text-green-400">// Type inference</code><br>
+                        <code class="text-blue-400">let</code> <code>output2</code> = <code>identity</code>(<code class="text-green-400">42</code>);<br>
+                        <br>
+                        <code class="text-green-400">// Generic with multiple types</code><br>
+                        <code class="text-blue-400">function</code> <code>merge</code>&lt;<code>T</code>, <code>U</code>&gt;(<code>obj1</code>: <code>T</code>, <code>obj2</code>: <code>U</code>): <code>T</code> & <code>U</code> {<br>
+                        &nbsp;&nbsp;<code class="text-blue-400">return</code> { ...<code>obj1</code>, ...<code>obj2</code> };<br>
+                        }<br>
+                        <br>
+                        <code class="text-blue-400">const</code> <code>merged</code> = <code>merge</code>({ <code>name</code>: <code class="text-yellow-300">"Alice"</code> }, { <code>age</code>: <code class="text-green-400">30</code> });<br>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-semibold text-blue-300 mb-3">Generic Constraints</h3>
+                    <div class="code-block p-4 rounded-lg overflow-x-auto">
+                        <code class="text-green-400">// Constraint with interface</code><br>
+                        <code class="text-blue-400">interface</code> <code>Lengthwise</code> {<br>
+                        &nbsp;&nbsp;<code>length</code>: <code class="text-blue-400">number</code>;<br>
+                        }<br>
+                        <br>
+                        <code class="text-blue-400">function</code> <code>loggingIdentity</code>&lt;<code>T</code> <code class="text-blue-400">extends</code> <code>Lengthwise</code>&gt;(<code>arg</code>: <code>T</code>): <code>T</code> {<br>
+                        &nbsp;&nbsp;<code class="text-blue-400">console</code>.<code class="text-blue-400">log</code>(<code>arg</code>.<code>length</code>);<br>
+                        &nbsp;&nbsp;<code class="text-blue-400">return</code> <code>arg</code>;<br>
+                        }<br>
+                        <br>
+                        <code class="text-green-400">// Now works with arrays and strings</code><br>
+                        <code>loggingIdentity</code>([<code class="text-green-400">1</code>, <code class="text-green-400">2</code>, <code class="text-green-400">3</code>]);<br>
+                        <code>loggingIdentity</code>(<code class="text-yellow-300">"hello"</code>);<br>
+                        <br>
+                        <code class="text-green-400">// Keyof constraint</code><br>
+                        <code class="text-blue-400">function</code> <code>getProperty</code>&lt;<code>T</code>, <code>K</code> <code class="text-blue-400">extends</code> <code class="text-blue-400">keyof</code> <code>T</code>&gt;(<code>obj</code>: <code>T</code>, <code>key</code>: <code>K</code>) {<br>
+                        &nbsp;&nbsp;<code class="text-blue-400">return</code> <code>obj</code>[<code>key</code>];<br>
+                        }<br>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-6">
+                <h3 class="text-xl font-semibold text-blue-300 mb-3">Generic Classes</h3>
+                <div class="code-block p-4 rounded-lg overflow-x-auto">
+                    <code class="text-blue-400">class</code> <code>GenericNumber</code>&lt;<code>T</code>&gt; {<br>
+                    &nbsp;&nbsp;<code>zeroValue</code>: <code>T</code>;<br>
+                    &nbsp;&nbsp;<code>add</code>: (<code>x</code>: <code>T</code>, <code>y</code>: <code>T</code>) => <code>T</code>;<br>
+                    <br>
+                    &nbsp;&nbsp;<code class="text-blue-400">constructor</code>(<code>zeroValue</code>: <code>T</code>, <code>add</code>: (<code>x</code>: <code>T</code>, <code>y</code>: <code>T</code>) => <code>T</code>) {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<code class="text-blue-400">this</code>.<code>zeroValue</code> = <code>zeroValue</code>;<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<code class="text-blue-400">this</code>.<code>add</code> = <code>add</code>;<br>
+                    &nbsp;&nbsp;}<br>
+                    }<br>
+                    <br>
+                    <code class="text-green-400">// Usage with number</code><br>
+                    <code class="text-blue-400">let</code> <code>myGenericNumber</code> = <code class="text-blue-400">new</code> <code>GenericNumber</code>&lt;<code class="text-blue-400">number</code>&gt;(<code class="text-green-400">0</code>, (<code>x</code>, <code>y</code>) => <code>x</code> + <code>y</code>);<br>
+                    <br>
+                    <code class="text-green-400">// Usage with string</code><br>
+                    <code class="text-blue-400">let</code> <code>stringNumeric</code> = <code class="text-blue-400">new</code> <code>GenericNumber</code>&lt;<code class="text-blue-400">string</code>&gt;(<code class="text-yellow-300">""</code>, (<code>x</code>, <code>y</code>) => <code>x</code> + <code>y</code>);<br>
+                </div>
+            </div>
+        </section>
+
+        <!-- Advanced Types Section -->
+        <section class="bg-slate-800 rounded-xl p-6 mb-8 shadow-lg border border-slate-700 animate-fade-in">
+            <h2 class="text-2xl font-bold text-blue-400 mb-4 pb-2 border-b border-slate-700">
+                <i class="fas fa-star mr-2"></i>Advanced Types
+            </h2>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-xl font-semibold text-blue-300 mb-3">Union & Intersection Types</h3>
+                    <div class="code-block p-4 rounded-lg overflow-x-auto">
+                        <code class="text-green-400">// Union type - value can be one of several types</code><br>
+                        <code class="text-blue-400">function</code> <code>printId</code>(<code>id</code>: <code class="text-blue-400">number</code> | <code class="text-blue-400">string</code>) {<br>
+                        &nbsp;&nbsp;<code class="text-blue-400">console</code>.<code class="text-blue-400">log</code>(<code>`ID: ${id}`</code>);<br>
+                        }<br>
+                        <br>
+                        <code class="text-green-400">// Type guards with typeof</code><br>
+                        <code class="text-blue-400">function</code> <code>printIdSafe</code>(<code>id</code>: <code class="text-blue-400">number</code> | <code class="text-blue-400">string</code>) {<br>
+                        &nbsp;&nbsp;<code class="text-blue-400">if</code> (<code class="text-blue-400">typeof</code> <code>id</code> === <code class="text-yellow-300">"string"</code>) {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<code class="text-blue-400">console</code>.<code class="text-blue-400">log</code>(<code>id</code>.<code class="text-blue-400">toUpperCase</code>());<br>
+                        &nbsp;&nbsp;} <code class="text-blue-400">else</code> {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<code class="text-blue-400">console</code>.<code class="text-blue-400">log</code>(<code>id</code>.<code class="text-blue-400">toFixed</code>(<code class="text-green-400">2</code>));<br>
+                        &nbsp;&nbsp;}<br>
+                        }<br>
+                        <br>
+                        <code class="text-green-400">// Intersection type - combines multiple types</code><br>
+                        <code class="text-blue-400">type</code> <code>Admin</code> = {<br>
+                        &nbsp;&nbsp;<code>name</code>: <code class="text-blue-400">string</code>;<br>
+                        &nbsp;&nbsp;<code>privileges</code>: <code class="text-blue-400">string</code>[];<br>
+                        };<br>
+                        <br>
+                        <code class="text-blue-400">type</code> <code>Employee</code> = {<br>
+                        &nbsp;&nbsp;<code>name</code>: <code class="text-blue-400">string</code>;<br>
+                        &nbsp;&nbsp;<code>startDate</code>: <code class="text-blue-400">Date</code>;<br>
+                        };<br>
+                        <br>
+                        <code class="text-blue-400">type</code> <code>ElevatedEmployee</code> = <code>Admin</code> & <code>Employee</code>;<br>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-semibold text-blue-300 mb-3">Type Guards & Discriminated Unions</h3>
+                    <div class="code-block p-4 rounded-lg overflow-x-auto">
+                        <code class="text-green-400">// Type guard with 'in' operator</code><br>
+                        <code class="text-blue-400">interface</code> <code>Bird</code> {<br>
+                        &nbsp;&nbsp;<code>fly</code>(): <code class="text-blue-400">void</code>;<br>
+                        &nbsp;&nbsp;<code>layEggs</code>(): <code class="text-blue-400">void</code>;<br>
+                        }<br>
+                        <br>
+                        <code class="text-blue-400">interface</code> <code>Fish</code> {<br>
+                        &nbsp;&nbsp;<code>swim</code>(): <code class="text-blue-400">void</code>;<br>
+                        &nbsp;&nbsp;<code>layEggs</code>(): <code class="text-blue-400">void</code>;<br>
+                        }<br>
+                        <br>
+                        <code class="text-blue-400">function</code> <code>getSmallPet</code>(): <code>Fish</code> | <code>Bird</code> {<br>
+                        &nbsp;&nbsp;<code class="text-blue-400">return</code> <code class="text-blue-400">Math</code>.<code class="text-blue-400">random</code>() > <code class="text-green-400">0.5</code> ? { <code>fly</code>: () => {}, <code>layEggs</code>: () => {} } : { <code>swim</code>: () => {}, <code>layEggs</code>: () => {} };<br>
+                        }<br>
+                        <br>
+                        <code class="text-blue-400">function</code> <code>move</code>(<code>pet</code>: <code>Fish</code> | <code>Bird</code>) {<br>
+                        &nbsp;&nbsp;<code class="text-blue-400">if</code> (<code class="text-yellow-300">"swim"</code> <code class="text-blue-400">in</code> <code>pet</code>) {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<code class="text-blue-400">return</code> <code>pet</code>.<code>swim</code>();<br>
+                        &nbsp;&nbsp;}<br>
+                        &nbsp;&nbsp;<code class="text-blue-400">return</code> <code>pet</code>.<code>fly</code>();<br>
+                        }<br>
+                        <br>
+                        <code class="text-green-400">// Discriminated union with 'kind' property</code><br>
+                        <code class="text-blue-400">interface</code> <code>Square</code> {<br>
+                        &nbsp;&nbsp;<code>kind</code>: <code class="text-yellow-300">"square"</code>;<br>
+                        &nbsp;&nbsp;<code>size</code>: <code class="text-blue-400">number</code>;<br>
+                        }<br>
+                        <br>
+                        <code class="text-blue-400">interface</code> <code>Circle</code> {<br>
+                        &nbsp;&nbsp;<code>kind</code>: <code class="text-yellow-300">"circle"</code>;<br>
+                        &nbsp;&nbsp;<code>radius</code>: <code class="text-blue-400">number</code>;<br>
+                        }<br>
+                        <br>
+                        <code class="text-blue-400">type</code> <code>Shape</code> = <code>Square</code> | <code>Circle</code>;<br>
+                        <br>
+                        <code class="text-blue-400">function</code> <code>area</code>(<code>shape</code>: <code>Shape</code>): <code class="text-blue-400">number</code> {<br>
+                        &nbsp;&nbsp;<code class="text-blue-400">switch</code> (<code>shape</code>.<code>kind</code>) {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<code class="text-blue-400">case</code> <code class="text-yellow-300">"square"</code>: <code class="text-blue-400">return</code> <code>shape</code>.<code>size</code> * <code>shape</code>.<code>size</code>;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<code class="text-blue-400">case</code> <code class="text-yellow-300">"circle"</code>: <code class="text-blue-400">return</code> <code class="text-blue-400">Math</code>.<code class="text-blue-400">PI</code> * <code>shape</code>.<code>radius</code> ** <code class="text-green-400">2</code>;<br>
+                        &nbsp;&nbsp;}<br>
+                        }<br>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-6">
+                <h3 class="text-xl font-semibold text-blue-300 mb-3">Utility Types</h3>
+                <p class="mb-3">TypeScript provides several utility types to facilitate common type transformations.</p>
+                <div class="overflow-x-auto">
+                    <table class="w-full border-collapse">
+                        <thead>
+                            <tr class="bg-slate-700">
+                                <th class="p-3 text-left">Utility Type</th>
+                                <th class="p-3 text-left">Description</th>
+                                <th class="p-3 text-left">Example</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-slate-700 hover:bg-slate-700/50">
+                                <td class="p-3"><code class="text-blue-400">Partial&lt;T&gt;</code></td>
+                                <td class="p-3">Makes all properties in T optional</td>
+                                <td class="p-3"><code>Partial&lt;User&gt;</code></td>
+                            </tr>
+                            <tr class="border-b border-slate-700 hover:bg-slate-700/50">
+                                <td class="p-3"><code class="text-blue-400">Required&lt;T&gt;</code></td>
+                                <td class="p-3">Makes all properties in T required</td>
+                                <td class="p-3"><code>Required&lt;User&gt;</code></td>
+                            </tr>
+                            <tr class="border-b border-slate-700 hover:bg-slate-700/50">
+                                <td class="p-3"><code class="text-blue-400">Readonly&lt;T&gt;</code></td>
+                                <td class="p-3">Makes all properties in T readonly</td>
+                                <td class="p-3"><code>Readonly&lt;User&gt;</code></td>
+                            </tr>
+                            <tr class="border-b border-slate-700 hover:bg-slate-700/50">
+                                <td class="p-3"><code class="text-blue-400">Record&lt;K,T&gt;</code></td>
+                                <td class="p-3">Constructs an object type with property keys of type K and values of type T</td>
+                                <td class="p-3"><code>Record&lt;string, number&gt;</code></td>
+                            </tr>
+                            <tr class="border-b border-slate-700 hover:bg-slate-700/50">
+                                <td class="p-3"><code class="text-blue-400">Pick&lt;T,K&gt;</code></td>
+                                <td class="p-3">Picks a set of properties K from T</td>
+                                <td class="p-3"><code>Pick&lt;User, "name" | "email"&gt;</code></td>
+                            </tr>
+                            <tr class="border-b border-slate-700 hover:bg-slate-700/50">
+                                <td class="p-3"><code class="text-blue-400">Omit&lt;T,K&gt;</code></td>
+                                <td class="p-3">Omits a set of properties K from T</td>
+                                <td class="p-3"><code>Omit&lt;User, "password"&gt;</code></td>
+                            </tr>
+                            <tr class="hover:bg-slate-700/50">
+                                <td class="p-3"><code class="text-blue-400">Exclude&lt;T,U&gt;</code></td>
+                                <td class="p-3">Excludes from T those types that are assignable to U</td>
+                                <td class="p-3"><code>Exclude&lt;string | number, number&gt;</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Decorators Section -->
+        <section class="bg-slate-800 rounded-xl p-6 mb-8 shadow-lg border border-slate-700 animate-fade-in">
+            <h2 class="text-2xl font-bold text-blue-400 mb-4 pb-2 border-b border-slate-700">
+                <i class="fas fa-magic mr-2"></i>Decorators (Experimental)
+            </h2>
+            
+            <p class="mb-4">Decorators provide a way to add both annotations and a meta-programming syntax for class declarations and members.</p>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-xl font-semibold text-blue-300 mb-3">Class Decorator</h3>
+                    <div class="code-block p-4 rounded-lg overflow-x-auto">
+                        <code class="text-green-400">// Simple decorator that logs class construction</code><br>
+                        <code class="text-blue-400">function</code> <code>logged</code>(<code>constructor</code>: <code class="text-blue-400">Function</code>) {<br>
+                        &nbsp;&nbsp;<code class="text-blue-400">console</code>.<code class="text-blue-400">log</code>(<code>`Class ${constructor.name} was defined`</code>);<br>
+                        }<br>
+                        <br>
+                        <code class="text-green-400">// Applying the decorator</code><br>
+                        <code>@logged</code><br>
+                        <code class="text-blue-400">class</code> <code>Greeter</code> {<br>
+                        &nbsp;&nbsp;<code>greeting</code>: <code class="text-blue-400">string</code>;<br>
+                        &nbsp;&nbsp;<code class="text-blue-400">constructor</code>(<code>message</code>: <code class="text-blue-400">string</code>) {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<code class="text-blue-400">this</code>.<code>greeting</code> = <code>message</code>;<br>
+                        &nbsp;&nbsp;}<br>
+                        &nbsp;&nbsp;<code>greet</code>() {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<code class="text-blue-400">return</code> <code>`Hello, ${this.greeting}`</code>;<br>
+                        &nbsp;&nbsp;}<br>
+                        }<br>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-semibold text-blue-300 mb-3">Method Decorator</h3>
+                    <div class="code-block p-4 rounded-lg overflow-x-auto">
+                        <code class="text-green-400">// Decorator factory that logs method calls</code><br>
+                        <code class="text-blue-400">function</code> <code>logMethod</code>(<code>target</code>: <code class="text-blue-400">any</code>, <code>propertyKey</code>: <code class="text-blue-400">string</code>, <code>descriptor</code>: <code class="text-blue-400">PropertyDescriptor</code>) {<br>
+                        &nbsp;&nbsp;<code class="text-blue-400">const</code> <code>originalMethod</code> = <code>descriptor</code>.<code>value</code>;<br>
+                        <br>
+                        &nbsp;&nbsp;<code class="text-green-400">// Replace the original method with a wrapper</code><br>
+                        &nbsp;&nbsp;<code>descriptor</code>.<code>value</code> = <code class="text-blue-400">function</code> (...<code>args</code>: <code class="text-blue-400">any</code>[]) {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<code class="text-blue-400">console</code>.<code class="text-blue-400">log</code>(<code>`Calling ${propertyKey} with args: ${JSON.stringify(args)}`</code>);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<code class="text-blue-400">const</code> <code>result</code> = <code>originalMethod</code>.<code class="text-blue-400">apply</code>(<code class="text-blue-400">this</code>, <code>args</code>);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<code class="text-blue-400">console</code>.<code class="text-blue-400">log</code>(<code>`Method ${propertyKey} returned: ${JSON.stringify(result)}`</code>);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<code class="text-blue-400">return</code> <code>result</code>;<br>
+                        &nbsp;&nbsp;};<br>
+                        <br>
+                        &nbsp;&nbsp;<code class="text-blue-400">return</code> <code>descriptor</code>;<br>
+                        }<br>
+                        <br>
+                        <code class="text-blue-400">class</code> <code>Calculator</code> {<br>
+                        &nbsp;&nbsp;<code>@logMethod</code><br>
+                        &nbsp;&nbsp;<code>add</code>(<code>x</code>: <code class="text-blue-400">number</code>, <code>y</code>: <code class="text-blue-400">number</code>): <code class="text-blue-400">number</code> {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<code class="text-blue-400">return</code> <code>x</code> + <code>y</code>;<br>
+                        &nbsp;&nbsp;}<br>
+                        }<br>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-6">
+                <h3 class="text-xl font-semibold text-blue-300 mb-3">Property & Parameter Decorators</h3>
+                <div class="code-block p-4 rounded-lg overflow-x-auto">
+                    <code class="text-green-400">// Property decorator that adds metadata</code><br>
+                    <code class="text-blue-400">function</code> <code>format</code>(<code>formatString</code>: <code class="text-blue-400">string</code>) {<br>
+                    &nbsp;&nbsp;<code class="text-blue-400">return</code> <code class="text-blue-400">function</code> (<code>target</code>: <code class="text-blue-400">any</code>, <code>propertyKey</code>: <code class="text-blue-400">string</code>) {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<code class="text-blue-400">console</code>.<code class="text-blue-400">log</code>(<code>`Property ${propertyKey} will be formatted with: ${formatString}`</code>);<br>
+                    &nbsp;&nbsp;};<br>
+                    }<br>
+                    <br>
+                    <code class="text-green-400">// Parameter decorator</code><br>
+                    <code class="text-blue-400">function</code> <code>validate</code>(<code>target</code>: <code class="text-blue-400">any</code>, <code>propertyKey</code>: <code class="text-blue-400">string</code>, <code>parameterIndex</code>: <code class="text-blue-400">number</code>) {<br>
+                    &nbsp;&nbsp;<code class="text-blue-400">console</code>.<code class="text-blue-400">log</code>(<code>`Validating parameter ${parameterIndex} of ${propertyKey}`</code>);<br>
+                    }<br>
+                    <br>
+                    <code class="text-blue-400">class</code> <code>Greeter</code> {<br>
+                    &nbsp;&nbsp;<code>@format</code>(<code class="text-yellow-300">"Hello, %s"</code>)<br>
+                    &nbsp;&nbsp;<code>greeting</code>: <code class="text-blue-400">string</code>;<br>
+                    <br>
+                    &nbsp;&nbsp;<code class="text-blue-400">constructor</code>(<code>message</code>: <code class="text-blue-400">string</code>) {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<code class="text-blue-400">this</code>.<code>greeting</code> = <code>message</code>;<br>
+                    &nbsp;&nbsp;}<br>
+                    <br>
+                    &nbsp;&nbsp;<code>greet</code>(<code>@validate</code> <code>name</code>: <code class="text-blue-400">string</code>) {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<code class="text-blue-400">return</code> <code>`${this.greeting}, ${name}`</code>;<br>
+                    &nbsp;&nbsp;}<br>
+                    }<br>
+                </div>
+            </div>
+        </section>
+
+        <!-- Configuration & Tooling Section -->
+        <section class="bg-slate-800 rounded-xl p-6 mb-8 shadow-lg border border-slate-700 animate-fade-in">
+            <h2 class="text-2xl font-bold text-blue-400 mb-4 pb-2 border-b border-slate-700">
+                <i class="fas fa-tools mr-2"></i>Configuration & Tooling
+            </h2>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-xl font-semibold text-blue-300 mb-3">tsconfig.json</h3>
+                    <p class="mb-3">The tsconfig.json file specifies the root files and the compiler options required to compile the project.</p>
+                    <div class="code-block p-4 rounded-lg overflow-x-auto">
+                        <code class="text-green-400">// Example tsconfig.json</code><br>
+                        <code>{</code><br>
+                        &nbsp;&nbsp;<code class="text-yellow-300">"compilerOptions"</code>: {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<code class="text-yellow-300">"target"</code>: <code class="text-yellow-300">"ES6"</code>,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<code class="text-yellow-300">"module"</code>: <code class="text-yellow-300">"commonjs"</code>,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<code class="text-yellow-300">"strict"</code>: <code class="text-blue-400">true</code>,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<code class="text-yellow-300">"esModuleInterop"</code>: <code class="text-blue-400">true</code>,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<code class="text-yellow-300">"skipLibCheck"</code>: <code class="text-blue-400">true</code>,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<code class="text-yellow-300">"forceConsistentCasingInFileNames"</code>: <code class="text-blue-400">true</code>,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<code class="text-yellow-300">"outDir"</code>: <code class="text-yellow-300">"./dist"</code>,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<code class="text-yellow-300">"rootDir"</code>: <code class="text-yellow-300">"./src"</code>,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<code class="text-yellow-300">"baseUrl"</code>: <code class="text-yellow-300">"."</code>,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<code class="text-yellow-300">"paths"</code>: {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code class="text-yellow-300">"@/*"</code>: [<code class="text-yellow-300">"src/*"</code>]<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                        &nbsp;&nbsp;},<br>
+                        &nbsp;&nbsp;<code class="text-yellow-300">"include"</code>: [<code class="text-yellow-300">"src/**/*"</code>],<br>
+                        &nbsp;&nbsp;<code class="text-yellow-300">"exclude"</code>: [<code class="text-yellow-300">"node_modules"</code>]<br>
+                        <code>}</code><br>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-semibold text-blue-300 mb-3">Important Compiler Options</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-semibold text-blue-200 mb-1">Strict Type-Checking</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-blue-900/50 text-blue-300 px-3 py-1 rounded-full text-sm">strict</span>
+                                <span class="bg-blue-900/50 text-blue-300 px-3 py-1 rounded-full text-sm">noImplicitAny</span>
+                                <span class="bg-blue-900/50 text-blue-300 px-3 py-1 rounded-full text-sm">strictNullChecks</span>
+                                <span class="bg-blue-900/50 text-blue-300 px-3 py-1 rounded-full text-sm">strictFunctionTypes</span>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 class="font-semibold text-blue-200 mb-1">Module Resolution</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-blue-900/50 text-blue-300 px-3 py-1 rounded-full text-sm">module</span>
+                                <span class="bg-blue-900/50 text-blue-300 px-3 py-1 rounded-full text-sm">moduleResolution</span>
+                                <span class="bg-blue-900/50 text-blue-300 px-3 py-1 rounded-full text-sm">esModuleInterop</span>
+                                <span class="bg-blue-900/50 text-blue-300 px-3 py-1 rounded-full text-sm">allowSyntheticDefaultImports</span>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 class="font-semibold text-blue-200 mb-1">Source Maps & Output</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <
+</body>
+</html>

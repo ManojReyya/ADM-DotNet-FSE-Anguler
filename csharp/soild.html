@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SOLID Principles in C# — Dark Theme Guide</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
+  <style>
+    :root {
+      --bg: #0b0f14;
+      --panel: #111827;
+      --panel-2: #0f172a;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --accent: #60a5fa;
+      --accent-2: #a78bfa;
+      --border: #1f2937;
+      --shadow: 0 10px 25px rgba(0, 0, 0, .35);
+    }
+    body {
+      margin: 0;
+      font-family: Segoe UI, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .container { max-width: 1000px; margin: 0 auto; padding: 2rem 1rem; }
+    header { margin-bottom: 2rem; }
+    h1 { font-size: 2rem; font-weight: 700; }
+    h2 { font-size: 1.5rem; margin-top: 1.2rem; }
+    h3 { font-size: 1.2rem; margin-top: .8rem; color: var(--accent); }
+    p { line-height: 1.6; }
+    .card { background: linear-gradient(180deg, var(--panel), var(--panel-2)); border: 1px solid var(--border); border-radius: 16px; padding: 1rem 1.2rem; margin-top: 1rem; box-shadow: var(--shadow); }
+    pre { background: #111827 !important; border-radius: 12px; border: 1px solid var(--border); padding: 1rem; overflow: auto; }
+    .principle { margin-bottom: 2rem; }
+    footer { margin-top: 2rem; text-align: center; font-size: .9rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>SOLID Principles — Easy C# Guide</h1>
+      <p>The <b>SOLID</b> principles are five simple rules that make object-oriented code easier to read, maintain, and extend. Let’s break them down with examples.</p>
+    </header>
+
+    <section class="card principle">
+      <h2>1) S — Single Responsibility Principle</h2>
+      <p>A class should have only <b>one reason to change</b>. Do one thing, do it well.</p>
+      <pre><code class="language-csharp">// ❌ Bad: Handles both saving and logging
+class OrderService
+{
+    public void SaveOrder(string order) { /* save */ }
+    public void Log(string message) { /* log */ }
+}
+
+// ✅ Good: Separate concerns
+class OrderRepository
+{
+    public void Save(string order) { /* save */ }
+}
+
+class Logger
+{
+    public void Log(string message) { /* log */ }
+}</code></pre>
+    </section>
+
+    <section class="card principle">
+      <h2>2) O — Open/Closed Principle</h2>
+      <p>Software should be <b>open for extension</b> but <b>closed for modification</b>. Add new code without changing existing code.</p>
+      <pre><code class="language-csharp">// ❌ Bad: Adding new shapes requires editing the class
+class AreaCalculator
+{
+    public double Area(object shape)
+    {
+        if (shape is Circle c) return Math.PI * c.Radius * c.Radius;
+        if (shape is Square s) return s.Side * s.Side;
+        return 0;
+    }
+}
+
+// ✅ Good: Use abstraction (polymorphism)
+interface IShape { double Area(); }
+class Circle : IShape { public double Radius { get; set; } public double Area() => Math.PI * Radius * Radius; }
+class Square : IShape { public double Side { get; set; } public double Area() => Side * Side; }
+
+class AreaCalculator
+{
+    public double Area(IShape shape) => shape.Area();
+}</code></pre>
+    </section>
+
+    <section class="card principle">
+      <h2>3) L — Liskov Substitution Principle</h2>
+      <p>Subclasses should be usable wherever their base class is expected. <b>No surprises.</b></p>
+      <pre><code class="language-csharp">// ❌ Bad: Square breaks Rectangle behavior
+class Rectangle
+{
+    public virtual int Width { get; set; }
+    public virtual int Height { get; set; }
+    public int Area() => Width * Height;
+}
+
+class Square : Rectangle
+{
+    public override int Width { set { base.Width = base.Height = value; } }
+    public override int Height { set { base.Width = base.Height = value; } }
+}
+
+// ✅ Good: Use separate abstractions
+interface IShape { int Area(); }
+class RectangleShape : IShape { public int Width { get; set; } public int Height { get; set; } public int Area() => Width * Height; }
+class SquareShape : IShape { public int Side { get; set; } public int Area() => Side * Side; }</code></pre>
+    </section>
+
+    <section class="card principle">
+      <h2>4) I — Interface Segregation Principle</h2>
+      <p>Don’t force classes to implement things they don’t need. <b>Smaller, specific interfaces</b> are better than large, general ones.</p>
+      <pre><code class="language-csharp">// ❌ Bad: One big interface
+interface IMachine
+{
+    void Print();
+    void Scan();
+    void Fax();
+}
+
+class OldPrinter : IMachine
+{
+    public void Print() { }
+    public void Scan() { throw new NotImplementedException(); }
+    public void Fax() { throw new NotImplementedException(); }
+}
+
+// ✅ Good: Smaller interfaces
+interface IPrinter { void Print(); }
+interface IScanner { void Scan(); }
+
+class SimplePrinter : IPrinter
+{
+    public void Print() { }
+}</code></pre>
+    </section>
+
+    <section class="card principle">
+      <h2>5) D — Dependency Inversion Principle</h2>
+      <p>Depend on <b>abstractions</b>, not concrete classes. High-level modules shouldn’t depend on low-level modules directly.</p>
+      <pre><code class="language-csharp">// ❌ Bad: High-level depends on low-level
+class FileLogger
+{
+    public void Log(string message) { /* write to file */ }
+}
+
+class OrderService
+{
+    private FileLogger _logger = new FileLogger();
+    public void Save(string order) { _logger.Log("Saved order"); }
+}
+
+// ✅ Good: Depend on abstraction
+interface ILogger { void Log(string message); }
+class FileLogger : ILogger { public void Log(string msg) { /* file */ } }
+class ConsoleLogger : ILogger { public void Log(string msg) { Console.WriteLine(msg); } }
+
+class OrderService
+{
+    private readonly ILogger _logger;
+    public OrderService(ILogger logger) { _logger = logger; }
+    public void Save(string order) { _logger.Log("Saved order"); }
+}</code></pre>
+    </section>
+
+    <footer>
+      SOLID makes your code <b>cleaner, reusable, and testable</b>. Try applying one principle at a time.
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dapper — Dark Theme Guide</title>
+  <style>
+    :root{
+      --bg:#0b1220;          /* page background */
+      --panel:#0f172a;       /* cards/panels */
+      --muted:#94a3b8;       /* secondary text */
+      --text:#e5e7eb;        /* main text */
+      --accent:#22d3ee;      /* cyan accent */
+      --accent-2:#60a5fa;    /* blue accent */
+      --border:#1f2a44;      /* borders */
+      --code-bg:#0a0f1a;     /* code blocks */
+      --code-border:#1c2a42; /* code border */
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background:radial-gradient(1200px 1200px at 10% -10%, rgba(96,165,250,.12), transparent),
+                 radial-gradient(1000px 1000px at 110% 10%, rgba(34,211,238,.10), transparent),
+                 var(--bg);
+      color:var(--text);
+      line-height:1.6;
+    }
+    .container{max-width:980px; margin:0 auto; padding:32px 16px 80px}
+    header{padding:24px 0 8px; margin-bottom:16px; border-bottom:1px solid var(--border)}
+    h1{margin:0; font-size:2rem; letter-spacing:.2px}
+    header p{margin:6px 0 0; color:var(--muted)}
+    h2{margin-top:28px; margin-bottom:12px; font-size:1.35rem; color:#cfe7ff}
+    h3{margin-top:18px; margin-bottom:8px; font-size:1.05rem; color:#bfe7ff}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.0)); border:1px solid var(--border); border-radius:12px; padding:16px}
+    code.inline{background:rgba(255,255,255,.06); border:1px solid var(--border); padding:.1rem .35rem; border-radius:6px; font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}
+    pre{margin:12px 0; background:var(--code-bg); border:1px solid var(--code-border); border-radius:12px; overflow:auto}
+    pre code{display:block; padding:14px; font-size:.92rem}
+    a{color:var(--accent)}
+    .muted{color:#94a3b8}
+    .footer{margin-top:36px; border-top:1px solid var(--border); padding-top:16px; color:#94a3b8; font-size:.9rem}
+    .badge{display:inline-block; padding:.15rem .5rem; font-size:.75rem; border:1px solid var(--border); border-radius:999px; background:rgba(255,255,255,.05); color:#a8b5d1}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Dapper — Essentials</h1>
+      <p>Dark theme quick reference for Dapper with a repository-based Doctors sample.</p>
+    </header>
+
+    <section class="card">
+      <h2>What is Dapper?</h2>
+      <ul>
+        <li><strong>Micro-ORM</strong> for .NET: thin abstraction over ADO.NET.</li>
+        <li><strong>Fast</strong> and lightweight: focuses on mapping rows to objects.</li>
+        <li><strong>You write SQL</strong>: Dapper executes and maps results to your types.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Setup</h2>
+      <ol>
+        <li>Install packages:
+          <pre><code>dotnet add package Dapper
+dotnet add package Microsoft.Data.SqlClient</code></pre>
+        </li>
+        <li>Connection string:
+          <pre><code>Data Source=ELIZA\SQLEXPRESS; Initial Catalog=HealthcareSystem; Integrated Security=True; TrustServerCertificate=True</code></pre>
+        </li>
+      </ol>
+    </section>
+
+    <section class="card">
+      <h2>Entity model: Doctor</h2>
+      <pre><code class="language-csharp">namespace HandsOnDapper
+{
+    public class Doctor
+    {
+        public int DoctorId { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Specialization { get; set; } = string.Empty;
+        public string? Qualification { get; set; }
+        public string? LicenseNumber { get; set; }
+        public int ExperienceYears { get; set; }
+        public string? PhoneNumber { get; set; }
+        public TimeSpan AvailabilityStart { get; set; }
+        public TimeSpan AvailabilityEnd { get; set; }
+    }
+}
+</code></pre>
+    </section>
+
+    <section class="card">
+      <h2>Repository: DoctorRepository</h2>
+      <pre><code class="language-csharp">using Dapper;
+using System;
+using System.Collections.Generic;
+using Microsoft.Data.SqlClient; // ✅ Use this instead
+
+namespace HandsOnDapper
+{
+    public class DoctorRepository
+    {
+        private string connectionString = "Data Source=ELIZA\\SQLEXPRESS; Initial Catalog=HealthcareSystem; Integrated Security=True; TrustServerCertificate=True";
+
+        // READ
+        public IEnumerable&lt;Doctor&gt; GetAllDoctors()
+        {
+            using var conn = new SqlConnection(connectionString);
+            string query = "SELECT * FROM Doctors";
+            return conn.Query&lt;Doctor&gt;(query);
+        }
+
+        // INSERT
+        public void AddDoctor(Doctor doctor)
+        {
+            using var conn = new SqlConnection(connectionString);
+            string query = @"INSERT INTO Doctors (Name, Specialization, Qualification, LicenseNumber, ExperienceYears, PhoneNumber, AvailabilityStart, AvailabilityEnd)
+                             VALUES (@Name, @Specialization, @Qualification, @LicenseNumber, @ExperienceYears, @PhoneNumber, @AvailabilityStart, @AvailabilityEnd)";
+            conn.Execute(query, doctor);
+        }
+
+        // UPDATE
+        public void UpdateDoctor(Doctor doctor)
+        {
+            using var conn = new SqlConnection(connectionString);
+            string query = @"UPDATE Doctors 
+                             SET Name = @Name, Specialization = @Specialization 
+                             WHERE DoctorId = @DoctorId";
+            conn.Execute(query, doctor);
+        }
+
+        // DELETE
+        public void DeleteDoctor(int doctorId)
+        {
+            using var conn = new SqlConnection(connectionString);
+            string query = "DELETE FROM Doctors WHERE DoctorId = @DoctorId";
+            conn.Execute(query, new { DoctorId = doctorId });
+        }
+    }
+}
+</code></pre>
+    </section>
+
+    <section class="card">
+      <h2>Program.cs</h2>
+      <pre><code class="language-csharp">using System;
+namespace HandsOnDapper
+{
+   internal class Program
+    {
+        static void Main(string[] args)
+        {
+            var repo = new DoctorRepository();
+
+            // Insert
+            repo.AddDoctor(new Doctor
+            {
+                Name = "Dr. Kavita Sharma",
+                Specialization = "Dermatologist",
+                Qualification = "MBBS, DDVL",
+                LicenseNumber = "LIC10293",
+                ExperienceYears = 14,
+                PhoneNumber = "9876543210",
+                AvailabilityStart = new TimeSpan(10, 0, 0),
+                AvailabilityEnd = new TimeSpan(13, 0, 0)
+            });
+
+            // Read
+            var doctors = repo.GetAllDoctors();
+            foreach (var doc in doctors)
+            {
+                Console.WriteLine($"{doc.DoctorId}: {doc.Name}, {doc.Specialization}");
+            }
+
+            // Update
+            repo.UpdateDoctor(new Doctor { DoctorId = 10, Name = "Dr. Harish Iyer", Specialization = "Updated Specialist" });
+
+            // Delete
+            repo.DeleteDoctor(9);
+        }
+    }
+}
+</code></pre>
+    </section>
+
+    <section class="card">
+      <h2>Notes</h2>
+      <ul>
+        <li>Dapper maps columns by name to properties (case-insensitive).</li>
+        <li>Use <code class="inline">Query</code>/<code class="inline">QueryFirstOrDefault</code> for reads and <code class="inline">Execute</code> for non-queries.</li>
+        <li>Prefer <code class="inline">Microsoft.Data.SqlClient</code> provider for SQL Server.</li>
+      </ul>
+    </section>
+
+    <div class="footer">
+      <span>Need a related topic? See <a href="index.html">Index</a>.</span>
+    </div>
+  </div>
+</body>
+</html>

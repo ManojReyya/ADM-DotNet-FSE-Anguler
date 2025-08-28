@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EF Core — Dark Theme Guide</title>
+  <style>
+    :root{
+      --bg:#0b1220;          /* page background */
+      --panel:#0f172a;       /* cards/panels */
+      --muted:#94a3b8;       /* secondary text */
+      --text:#e5e7eb;        /* main text */
+      --accent:#22d3ee;      /* cyan accent */
+      --accent-2:#60a5fa;    /* blue accent */
+      --border:#1f2a44;      /* borders */
+      --code-bg:#0a0f1a;     /* code blocks */
+      --code-border:#1c2a42; /* code border */
+      --success:#22c55e;
+      --warn:#f59e0b;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background:radial-gradient(1200px 1200px at 10% -10%, rgba(96,165,250,.12), transparent),
+                 radial-gradient(1000px 1000px at 110% 10%, rgba(34,211,238,.10), transparent),
+                 var(--bg);
+      color:var(--text);
+      line-height:1.6;
+    }
+    .container{max-width:980px; margin:0 auto; padding:32px 16px 80px}
+    header{padding:24px 0 8px; margin-bottom:16px; border-bottom:1px solid var(--border)}
+    h1{margin:0; font-size:2rem; letter-spacing:.2px}
+    header p{margin:6px 0 0; color:var(--muted)}
+    h2{margin-top:28px; margin-bottom:12px; font-size:1.35rem; color:#cfe7ff}
+    h3{margin-top:18px; margin-bottom:8px; font-size:1.05rem; color:#bfe0ff}
+    .grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:16px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.0)); border:1px solid var(--border); border-radius:12px; padding:16px}
+    .muted{color:var(--muted)}
+    code.inline{background:rgba(255,255,255,.06); border:1px solid var(--border); padding:.1rem .35rem; border-radius:6px; font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}
+    pre{margin:12px 0; background:var(--code-bg); border:1px solid var(--code-border); border-radius:12px; overflow:auto}
+    pre code{display:block; padding:14px; font-size:.92rem}
+    a{color:var(--accent)}
+    .footer{margin-top:36px; border-top:1px solid var(--border); padding-top:16px; color:var(--muted); font-size:.9rem}
+    .badge{display:inline-block; padding:.15rem .5rem; font-size:.75rem; border:1px solid var(--border); border-radius:999px; background:rgba(255,255,255,.05); color:#a8b5d1}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Entity Framework Core — Essentials</h1>
+      <p>Dark theme quick reference for ORM concepts and a practical EF Core CRUD example.</p>
+    </header>
+
+    <section class="card">
+      <h2>ORM (Object-Relational Mapping)</h2>
+      <p><strong>ORM</strong> lets you interact with database tables using C# objects instead of writing raw SQL.</p>
+      <h3>Why use ORM?</h3>
+      <ul>
+        <li><strong>Avoid manual SQL</strong> for common operations</li>
+        <li><strong>Map tables to classes</strong> automatically</li>
+        <li><strong>Reduce boilerplate</strong> data-access code</li>
+        <li><strong>Type safety</strong> and IntelliSense support</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Key features of EF Core</h2>
+      <ul>
+        <li><strong>Code-first</strong>: Write C# domain classes; EF generates schema</li>
+        <li><strong>Database-first</strong>: Scaffold models from an existing DB</li>
+        <li><strong>Migrations</strong>: Manage schema changes via CLI</li>
+        <li><strong>Change tracking</strong>: Tracks modifications to entities</li>
+        <li><strong>Lazy/Eager/Explicit loading</strong>: Control how related data loads</li>
+        <li><strong>LINQ support</strong>: Compose queries in C#</li>
+        <li><strong>Async operations</strong>: Works with async/await</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>EF Core architecture overview</h2>
+      <ul>
+        <li><strong>DbContext</strong>: Main class to interact with the database</li>
+        <li><strong>DbSet&lt;TEntity&gt;</strong>: Represents a table</li>
+        <li><strong>Models/Entities</strong>: C# classes mapped to tables</li>
+        <li><strong>LINQ queries</strong>: C# expressions translated to SQL</li>
+        <li><strong>Migrations</strong>: Create/update schema from code</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Setup</h2>
+      <ol>
+        <li>Install packages:
+          <pre><code>dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+dotnet add package Microsoft.EntityFrameworkCore.Tools</code></pre>
+        </li>
+        <li>Connection string example:
+          <pre><code>Server=ELIZA\SQLEXPRESS;Database=HealthcareSystem;Trusted_Connection=True;TrustServerCertificate=True;</code></pre>
+        </li>
+      </ol>
+    </section>
+
+    <section class="card">
+      <h2>Entity model: Doctor (with Data Annotations)</h2>
+      <pre><code class="language-csharp">using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace HandsOnEntityFrameworkCore.Entities
+{
+    public class Doctor
+    {
+        [Key] // Primary key
+        public int DoctorId { get; set; }
+
+        [Required]
+        [MaxLength(100)] // NVARCHAR(100)
+        public string Name { get; set; } = string.Empty;
+
+        [Required]
+        [MaxLength(100)]
+        public string Specialization { get; set; } = string.Empty;
+
+        [StringLength(150)] // Optional with max length
+        public string? Qualification { get; set; }
+
+        [StringLength(50)]
+        public string? LicenseNumber { get; set; }
+
+        [Range(0, 60)] // 0..60 years experience
+        public int ExperienceYears { get; set; }
+
+        [Phone]
+        [StringLength(20)]
+        public string? PhoneNumber { get; set; }
+
+        [Column(TypeName = "time")] // map to SQL Server 'time'
+        public TimeSpan AvailabilityStart { get; set; }
+
+        [Column(TypeName = "time")]
+        public TimeSpan AvailabilityEnd { get; set; }
+    }
+}
+</code></pre>
+    </section>
+
+    <section class="card">
+      <h2>Data Annotations — what they do</h2>
+      <ul>
+        <li><strong>[Key]</strong>: Marks the primary key column.</li>
+        <li><strong>[Required]</strong>: NOT NULL constraint and validation.</li>
+        <li><strong>[MaxLength]/[StringLength]</strong>: Limits string column size and validates input length.</li>
+        <li><strong>[Range]</strong>: Validates numeric range; documents constraints.</li>
+        <li><strong>[Phone]</strong>: Validates format; does not change column type.</li>
+        <li><strong>[Column(TypeName = "time")]</strong>: Forces SQL type mapping.</li>
+      </ul>
+      <p class="muted">Use Fluent API in <code class="inline">OnModelCreating</code> for relationships, indexes, and advanced configuration.</p>
+    </section>
+
+    <section class="card">
+      <h2>DbContext</h2>
+      <p><em>Note: Namespace uses the same spelling you provided (DbContextFloder).</em></p>
+      <pre><code class="language-csharp">using HandsOnEntityFrameworkCore.Entities;
+using Microsoft.EntityFrameworkCore;
+
+namespace HandsOnEntityFrameworkCore.DbContextFloder
+{
+    internal class AppDbContext : DbContext
+    {
+        public DbSet&lt;Doctor&gt; Doctors { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer("Server=ELIZA\\SQLEXPRESS;Database=HealthcareSystem;Trusted_Connection=True;TrustServerCertificate=True;");
+        }
+    }
+}
+</code></pre>
+    </section>
+
+    <section class="card">
+      <h2>Program.cs — CRUD with EF Core</h2>
+      <pre><code class="language-csharp">using HandsOnEntityFrameworkCore.DbContextFloder;
+using HandsOnEntityFrameworkCore.Entities;
+using System;
+using System.Linq;
+
+namespace HandsOnEntityFrameworkCore
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            using var context = new AppDbContext();
+
+            // Ensure database and table are created (simple dev approach)
+            context.Database.EnsureCreated();
+
+            // Insert
+            var doctor2 = new Doctor
+            {
+                Name = "Dr. Asha Mehta",
+                Specialization = "Dermatologist",
+                LicenseNumber = "LIC2222",
+                Qualification = "MBBS, DDVL",
+                ExperienceYears = 7,
+                PhoneNumber = "9123456789",
+                AvailabilityStart = new TimeSpan(10, 0, 0),
+                AvailabilityEnd = new TimeSpan(14, 0, 0)
+            };
+            context.Doctors.Add(doctor2);
+            context.SaveChanges();
+            Console.WriteLine("✅ Doctor inserted.");
+
+            // Read
+            var doctors = context.Doctors.ToList();
+            Console.WriteLine("\n👨‍⚕️ All Doctors:");
+            foreach (var doc in doctors)
+            {
+                Console.WriteLine($"{doc.DoctorId}: {doc.Name} - {doc.Specialization}");
+            }
+
+            // Update
+            var firstDoctor = context.Doctors.FirstOrDefault();
+            if (firstDoctor != null)
+            {
+                firstDoctor.Specialization = "Senior Cardiologist";
+                context.SaveChanges();
+                Console.WriteLine("✏️ Doctor updated.");
+            }
+
+            // Delete
+            if (firstDoctor != null)
+            {
+                context.Doctors.Remove(firstDoctor);
+                context.SaveChanges();
+                Console.WriteLine("❌ Doctor deleted.");
+            }
+        }
+    }
+}
+</code></pre>
+      <p class="muted">Alternative: replace <code class="inline">EnsureCreated()</code> with migrations (recommended for real apps).</p>
+    </section>
+
+    <section class="card">
+      <h2>Optional: Migrations quick start</h2>
+      <ol>
+        <li>Create initial migration:
+          <pre><code>dotnet ef migrations add InitialCreate</code></pre>
+        </li>
+        <li>Apply to database:
+          <pre><code>dotnet ef database update</code></pre>
+        </li>
+      </ol>
+      <p class="note"><strong>Tip:</strong> For migrations commands, ensure the <code class="inline">Microsoft.EntityFrameworkCore.Tools</code> package is installed and the project builds.</p>
+    </section>
+
+    <div class="footer">
+      <span>Need a related topic? See <a href="index.html">Index</a>.</span>
+    </div>
+  </div>
+</body>
+</html>

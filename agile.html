@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Agile Scrum Flow Diagram</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Anti-clockwise rotation for sprint arrow */
+    .rotate-anticlockwise {
+      transform-origin: 790px 150px;
+      animation: rotate-anticlockwise 2.5s linear infinite;
+    }
+    @keyframes rotate-anticlockwise {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(-360deg); }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+    .animate-pulse-slow {
+      animation: pulse 3s infinite;
+    }
+    .animate-pulse-feedback {
+      animation: pulse 2.5s infinite;
+    }
+    .glow {
+      filter: drop-shadow(0 0 12px rgba(107, 190, 255, 0.8));
+    }
+    .feedback-glow {
+      filter: drop-shadow(0 0 12px rgba(125, 255, 165, 0.8));
+    }
+    .card-gradient {
+      background: linear-gradient(180deg, #1a103a 0%, #0e0825 100%);
+    }
+    .box-gradient {
+      background: linear-gradient(180deg, #2a1d5e 0%, #1a1240 100%);
+    }
+    .arrow-gradient {
+      background: linear-gradient(90deg, #ff8be0 0%, #a56aff 100%);
+    }
+    .feedback-gradient {
+      background: linear-gradient(90deg, #a56aff 0%, #7dffa5 100%);
+    }
+    .scrum-circle {
+      background: rgba(204, 138, 255, 0.1);
+    }
+    .table-bg {
+      background: #1e0a3f;
+    }
+    .chip-bg {
+      background: #2a104d;
+    }
+    .hover-scale {
+      transition: transform 0.2s ease;
+    }
+    .hover-scale:hover {
+      transform: scale(1.02);
+    }
+    .tooltip {
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .has-tooltip:hover .tooltip {
+      visibility: visible;
+      opacity: 1;
+    }
+    /* New vibrant colors */
+    .primary-blue {
+      color: #6aa5ff;
+    }
+    .primary-teal {
+      color: #7dffa5;
+    }
+    .text-light {
+      color: #e7f1ff;
+    }
+    .text-muted {
+      color: #a6b8d8;
+    }
+    .border-accent {
+      border-color: #3a4b7a;
+    }
+    .bg-dark {
+      background-color: #0a1120;
+    }
+    .bg-darker {
+      background-color: #070d18;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-start p-4 bg-gradient-to-b from-[#1a103a] to-[#0a051f] font-['Inter'] text-light">
+  
+    <!-- Navigation Button -->
+<div class="w-full flex justify-start px-6 py-4">
+  <a href="index.html" 
+     class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white font-medium shadow-lg hover:scale-105 transition-transform">
+    <i class="fas fa-arrow-left"></i>
+    Back to Homepage
+  </a>
+</div>
+  <!-- Agile Cycle Section -->
+  <section class="py-12 px-6 text-center w-full">
+    <h2 class="text-3xl md:text-4xl font-bold mb-6 primary-blue">Agile Development Cycle</h2>
+    <div class="flex justify-center">
+      <img src="Images/agile.png" alt="Agile Development Cycle" class="max-w-6xl rounded-lg shadow-lg">
+    </div>
+  </section>
+
+  <!-- Scrum Workflow Diagram Section -->
+  <section class="w-full max-w-6xl mt-10 rounded-2xl border border-accent shadow-2xl shadow-black/50 card-gradient overflow-hidden">
+    <div class="p-6 border-b border-accent">
+      <h1 class="text-2xl font-bold flex items-center gap-2 primary-blue">
+        <i class="fas fa-project-diagram"></i>
+        Scrum Workflow
+      </h1>
+      <p class="text-sm text-muted mt-1">Visualizing the iterative development process</p>
+    </div>
+
+        
+    <div class="p-4 md:p-6 relative overflow-x-auto">
+      <!-- Main SVG Diagram -->
+      <svg viewBox="0 0 1200 650" class="w-full h-auto">
+        <defs>
+          <linearGradient id="boxGrad" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stop-color="#2a1d5e"/>
+            <stop offset="100%" stop-color="#1a1240"/>
+          </linearGradient>
+          <linearGradient id="arrowGrad" x1="0" x2="1" y1="0" y2="0">
+            <stop offset="0%" stop-color="#ff8be0"/>
+            <stop offset="100%" stop-color="#a56aff"/>
+          </linearGradient>
+          <linearGradient id="feedbackGrad" x1="0" x2="1" y1="0" y2="0">
+            <stop offset="0%" stop-color="#a56aff"/>
+            <stop offset="100%" stop-color="#7dffa5"/>
+          </linearGradient>
+          <filter id="drop" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="6" stdDeviation="6" flood-opacity="0.45"/>
+          </filter>
+          <filter id="dropLite" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="3" stdDeviation="3" flood-opacity="0.35"/>
+          </filter>
+          <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+            <feMerge>
+              <feMergeNode in="coloredBlur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+          <marker id="arrowHead" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#8be0ff"/>
+          </marker>
+        </defs>
+
+        <!-- Product Owner Box -->
+        <g class="has-tooltip cursor-pointer hover:opacity-90 transition-opacity" id="product-owner">
+          <rect class="box" x="80" y="470" width="200" height="80" rx="10" stroke="#3a4b7a" stroke-width="1.2" fill="url(#boxGrad)" filter="url(#drop)"/>
+          <text x="180" y="518" text-anchor="middle" font-size="18" font-weight="600" fill="#e7f1ff">Product</text>
+          <text x="180" y="540" text-anchor="middle" font-size="18" font-weight="600" fill="#e7f1ff">Owner</text>
+          <foreignObject x="80" y="470" width="200" height="80">
+            <div class="tooltip absolute -mt-12 px-3 py-2 bg-darker border border-accent rounded-md text-sm text-light shadow-lg">
+              Defines product vision, prioritizes backlog, and ensures ROI
+            </div>
+          </foreignObject>
+        </g>
+
+        <!-- Development Team Box -->
+        <g class="has-tooltip cursor-pointer hover:opacity-90 transition-opacity" id="dev-team">
+          <rect class="box" x="490" y="470" width="260" height="80" rx="10" stroke="#3a4b7a" stroke-width="1.2" fill="url(#boxGrad)" filter="url(#drop)"/>
+          <text x="620" y="520" text-anchor="middle" font-size="18" font-weight="600" fill="#e7f1ff">Development</text>
+          <text x="620" y="542" text-anchor="middle" font-size="18" font-weight="600" fill="#e7f1ff">Team</text>
+          <foreignObject x="490" y="470" width="260" height="80">
+            <div class="tooltip absolute -mt-12 px-3 py-2 bg-darker border border-accent rounded-md text-sm text-light shadow-lg">
+              Cross-functional team that delivers increments each sprint
+            </div>
+          </foreignObject>
+        </g>
+
+        <!-- Client Box -->
+        <g class="has-tooltip cursor-pointer hover:opacity-90 transition-opacity" id="client">
+          <rect class="box" x="930" y="470" width="180" height="80" rx="10" stroke="#3a4b7a" stroke-width="1.2" fill="url(#boxGrad)" filter="url(#drop)"/>
+          <text x="1020" y="518" text-anchor="middle" font-size="18" font-weight="600" fill="#e7f1ff">Client</text>
+          <foreignObject x="930" y="470" width="180" height="80">
+            <div class="tooltip absolute -mt-12 px-3 py-2 bg-darker border border-accent rounded-md text-sm text-light shadow-lg">
+              Provides feedback and validates the product increments
+            </div>
+          </foreignObject>
+        </g>
+
+        <!-- Forward arrows PO -> Dev -> Client -->
+        <path class="arrow animate-pulse-slow" d="M 280 510 C 360 505, 410 505, 490 510" stroke="url(#arrowGrad)" stroke-width="2.6" fill="none" marker-end="url(#arrowHead)" filter="url(#glow)"/>
+        <path class="arrow animate-pulse-slow" d="M 750 510 C 835 505, 885 505, 930 510" stroke="url(#arrowGrad)" stroke-width="2.6" fill="none" marker-end="url(#arrowHead)" filter="url(#glow)"/>
+
+        <!-- Feedback loop box -->
+        <g class="has-tooltip cursor-pointer" id="feedback-loop">
+          <rect class="chip" x="480" y="570" width="180" height="46" rx="6" stroke="#3a7a5f" stroke-width="1" fill="#0f4d3d" filter="url(#dropLite)"/>
+          <text x="570" y="595" text-anchor="middle" font-size="12.8" fill="#a5ffd6">Feedback Loop</text>
+          <foreignObject x="480" y="570" width="180" height="46">
+            <div class="tooltip absolute -mt-16 px-3 py-2 bg-[#0a1f18] border border-[#2a7a5f] rounded-md text-sm text-[#e7fef5] shadow-lg">
+              Continuous feedback from client to improve product
+            </div>
+          </foreignObject>
+        </g>
+        <!-- Feedback curved arrow Client -> Product Owner (bottom route) -->
+        <path class="feedback animate-pulse-feedback" d="M 1040 550 C 820 650, 420 650, 180 550" stroke="url(#feedbackGrad)" stroke-width="3" fill="none" marker-end="url(#arrowHead)" filter="url(#glow)"/>
+
+        <!-- Increment chip near client -->
+        <g class="has-tooltip cursor-pointer" id="increment">
+          <rect class="chip" x="840" y="405" width="160" height="46" rx="6" stroke="#2b4c78" stroke-width="1" fill="#102a4d" filter="url(#dropLite)"/>
+          <text x="920" y="430" text-anchor="middle" font-size="12.8" fill="#cfe0ff">Increment / product delivery</text>
+          <foreignObject x="840" y="405" width="160" height="46">
+            <div class="tooltip absolute -mt-16 px-3 py-2 bg-darker border border-accent rounded-md text-sm text-light shadow-lg">
+              Potentially shippable product increment delivered each sprint
+            </div>
+          </foreignObject>
+        </g>
+
+        <!-- Product backlog table -->
+        <g class="has-tooltip cursor-pointer" id="product-backlog">
+          <rect class="table" x="210" y="210" width="140" height="160" rx="6" stroke="#3a4b7a" stroke-width="1.1" fill="#0e1a2f" filter="url(#dropLite)"/>
+          <text class="small" x="280" y="200" text-anchor="middle" font-size="12.5" fill="#a6b8d8">product backlog</text>
+          <!-- vertical middle divider -->
+          <line class="table-line" x1="260" y1="210" x2="260" y2="370" stroke="#3a4b7a" stroke-width="1"/>
+          <!-- horizontal rows -->
+          <line class="table-line" x1="210" y1="242" x2="350" y2="242" stroke="#3a4b7a" stroke-width="1"/>
+          <line class="table-line" x1="210" y1="274" x2="350" y2="274" stroke="#3a4b7a" stroke-width="1"/>
+          <line class="table-line" x1="210" y1="306" x2="350" y2="306" stroke="#3a4b7a" stroke-width="1"/>
+          <line class="table-line" x1="210" y1="338" x2="350" y2="338" stroke="#3a4b7a" stroke-width="1"/>
+          <!-- letters -->
+          <text class="table-text" x="236" y="234" font-size="13" fill="#e7f1ff">A</text>
+          <text class="table-text" x="236" y="266" font-size="13" fill="#e7f1ff">B</text>
+          <text class="table-text" x="236" y="298" font-size="13" fill="#e7f1ff">C</text>
+          <text class="table-text" x="236" y="330" font-size="13" fill="#e7f1ff">D</text>
+          <text class="table-text" x="236" y="362" font-size="13" fill="#e7f1ff">E</text>
+          <foreignObject x="210" y="210" width="140" height="160">
+            <div class="tooltip absolute -mt-40 px-3 py-2 bg-darker border border-accent rounded-md text-sm text-light shadow-lg">
+              Prioritized list of all features, requirements, and work items
+            </div>
+          </foreignObject>
+        </g>
+
+        <!-- Sprint backlog table -->
+        <g class="has-tooltip cursor-pointer" id="sprint-backlog">
+          <rect class="table" x="410" y="230" width="120" height="90" rx="6" stroke="#3a4b7a" stroke-width="1.1" fill="#0e1a2f" filter="url(#dropLite)"/>
+          <text class="small" x="470" y="214" text-anchor="middle" font-size="12.5" fill="#a6b8d8">sprint backlog</text>
+          <line class="table-line" x1="410" y1="262" x2="530" y2="262" stroke="#3a4b7a" stroke-width="1"/>
+          <line class="table-line" x1="410" y1="294" x2="530" y2="294" stroke="#3a4b7a" stroke-width="1"/>
+          <text class="table-text" x="440" y="254" font-size="13" fill="#e7f1ff">A</text>
+          <text class="table-text" x="440" y="286" font-size="13" fill="#e7f1ff">D</text>
+          <text class="table-text" x="440" y="318" font-size="13" fill="#e7f1ff">E</text>
+          <foreignObject x="410" y="230" width="120" height="90">
+            <div class="tooltip absolute -mt-24 px-3 py-2 bg-darker border border-accent rounded-md text-sm text-light shadow-lg">
+              Selected items from product backlog to complete in current sprint
+            </div>
+          </foreignObject>
+        </g>
+
+        <!-- Lines extracting from product backlog to sprint backlog -->
+        <path class="thin-arrow" d="M 350 242 C 380 240, 390 235, 410 248" stroke="url(#arrowGrad)" stroke-width="2" fill="none" marker-end="url(#arrowHead)"/>
+        <path class="thin-arrow" d="M 350 338 C 380 336, 392 332, 410 294" stroke="url(#arrowGrad)" stroke-width="2" fill="none" marker-end="url(#arrowHead)"/>
+
+        <!-- Scrum Master circle with bullets -->
+        <g class="has-tooltip cursor-pointer" id="scrum-master">
+          <circle class="scrum-circle" cx="790" cy="150" r="110" stroke="#77c7ff" stroke-width="1.4" fill="rgba(138, 204, 255, 0.1)" filter="url(#dropLite)"/>
+          <text x="790" y="98" text-anchor="middle" font-weight="600" font-size="16" fill="#e7f1ff">Scrum Master</text>
+          <!-- bullets -->
+          <circle cx="730" cy="128" r="3" fill="#e7f1ff"/>
+          <text class="label" x="740" y="132" font-size="14" fill="#a6b8d8">Daily Scrum</text>
+          <circle cx="730" cy="152" r="3" fill="#e7f1ff"/>
+          <text class="label" x="740" y="156" font-size="14" fill="#a6b8d8">planning</text>
+          <circle cx="730" cy="176" r="3" fill="#e7f1ff"/>
+          <text class="label" x="740" y="180" font-size="14" fill="#a6b8d8">review</text>
+          <circle cx="730" cy="200" r="3" fill="#e7f1ff"/>
+          <text class="label" x="740" y="204" font-size="14" fill="#a6b8d8">retrospective</text>
+          <foreignObject x="680" y="40" width="220" height="220">
+            <div class="tooltip absolute -mt-48 px-3 py-2 bg-darker border border-accent rounded-md text-sm text-light shadow-lg">
+              Facilitates Scrum process, removes impediments, and coaches team
+            </div>
+          </foreignObject>
+        </g>
+
+        <!-- Sprint (2-4 weeks) curved arrow around Scrum Master -->
+        <path class="rotate-anticlockwise" d="M 790 300 A 150 150 0 1 0 640 150" stroke="#84d1ff" stroke-width="2.6" fill="none" marker-end="url(#arrowHead)" filter="url(#glow)"/>
+        <text class="small" x="790" y="280" text-anchor="middle" font-size="12.5" fill="#a6e8ff">Sprint (2-4 weeks)</text>
+      </svg>
+    </div>
+ </section>
+    <script>
+      // Add interactive hover effects
+      document.addEventListener('DOMContentLoaded', () => {
+        const elements = document.querySelectorAll('#product-owner, #dev-team, #client, #product-backlog, #sprint-backlog, #scrum-master, #increment');
+            
+        elements.forEach(el => {
+          el.addEventListener('mouseenter', () => {
+            el.querySelector('rect, circle').classList.add('glow');
+          });
+              
+          el.addEventListener('mouseleave', () => {
+            el.querySelector('rect, circle').classList.remove('glow');
+          });
+        });
+            
+        // Special glow for feedback path
+        const feedbackPath = document.querySelector('.feedback');
+        feedbackPath.addEventListener('mouseenter', () => {
+          feedbackPath.classList.add('feedback-glow');
+        });
+        feedbackPath.addEventListener('mouseleave', () => {
+          feedbackPath.classList.remove('feedback-glow');
+        });
+      });
+    </script>
+  </div>
+</body>
+</html>

@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASP.NET Core Web API Structure</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #7e57c2;
+            --primary-light: #b085f5;
+            --primary-dark: #4d2c91;
+            --secondary: #00bcd4;
+            --text-primary: #e0e0e0;
+            --text-secondary: #9e9e9e;
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #252525;
+            --success: #00c853;
+            --warning: #ffab00;
+            --error: #ff5252;
+            --card-shadow: 0 4px 8px rgba(0, 0, 0, 0.38);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background-color: var(--bg-secondary);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-light);
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            color: var(--secondary);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 30px;
+        }
+
+        .nav-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            font-size: 1.1rem;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-light);
+        }
+
+        .hero {
+            padding: 80px 0;
+            text-align: center;
+            background: linear-gradient(to bottom right, var(--bg-secondary), var(--bg-primary));
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, var(--primary-light), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-family: 'Roboto Mono', monospace;
+        }
+
+        .hero p {
+            font-size: 1.4rem;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            color: var(--text-secondary);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 500;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary-light);
+            margin-left: 15px;
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(126, 87, 194, 0.1);
+        }
+
+        section {
+            padding: 80px 0;
+        }
+
+        section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 60px;
+            color: var(--primary-light);
+            font-family: 'Roboto Mono', monospace;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .card {
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .card i {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 20px;
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .code-example {
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 30px 0;
+            overflow-x: auto;
+            font-family: 'Roboto Mono', monospace;
+            position: relative;
+        }
+
+        .code-example pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            color: var(--text-secondary);
+        }
+
+        .copy-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .copy-btn:hover {
+            color: var(--text-primary);
+        }
+
+        .keyword {
+            color: var(--primary-light);
+        }
+
+        .type {
+            color: var(--secondary);
+        }
+
+        .comment {
+            color: #6a9955;
+        }
+
+        .string {
+            color: var(--warning);
+        }
+
+        .features {
+            background-color: var(--bg-secondary);
+        }
+
+        .feature-content {
+            display: flex;
+            align-items: center;
+            margin-bottom: 60px;
+        }
+
+        .feature-text {
+            flex: 1;
+            padding-right: 40px;
+        }
+
+        .feature-image {
+            flex: 1;
+            background-color: var(--bg-tertiary);
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 300px;
+        }
+
+        .feature-image pre {
+            color: var(--text-primary);
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+        }
+
+        .comparison {
+            margin-top: 60px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 15px 20px;
+            text-align: left;
+            border-bottom: 1px solid var(--bg-tertiary);
+        }
+
+        th {
+            background-color: var(--primary-dark);
+            color: white;
+        }
+
+        tr:hover {
+            background-color: var(--bg-tertiary);
+        }
+
+        footer {
+            background-color: var(--bg-secondary);
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .footer-links {
+            display: flex;
+            list-style: none;
+            margin: 20px 0;
+        }
+
+        .footer-links li {
+            margin: 0 15px;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-light);
+        }
+
+        .copyright {
+            color: var(--text-secondary);
+            margin-top: 20px;
+        }
+
+        .structure-diagram {
+            background-color: var(--bg-tertiary);
+            border-radius: 10px;
+            padding: 30px;
+            margin: 40px 0;
+        }
+
+        .structure-item {
+            margin-bottom: 30px;
+            padding-left: 20px;
+            border-left: 3px solid var(--primary);
+        }
+
+        .structure-item h3 {
+            color: var(--primary-light);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .structure-item h3 i {
+            margin-right: 10px;
+            color: var(--secondary);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .feature-content {
+                flex-direction: column;
+            }
+            
+            .feature-text {
+                padding-right: 0;
+                margin-bottom: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <i class="fas fa-code"></i>
+                    <span>ASP.NET Core API</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#intro">Introduction</a></li>
+                    <li><a href="#structure">Structure</a></li>
+                    <li><a href="#examples">Examples</a></li>
+                    <li><a href="#comparison">Comparison</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>ASP.NET Core Web API Structure</h1>
+            <p>Learn the fundamental structure and components of ASP.NET Core Web API for building robust RESTful services</p>
+            <a href="#structure" class="btn">Explore Structure</a>
+            <a href="#examples" class="btn btn-secondary">View Examples</a>
+        </div>
+    </section>
+
+    <section id="intro">
+        <div class="container">
+            <h2>What is ASP.NET Core Web API?</h2>
+            <p>ASP.NET Core Web API is a framework for building HTTP services that can be accessed from various clients, including browsers and mobile devices. It is an ideal platform for building RESTful applications on the .NET Core framework.</p>
+            
+            <div class="code-example">
+                <div class="code-header">
+                    <span>Program.cs - The Entry Point</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy Code</button>
+                </div>
+                <pre><code><span class="keyword">var</span> builder = <span class="type">WebApplication</span>.CreateBuilder(args);
+
+<span class="comment">// Add services to the container</span>
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+<span class="keyword">var</span> app = builder.Build();
+
+<span class="comment">// Configure the HTTP request pipeline</span>
+<span class="keyword">if</span> (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseHttpsRedirection();
+app.UseAuthorization();
+app.MapControllers();
+
+app.Run();</code></pre>
+            </div>
+            
+            <div class="cards">
+                <div class="card">
+                    <i class="fas fa-layer-group"></i>
+                    <h3>Layered Architecture</h3>
+                    <p>ASP.NET Core Web API promotes clean separation of concerns with controllers, services, and repositories.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-plug"></i>
+                    <h3>Dependency Injection</h3>
+                    <p>Built-in DI container provides loose coupling and easier testing of components.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-cogs"></i>
+                    <h3>Middleware Pipeline</h3>
+                    <p>Request processing pipeline with customizable middleware components.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="structure" class="features">
+        <div class="container">
+            <h2>Project Structure</h2>
+            
+            <div class="structure-diagram">
+                <div class="structure-item">
+                    <h3><i class="fas fa-folder"></i> Project Root</h3>
+                    <p>Contains solution file, startup configuration, and program entry point.</p>
+                    <ul>
+                        <li>Program.cs - Application entry point and middleware configuration</li>
+                        <li>Startup.cs (in older versions) - Service configuration</li>
+                        <li>appsettings.json - Configuration settings</li>
+                        <li>ProjectName.csproj - Project dependencies and settings</li>
+                    </ul>
+                </div>
+                
+                <div class="structure-item">
+                    <h3><i class="fas fa-folder"></i> Controllers</h3>
+                    <p>Handle HTTP requests and return responses. Should be thin and delegate business logic to services.</p>
+                    <ul>
+                        <li>Controller classes inherit from ControllerBase</li>
+                        <li>Use attributes for routing and HTTP verbs</li>
+                        <li>Return ActionResult or IActionResult types</li>
+                    </ul>
+                </div>
+                
+                <div class="structure-item">
+                    <h3><i class="fas fa-folder"></i> Models</h3>
+                    <p>Represent data structures and business entities used in the application.</p>
+                    <ul>
+                        <li>Data Transfer Objects (DTOs)</li>
+                        <li>Entity models for database interaction</li>
+                        <li>View models for shaping response data</li>
+                    </ul>
+                </div>
+                
+                <div class="structure-item">
+                    <h3><i class="fas fa-folder"></i> Services</h3>
+                    <p>Contain business logic and application rules. Called by controllers.</p>
+                    <ul>
+                        <li>Interface-based design for testability</li>
+                        <li>Registered with dependency injection container</li>
+                        <li>Handle complex business operations</li>
+                    </ul>
+                </div>
+                
+                <div class="structure-item">
+                    <h3><i class="fas fa-folder"></i> Data</h3>
+                    <p>Data access layer including database context, repositories, and migrations.</p>
+                    <ul>
+                        <li>DbContext for Entity Framework</li>
+                        <li>Repository pattern implementation</li>
+                        <li>Database migration files</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="feature-content">
+                <div class="feature-text">
+                    <h3>Dependency Injection Setup</h3>
+                    <p>ASP.NET Core has built-in support for Dependency Injection (DI), which makes your application more modular, testable, and maintainable.</p>
+                    <p>Services are registered in Program.cs (or Startup.cs in older versions) and then injected into controllers through constructor injection.</p>
+                </div>
+                <div class="feature-image">
+                    <pre><code><span class="comment">// In Program.cs</span>
+builder.Services.AddScoped&lt;IProductService, ProductService&gt;();
+builder.Services.AddScoped&lt;IProductRepository, ProductRepository&gt;();
+
+<span class="comment">// In Controller</span>
+<span class="keyword">public class</span> <span class="type">ProductsController</span> : <span class="type">ControllerBase</span>
+{
+    <span class="keyword">private readonly</span> <span class="type">IProductService</span> _productService;
+    
+    <span class="keyword">public</span> ProductsController(<span class="type">IProductService</span> productService)
+    {
+        _productService = productService;
+    }
+    
+    <span class="comment">// Controller actions...</span>
+}</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="examples">
+        <div class="container">
+            <h2>API Structure Examples</h2>
+            
+            <div class="code-example">
+                <div class="code-header">
+                    <span>Controller Structure</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy Code</button>
+                </div>
+                <pre><code><span class="comment">// Controllers/ProductsController.cs</span>
+[<span class="keyword">ApiController</span>]
+[<span class="keyword">Route</span>(<span class="string">"api/[controller]"</span>)]
+<span class="keyword">public class</span> <span class="type">ProductsController</span> : <span class="type">ControllerBase</span>
+{
+    <span class="keyword">private readonly</span> <span class="type">IProductService</span> _productService;
+    
+    <span class="keyword">public</span> ProductsController(<span class="type">IProductService</span> productService)
+    {
+        _productService = productService;
+    }
+    
+    <span class="comment">// GET: api/products</span>
+    [<span class="keyword">HttpGet</span>]
+    <span class="keyword">public async</span> <span class="type">Task</span>&lt;<span class="type">ActionResult</span>&lt;<span class="type">IEnumerable</span>&lt;<span class="type">ProductDto</span>&gt;&gt;&gt; GetProducts()
+    {
+        <span class="keyword">var</span> products = <span class="keyword">await</span> _productService.GetAllProductsAsync();
+        <span class="keyword">return</span> Ok(products);
+    }
+    
+    <span class="comment">// GET: api/products/5</span>
+    [<span class="keyword">HttpGet</span>(<span class="string">"{id}"</span>)]
+    <span class="keyword">public async</span> <span class="type">Task</span>&lt;<span class="type">ActionResult</span>&lt;<span class="type">ProductDto</span>&gt;&gt; GetProduct(<span class="type">int</span> id)
+    {
+        <span class="keyword">var</span> product = <span class="keyword">await</span> _productService.GetProductByIdAsync(id);
+        
+        <span class="keyword">if</span> (product == <span class="keyword">null</span>)
+        {
+            <span class="keyword">return</span> NotFound();
+        }
+        
+        <span class="keyword">return</span> product;
+    }
+    
+    <span class="comment">// Additional actions for POST, PUT, DELETE...</span>
+}</code></pre>
+            </div>
+            
+            <div class="code-example">
+                <div class="code-header">
+                    <span>Service and Repository Structure</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy Code</button>
+                </div>
+                <pre><code><span class="comment">// Services/IProductService.cs and ProductService.cs</span>
+<span class="keyword">public interface</span> <span class="type">IProductService</span>
+{
+    <span class="type">Task</span>&lt;<span class="type">IEnumerable</span>&lt;<span class="type">ProductDto</span>&gt;&gt; GetAllProductsAsync();
+    <span class="type">Task</span>&lt;<span class="type">ProductDto</span>&gt; GetProductByIdAsync(<span class="type">int</span> id);
+    <span class="type">Task</span>&lt;<span class="type">ProductDto</span>&gt; CreateProductAsync(<span class="type">CreateProductDto</span> createProductDto);
+    <span class="comment">// Other method signatures...</span>
+}
+
+<span class="keyword">public class</span> <span class="type">ProductService</span> : <span class="type">IProductService</span>
+{
+    <span class="keyword">private readonly</span> <span class="type">IProductRepository</span> _productRepository;
+    <span class="keyword">private readonly</span> <span class="type">IMapper</span> _mapper;
+    
+    <span class="keyword">public</span> ProductService(<span class="type">IProductRepository</span> productRepository, <span class="type">IMapper</span> mapper)
+    {
+        _productRepository = productRepository;
+        _mapper = mapper;
+    }
+    
+    <span class="keyword">public async</span> <span class="type">Task</span>&lt;<span class="type">IEnumerable</span>&lt;<span class="type">ProductDto</span>&gt;&gt; GetAllProductsAsync()
+    {
+        <span class="keyword">var</span> products = <span class="keyword">await</span> _productRepository.GetAllAsync();
+        <span class="keyword">return</span> _mapper.Map&lt;<span class="type">IEnumerable</span>&lt;<span class="type">ProductDto</span>&gt;&gt;(products);
+    }
+    
+    <span class="comment">// Other method implementations...</span>
+}</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <section id="comparison" class="comparison">
+        <div class="container">
+            <h2>Project Structure Comparison</h2>
+            <p>Different approaches to organizing your ASP.NET Core Web API project:</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Structure Type</th>
+                        <th>Pros</th>
+                        <th>Cons</th>
+                        <th>Best For</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Folder-by-Type</td>
+                        <td>Simple to understand, easy for beginners</td>
+                        <td>Can become cluttered as project grows</td>
+                        <td>Small to medium projects</td>
+                    </tr>
+                    <tr>
+                        <td>Feature-Based</td>
+                        <td>Better separation of concerns, easier maintenance</td>
+                        <td>More complex to set up initially</td>
+                        <td>Medium to large projects</td>
+                    </tr>
+                    <tr>
+                        <td>Clean Architecture</td>
+                        <td>Highly testable, independent of frameworks</td>
+                        <td>Steep learning curve, more boilerplate</td>
+                        <td>Large, complex enterprise applications</td>
+                    </tr>
+                    <tr>
+                        <td>Layered Architecture</td>
+                        <td>Clear separation between UI, business logic, and data access</td>
+                        <td>Can lead to redundant code</td>
+                        <td>Traditional business applications</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="code-example">
+                <div class="code-header">
+                    <span>Feature-Based Folder Structure</span>
+                </div>
+                <pre><code>ProjectName/
+├── Features/
+│   ├── Products/
+│   │   ├── Models/
+│   │   ├── Services/
+│   │   ├── Controllers/
+│   │   └── Mappings/
+│   ├── Orders/
+│   │   ├── Models/
+│   │   ├── Services/
+│   │   ├── Controllers/
+│   │   └── Mappings/
+│   └── Users/
+│       ├── Models/
+│       ├── Services/
+│       ├── Controllers/
+│       └── Mappings/
+├── Core/
+│   ├── Interfaces/
+│   ├── Entities/
+│   └── SharedModels/
+├── Infrastructure/
+│   ├── Data/
+│   ├── Repositories/
+│   └── Migrations/
+└── Program.cs</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="logo">
+                    <i class="fas fa-code"></i>
+                    <span>ASP.NET Core API</span>
+                </div>
+                <ul class="footer-links">
+                    <li><a href="#intro">Introduction</a></li>
+                    <li><a href="#structure">Structure</a></li>
+                    <li><a href="#examples">Examples</a></li>
+                    <li><a href="#comparison">Comparison</a></li>
+                </ul>
+                <p class="copyright">© 2023 ASP.NET Core Web API Educational Website. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function copyCode(button) {
+            const codeBlock = button.parentElement.nextElementSibling;
+            const textArea = document.createElement('textarea');
+            textArea.value = codeBlock.textContent;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            
+            const originalText = button.textContent;
+            button.textContent = 'Copied!';
+            
+            setTimeout(() => {
+                button.textContent = originalText;
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angular Learning Path</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #252526;
+            --text-primary: #e1e1e1;
+            --text-secondary: #a0a0a0;
+            --accent-primary: #dd0031;
+            --accent-secondary: #1976d2;
+            --accent-tertiary: #c2185b;
+            --border-color: #3c3c3c;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            color: var(--accent-primary);
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+        }
+
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        .logo {
+            font-size: 3.5rem;
+            color: var(--accent-primary);
+        }
+
+        .card {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+        }
+
+        h2 {
+            color: var(--accent-secondary);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        h3 {
+            color: var(--accent-primary);
+            margin: 20px 0 10px;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        .code-block {
+            background-color: var(--bg-tertiary);
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            overflow-x: auto;
+            border-left: 4px solid var(--accent-primary);
+        }
+
+        code {
+            font-family: 'Fira Code', monospace;
+            color: var(--accent-primary);
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .step-card {
+            background-color: var(--bg-tertiary);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid var(--accent-tertiary);
+            transition: transform 0.3s ease;
+        }
+
+        .step-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .step-number {
+            background-color: var(--accent-tertiary);
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .benefits-list {
+            list-style-type: none;
+        }
+
+        .benefits-list li {
+            margin-bottom: 10px;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .benefits-list li:before {
+            content: "✓";
+            color: var(--success);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        .package-list {
+            list-style-type: none;
+        }
+
+        .package-list li {
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: var(--bg-tertiary);
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .package-list li i {
+            margin-right: 10px;
+            color: var(--accent-secondary);
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 40px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        .structure-diagram {
+            width: 100%;
+            background-color: var(--bg-tertiary);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .folder-structure {
+            font-family: 'Fira Code', monospace;
+            color: var(--text-primary);
+            line-height: 1.8;
+        }
+
+        .folder {
+            color: var(--accent-secondary);
+        }
+
+        .file {
+            color: var(--accent-primary);
+        }
+
+        .folder-content {
+            margin-left: 20px;
+        }
+
+        .nav-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+
+        .nav-tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+        }
+
+        .nav-tab.active {
+            border-bottom: 3px solid var(--accent-primary);
+            color: var(--accent-primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--accent-primary);
+            color: white;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #a80027;
+        }
+
+        .btn-secondary {
+            background-color: var(--accent-secondary);
+        }
+
+        .btn-secondary:hover {
+            background-color: #1159a3;
+        }
+
+        @media (max-width: 768px) {
+            .steps {
+                grid-template-columns: 1fr;
+            }
+            
+            .logo-container {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Angular Learning Path</h1>
+            <p class="subtitle">A comprehensive guide to getting started with Angular</p>
+            <div class="logo-container">
+                <i class="fab fa-angular logo"></i>
+                <i class="fab fa-html5 logo" style="color: #e34f26"></i>
+                <i class="fab fa-css3-alt logo" style="color: #1572b6"></i>
+                <i class="fab fa-js-square logo" style="color: #f7df1e"></i>
+                <i class="fab fa-node-js logo" style="color: #4caf50"></i>
+            </div>
+        </header>
+
+        <div class="card">
+            <h2>What is Angular?</h2>
+            <p>Angular is a platform and framework for building single-page client applications using HTML and TypeScript. Angular is written in TypeScript and implements core and optional functionality as a set of TypeScript libraries that you import into your apps.</p>
+            
+            <h3>Key Features of Angular:</h3>
+            <ul class="benefits-list">
+                <li>Component-based architecture</li>
+                <li>Dependency injection</li>
+                <li>Powerful templating syntax</li>
+                <li>Comprehensive routing solution</li>
+                <li>Forms handling</li>
+                <li>HTTP client</li>
+                <li>Testing utilities</li>
+            </ul>
+            
+            <a href="https://angular.io/docs" class="btn" target="_blank">Official Documentation</a>
+        </div>
+
+        <div class="card">
+            <h2>Prerequisites</h2>
+            <p>Before diving into Angular, you should be familiar with:</p>
+            
+            <div class="steps">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3>HTML & CSS</h3>
+                    <p>Understanding of semantic HTML and modern CSS features like Flexbox and Grid.</p>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3>JavaScript</h3>
+                    <p>Solid knowledge of modern JavaScript (ES6+), including classes, modules, and promises.</p>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h3>TypeScript</h3>
+                    <p>Basic understanding of TypeScript, including types, interfaces, and decorators.</p>
+                </div>
+            </div>
+            
+            <a href="https://www.typescriptlang.org/docs/" class="btn btn-secondary" target="_blank">Learn TypeScript</a>
+        </div>
+
+        <div class="card">
+            <h2>Getting Started</h2>
+            
+            <div class="nav-tabs">
+                <div class="nav-tab active" onclick="switchTab(event, 'step1')">Step 1: Installation</div>
+                <div class="nav-tab" onclick="switchTab(event, 'step2')">Step 2: Create App</div>
+                <div class="nav-tab" onclick="switchTab(event, 'step3')">Step 3: Run App</div>
+            </div>
+            
+            <div id="step1" class="tab-content active">
+                <h3>Install Angular CLI</h3>
+                <p>The Angular CLI is a command-line interface tool that you use to initialize, develop, scaffold, and maintain Angular applications.</p>
+                
+                <div class="code-block">
+                    <code>npm install -g @angular/cli</code>
+                </div>
+                
+                <p>Verify the installation by checking the version:</p>
+                
+                <div class="code-block">
+                    <code>ng version</code>
+                </div>
+            </div>
+            
+            <div id="step2" class="tab-content">
+                <h3>Create a New Application</h3>
+                <p>Generate a new Angular application with the following command:</p>
+                
+                <div class="code-block">
+                    <code>ng new my-app</code>
+                </div>
+                
+                <p>The CLI will prompt you for information about features to include in the initial app. You can accept the defaults by pressing Enter.</p>
+            </div>
+            
+            <div id="step3" class="tab-content">
+                <h3>Run the Application</h3>
+                <p>Navigate to the workspace folder and launch the server:</p>
+                
+                <div class="code-block">
+                    <code>cd my-app<br>ng serve --open</code>
+                </div>
+                
+                <p>The <code>ng serve</code> command launches the server, watches your files, and rebuilds the app as you make changes.</p>
+                <p>The <code>--open</code> flag opens a browser to http://localhost:4200/.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Angular Project Structure</h2>
+            <p>When you create a new Angular app, you'll see the following structure:</p>
+            
+            <div class="structure-diagram">
+                <div class="folder-structure">
+                    <div><span class="folder">src/</span></div>
+                    <div class="folder-content">
+                        <div><span class="folder">app/</span></div>
+                        <div class="folder-content">
+                            <div><span class="file">app.component.ts</span> <span class="text-secondary"># Root component</span></div>
+                            <div><span class="file">app.component.html</span> <span class="text-secondary"># Component template</span></div>
+                            <div><span class="file">app.component.css</span> <span class="text-secondary"># Component styles</span></div>
+                            <div><span class="file">app.module.ts</span> <span class="text-secondary"># Root module</span></div>
+                            <div><span class="file">app-routing.module.ts</span> <span class="text-secondary"># Routing configuration</span></div>
+                        </div>
+                        <div><span class="folder">assets/</span> <span class="text-secondary"># Static assets</span></div>
+                        <div><span class="folder">environments/</span> <span class="text-secondary"># Environment configurations</span></div>
+                        <div><span class="file">index.html</span> <span class="text-secondary"># Main HTML file</span></div>
+                        <div><span class="file">main.ts</span> <span class="text-secondary"># Application entry point</span></div>
+                        <div><span class="file">styles.css</span> <span class="text-secondary"># Global styles</span></div>
+                    </div>
+                    <div><span class="file">angular.json</span> <span class="text-secondary"># Angular configuration</span></div>
+                    <div><span class="file">package.json</span> <span class="text-secondary"># Project dependencies</span></div>
+                    <div><span class="file">tsconfig.json</span> <span class="text-secondary"># TypeScript configuration</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Your First Component</h2>
+            <p>Components are the building blocks of Angular applications. Each component consists of:</p>
+            
+            <ul class="benefits-list">
+                <li>A TypeScript class that defines behavior</li>
+                <li>An HTML template that defines the view</li>
+                <li>CSS styles that define the appearance</li>
+            </ul>
+            
+            <div class="code-block">
+                <code>// app.component.ts
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  title = 'my-first-app';
+}</code>
+            </div>
+            
+            <div class="code-block">
+                <code>&lt;!-- app.component.html --&gt;
+&lt;h1&gt;Welcome to {{ title }}!&lt;/h1&gt;
+&lt;app-my-component&gt;&lt;/app-my-component&gt;</code>
+            </div>
+            
+            <a href="https://angular.io/guide/component-overview" class="btn" target="_blank">Learn More About Components</a>
+        </div>
+
+        <div class="card">
+            <h2>Learning Resources</h2>
+            
+            <div class="steps">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3>Official Tutorial</h3>
+                    <p>Complete the official Angular Tour of Heroes tutorial for a hands-on introduction.</p>
+                    <a href="https://angular.io/tutorial" class="btn" target="_blank">Start Tutorial</a>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3>Angular University</h3>
+                    <p>Free and paid courses covering Angular fundamentals and advanced topics.</p>
+                    <a href="https://angular-university.io" class="btn" target="_blank">Visit Website</a>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h3>YouTube Channels</h3>
+                    <p>Channels like Angular, Academind, and Fireship offer excellent video tutorials.</p>
+                    <a href="https://www.youtube.com/c/Angular" class="btn" target="_blank">Angular Channel</a>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Angular Learning Path - Designed for beginners</p>
+            <p>This is a starting point for your Angular journey. Keep learning and building!</p>
+        </footer>
+    </div>
+
+    <script>
+        function switchTab(event, tabId) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(tab => tab.classList.remove('active'));
+            
+            // Show the selected tab content
+            document.getElementById(tabId).classList.add('active');
+            
+            // Update active tab
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>C# Functions & Methods — Dark Theme Guide</title>
+  <!-- Prism for syntax highlighting -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
+  <style>
+    :root{
+      --bg: #0b0f14;
+      --panel: #111827;
+      --panel-2:#0f172a;
+      --text:#e5e7eb;
+      --muted:#9ca3af;
+      --accent:#60a5fa;
+      --accent-2:#a78bfa;
+      --warning:#eab308;
+      --border:#1f2937;
+      --shadow: 0 10px 25px rgba(0,0,0,.35);
+    }
+    body{
+      margin:0; font-family:Segoe UI, sans-serif; background:var(--bg); color:var(--text);
+    }
+    .container{ max-width:1000px; margin:0 auto; padding:2rem 1rem; }
+    header{ margin-bottom:2rem; }
+    h1{ font-size:2rem; font-weight:700; }
+    h2{ font-size:1.5rem; margin-top:1.2rem; }
+    h3{ font-size:1.2rem; margin-top:.8rem; color:var(--accent); }
+    p{ line-height:1.6; }
+    .card{ background:linear-gradient(180deg,var(--panel),var(--panel-2)); border:1px solid var(--border); border-radius:16px; padding:1rem 1.2rem; margin-top:1rem; box-shadow:var(--shadow); }
+    pre{ background:#111827!important; border-radius:12px; border:1px solid var(--border); padding:1rem; overflow:auto; }
+    .code-wrap{ position:relative; }
+    .copy{ position:absolute; top:8px; right:8px; font-size:.8rem; background:transparent; border:1px solid var(--border); color:var(--text); padding:.25rem .5rem; border-radius:8px; cursor:pointer; }
+    footer{ margin-top:2rem; text-align:center; font-size:.9rem; color:var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>C# Functions & Methods — Easy Guide</h1>
+      <p>Understand <b>functions</b> and <b>methods</b> in simple words: they are blocks of code you can call to do work, reuse logic, and keep programs clean.</p>
+    </header>
+
+    <section class="card">
+      <h2>1) What is a Function?</h2>
+      <p>A <b>function</b> is a block of code that can run when called. It can take inputs (parameters) and optionally return a value.</p>
+      <div class="code-wrap">
+        <button class="copy" data-copy="code1">Copy</button>
+<pre><code id="code1" class="language-csharp">using System;
+
+class Program
+{
+    // Function: Adds two numbers and returns the result
+    static int Add(int a, int b)
+    {
+        return a + b;
+    }
+
+    static void Main()
+    {
+        int sum = Add(5, 7);
+        Console.WriteLine($"Sum = {sum}");
+    }
+}
+</code></pre>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>2) Method vs Function</h2>
+      <ul>
+        <li><b>Function</b>: general term for reusable code block.</li>
+        <li><b>Method</b>: a function that belongs to a class or object (in C#, almost everything is inside a class, so we usually say "method").</li>
+      </ul>
+      <div class="code-wrap">
+        <button class="copy" data-copy="code2">Copy</button>
+<pre><code id="code2" class="language-csharp">class Calculator
+{
+    // This is a method because it belongs to the Calculator class
+    public int Multiply(int x, int y)
+    {
+        return x * y;
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        var calc = new Calculator();
+        Console.WriteLine(calc.Multiply(3, 4));
+    }
+}
+</code></pre>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>3) Method Types</h2>
+      <h3>Static Method</h3>
+      <p>Belongs to the class itself, not an object. Call with <code>ClassName.Method()</code>.</p>
+      <pre><code class="language-csharp">class MathHelper
+{
+    public static double Square(double n) => n * n;
+}
+
+Console.WriteLine(MathHelper.Square(5));</code></pre>
+
+      <h3>Instance Method</h3>
+      <p>Belongs to an object. Call with <code>object.Method()</code>.</p>
+      <pre><code class="language-csharp">class Person
+{
+    string name;
+    public Person(string name) { this.name = name; }
+    public void SayHello() => Console.WriteLine($"Hi, I am {name}");
+}
+
+var p = new Person("Alex");
+p.SayHello();</code></pre>
+    </section>
+
+    <section class="card">
+      <h2>4) Parameters</h2>
+      <p>Methods can take different kinds of parameters:</p>
+      <ul>
+        <li><b>By Value</b> (default) — a copy is passed.</li>
+        <li><b>ref</b> — pass by reference, changes affect the caller.</li>
+        <li><b>out</b> — must be assigned inside method.</li>
+        <li><b>Optional</b> — can have default values.</li>
+        <li><b>Params</b> — pass variable number of arguments.</li>
+      </ul>
+      <div class="code-wrap">
+        <button class="copy" data-copy="code3">Copy</button>
+<pre><code id="code3" class="language-csharp">class Demo
+{
+    public void ShowParams(params int[] numbers)
+    {
+        Console.WriteLine("Count: " + numbers.Length);
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        var d = new Demo();
+        d.ShowParams(1, 2, 3, 4); // variable number of inputs
+    }
+}
+</code></pre>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>5) Return Types</h2>
+      <p>A method can:</p>
+      <ul>
+        <li>Return <code>void</code> → nothing.</li>
+        <li>Return a value → <code>int</code>, <code>string</code>, etc.</li>
+        <li>Return a <code>Task</code> or <code>Task&lt;T&gt;</code> for async methods.</li>
+      </ul>
+      <div class="code-wrap">
+        <button class="copy" data-copy="code4">Copy</button>
+<pre><code id="code4" class="language-csharp">static void SayHello() => Console.WriteLine("Hello");
+
+static string GetName() => "Alex";
+
+static async Task DelayPrint()
+{
+    await Task.Delay(1000);
+    Console.WriteLine("Done waiting");
+}</code></pre>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>6) Method Overloading</h2>
+      <p>Same method name, but different parameter lists.</p>
+      <div class="code-wrap">
+        <button class="copy" data-copy="code5">Copy</button>
+<pre><code id="code5" class="language-csharp">class Printer
+{
+    public void Print(string text) => Console.WriteLine(text);
+    public void Print(int number) => Console.WriteLine(number);
+}
+
+var p = new Printer();
+p.Print("Hello");
+p.Print(42);
+</code></pre>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>7) Local Functions</h2>
+      <p>You can define a function <b>inside another function</b> (helps keep code organized).</p>
+      <pre><code class="language-csharp">static void Main()
+{
+    int Square(int x) => x * x; // local function
+
+    Console.WriteLine(Square(4));
+}</code></pre>
+    </section>
+
+    <footer>
+      Built for learners — try these examples in a <code>.NET console app</code>.
+    </footer>
+  </div>
+
+  <script>
+    document.addEventListener('click', e => {
+      const btn = e.target.closest('button.copy');
+      if(!btn) return;
+      const id = btn.getAttribute('data-copy');
+      const codeEl = document.getElementById(id);
+      if(!codeEl) return;
+      navigator.clipboard.writeText(codeEl.textContent).then(()=>{
+        const old = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(()=> btn.textContent = old, 1200);
+      });
+    });
+  </script>
+</body>
+</html>

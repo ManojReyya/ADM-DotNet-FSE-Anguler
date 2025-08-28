@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>C# OOP Tree Diagram</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0b0f14 0%, #1a1f29 100%);
+      color: #e5e7eb;
+      margin: 0;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding: 20px;
+      background: rgba(17, 24, 39, 0.8);
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    }
+    h1 {
+      color: #60a5fa;
+      margin: 0;
+      font-size: 2.5rem;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    .subtitle {
+      color: #93c5fd;
+      margin-top: 10px;
+      font-size: 1.2rem;
+    }
+    .tree {
+      list-style: none;
+      padding-left: 20px;
+      position: relative;
+    }
+    .tree::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      border-left: 3px dashed #374151;
+      height: 100%;
+    }
+    .tree li {
+      margin: 25px 0;
+      padding-left: 30px;
+      position: relative;
+    }
+    .tree li::before {
+      content: "";
+      position: absolute;
+      top: 20px;
+      left: 0;
+      border-top: 3px dashed #374151;
+      width: 30px;
+    }
+    .concept {
+      background: linear-gradient(145deg, #111827 0%, #1f2937 100%);
+      border: 1px solid #374151;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .concept:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+    }
+    .concept h2 {
+      margin: 0 0 15px 0;
+      color: #93c5fd;
+      font-size: 1.8rem;
+      border-bottom: 2px solid #374151;
+      padding-bottom: 10px;
+    }
+    .definition {
+      background: rgba(31, 41, 55, 0.7);
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+    pre {
+      background: #1f2937 !important;
+      border-radius: 10px;
+      padding: 15px;
+      overflow: auto;
+      font-size: 14px;
+      border-left: 4px solid #60a5fa;
+    }
+    .code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .code-title {
+      color: #93c5fd;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+    .expand-btn {
+      background: #374151;
+      color: #e5e7eb;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .expand-btn:hover {
+      background: #4b5563;
+    }
+    .extra-code {
+      display: none;
+      margin-top: 15px;
+    }
+    .example-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 15px;
+      margin: 15px 0;
+    }
+    .example-item {
+      background: rgba(31, 41, 55, 0.7);
+      padding: 15px;
+      border-radius: 10px;
+      border-left: 3px solid #60a5fa;
+    }
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      padding: 20px;
+      color: #9ca3af;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 768px) {
+      .tree li {
+        padding-left: 20px;
+      }
+      .tree li::before {
+        width: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>C# Object-Oriented Programming</h1>
+      <p class="subtitle">A Comprehensive Tree Diagram of OOP Concepts with Examples</p>
+    </header>
+
+    <ul class="tree">
+      <li>
+        <div class="concept">
+          <h2>Class & Object</h2>
+          <div class="definition">
+            <p><b>Class:</b> Blueprint/template that defines the structure and behavior.<br>
+            <b>Object:</b> Instance of a class created with the <code>new</code> keyword.</p>
+          </div>
+          
+          <div class="code-header">
+            <span class="code-title">Basic Example:</span>
+            <button class="expand-btn" onclick="toggleCode('class-basic')">Show More</button>
+          </div>
+          <pre><code class="language-csharp">class Car {
+    public string Brand;
+    public string Model;
+    public int Year;
+    
+    public void Drive() {
+        Console.WriteLine($"{Brand} {Model} is driving...");
+    }
+}
+
+class Program {
+    static void Main() {
+        // Creating objects
+        Car car1 = new Car();
+        car1.Brand = "Toyota";
+        car1.Model = "Camry";
+        car1.Year = 2022;
+        car1.Drive();
+        
+        Car car2 = new Car {
+            Brand = "Tesla",
+            Model = "Model 3",
+            Year = 2023
+        };
+        car2.Drive();
+    }
+}</code></pre>
+          
+          <div id="class-basic" class="extra-code">
+            <div class="code-header">
+              <span class="code-title">Advanced Example:</span>
+            </div>
+            <pre><code class="language-csharp">// Class with methods and properties
+class BankAccount {
+    private string accountNumber;
+    private decimal balance;
+    
+    public BankAccount(string accNumber, decimal initialBalance) {
+        accountNumber = accNumber;
+        balance = initialBalance;
+    }
+    
+    public void Deposit(decimal amount) {
+        if (amount > 0) {
+            balance += amount;
+            Console.WriteLine($"Deposited: ${amount}. New balance: ${balance}");
+        }
+    }
+    
+    public void Withdraw(decimal amount) {
+        if (amount > 0 && amount <= balance) {
+            balance -= amount;
+            Console.WriteLine($"Withdrew: ${amount}. New balance: ${balance}");
+        } else {
+            Console.WriteLine("Insufficient funds or invalid amount");
+        }
+    }
+    
+    public decimal GetBalance() => balance;
+}
+
+class Program {
+    static void Main() {
+        BankAccount account = new BankAccount("123456789", 1000);
+        account.Deposit(500);
+        account.Withdraw(200);
+        account.Withdraw(2000); // Should fail
+        Console.WriteLine($"Final balance: ${account.GetBalance()}");
+    }
+}</code></pre>
+          </div>
+        </div>
+      </li>
+
+      <li>
+        <div class="concept">
+          <h2>Encapsulation</h2>
+          <div class="definition">
+            <p><b>Definition:</b> Binding data & methods into a class and controlling access using <b>Access Modifiers</b>.</p>
+            <p><b>Types of Access Modifiers:</b></p>
+            <ul>
+              <li><b>public</b> – Accessible everywhere</li>
+              <li><b>private</b> – Accessible only within the same class</li>
+              <li><b>protected</b> – Accessible in the same class + derived classes</li>
+              <li><b>internal</b> – Accessible within the same assembly</li>
+              <li><b>protected internal</b> – Same assembly + derived classes</li>
+              <li><b>private protected</b> – Only derived classes in same assembly</li>
+            </ul>
+          </div>
+          
+          <div class="code-header">
+            <span class="code-title">Basic Example:</span>
+            <button class="expand-btn" onclick="toggleCode('encapsulation-basic')">Show More</button>
+          </div>
+          <pre><code class="language-csharp">class Person {
+    private string ssn = "123-45-6789"; // private field
+    public string Name { get; set; }     // public property
+    protected int Age { get; set; }      // protected property
+    internal string City { get; set; }   // internal property
+    
+    // Method to access private field
+    public string GetSSN() {
+        return "XXX-XX-" + ssn.Substring(ssn.Length - 4);
+    }
+}
+
+class Program {
+    static void Main() {
+        Person person = new Person();
+        person.Name = "John Doe";        // OK - public
+        person.City = "New York";        // OK - internal (same assembly)
+        // person.Age = 30;              // Error - protected
+        // person.ssn = "987-65-4321";   // Error - private
+        Console.WriteLine(person.GetSSN()); // Access via method
+    }
+}</code></pre>
+          
+          <div id="encapsulation-basic" class="extra-code">
+            <div class="code-header">
+              <span class="code-title">Advanced Example with Validation:</span>
+            </div>
+            <pre><code class="language-csharp">class Employee {
+    private string _name;
+    private decimal _salary;
+    
+    public string Name {
+        get { return _name; }
+        set {
+            if (!string.IsNullOrWhiteSpace(value))
+                _name = value;
+            else
+                throw new ArgumentException("Name cannot be empty");
+        }
+    }
+    
+    public decimal Salary {
+        get { return _salary; }
+        set {
+            if (value >= 0)
+                _salary = value;
+            else
+                throw new ArgumentException("Salary cannot be negative");
+        }
+    }
+    
+    public string Department { get; set; }
+    
+    public Employee(string name, decimal salary, string department) {
+        Name = name;
+        Salary = salary;
+        Department = department;
+    }
+    
+    public void GiveRaise(decimal percentage) {
+        if (percentage > 0 && percentage <= 50) {
+            Salary += Salary * (percentage / 100);
+            Console.WriteLine($"{Name} received a {percentage}% raise. New salary: ${Salary}");
+        } else {
+            Console.WriteLine("Invalid raise percentage");
+        }
+    }
+}
+
+class Program {
+    static void Main() {
+        try {
+            Employee emp = new Employee("Alice Johnson", 50000, "Engineering");
+            Console.WriteLine($"Employee: {emp.Name}, Salary: ${emp.Salary}");
+            emp.GiveRaise(10);
+            
+            // This will throw an exception
+            // emp.Salary = -1000;
+        } catch (Exception ex) {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+    }
+}</code></pre>
+          </div>
+        </div>
+      </li>
+
+      <li>
+        <div class="concept">
+          <h2>Inheritance</h2>
+          <div class="definition">
+            <p><b>Definition:</b> Reusing features of one class in another.</p>
+            <p><b>Types:</b></p>
+            <ul>
+              <li><b>Single</b> – One base → One derived</li>
+              <li><b>Multilevel</b> – Base → Derived → Another derived</li>
+              <li><b>Hierarchical</b> – One base → Multiple derived</li>
+              <li><b>Multiple (via Interface)</b> – Class implementing many interfaces</li>
+              <li><b>Hybrid</b> – Combination of above</li>
+            </ul>
+          </div>
+          
+          <div class="code-header">
+            <span class="code-title">Basic Example:</span>
+            <button class="expand-btn" onclick="toggleCode('inheritance-basic')">Show More</button>
+          </div>
+          <pre><code class="language-csharp">// Single inheritance
+class Animal {
+    public string Name { get; set; }
+    public void Eat() {
+        Console.WriteLine($"{Name} is eating.");
+    }
+}
+
+class Dog : Animal {
+    public void Bark() {
+        Console.WriteLine($"{Name} is barking.");
+    }
+}
+
+// Multilevel inheritance
+class Puppy : Dog {
+    public void Weep() {
+        Console.WriteLine($"{Name} is weeping.");
+    }
+}
+
+// Multiple inheritance via interfaces
+interface IFly {
+    void Fly();
+}
+
+interface ISwim {
+    void Swim();
+}
+
+class Duck : Animal, IFly, ISwim {
+    public void Fly() {
+        Console.WriteLine($"{Name} is flying.");
+    }
+    
+    public void Swim() {
+        Console.WriteLine($"{Name} is swimming.");
+    }
+}
+
+class Program {
+    static void Main() {
+        // Single inheritance
+        Dog dog = new Dog { Name = "Buddy" };
+        dog.Eat();
+        dog.Bark();
+        
+        // Multilevel inheritance
+        Puppy puppy = new Puppy { Name = "Max" };
+        puppy.Eat();
+        puppy.Bark();
+        puppy.Weep();
+        
+        // Multiple interfaces
+        Duck duck = new Duck { Name = "Donald" };
+        duck.Eat();
+        duck.Fly();
+        duck.Swim();
+    }
+}</code></pre>
+          
+          <div id="inheritance-basic" class="extra-code">
+            <div class="code-header">
+              <span class="code-title">Advanced Example with Base Keyword:</span>
+            </div>
+            <pre><code class="language-csharp">class Vehicle {
+    public string Brand { get; set; }
+    public int Year { get; set; }
+    
+    public Vehicle(string brand, int year) {
+        Brand = brand;
+        Year = year;
+    }
+    
+    public virtual void Start() {
+        Console.WriteLine($"{Brand} vehicle starting...");
+    }
+}
+
+class Car : Vehicle {
+    public int Doors { get; set; }
+    
+    public Car(string brand, int year, int doors) : base(brand, year) {
+        Doors = doors;
+    }
+    
+    public override void Start() {
+        base.Start(); // Call base method
+        Console.WriteLine($"Car with {Doors} doors is ready to go!");
+    }
+}
+
+class Motorcycle : Vehicle {
+    public bool HasSideCar { get; set; }
+    
+    public Motorcycle(string brand, int year, bool hasSideCar) : base(brand, year) {
+        HasSideCar = hasSideCar;
+    }
+    
+    public override void Start() {
+        Console.WriteLine($"{Brand} motorcycle is revving up!");
+        if (HasSideCar) {
+            Console.WriteLine("Sidecar attached.");
+        }
+    }
+}
+
+class Program {
+    static void Main() {
+        Vehicle vehicle = new Vehicle("Generic", 2020);
+        vehicle.Start();
+        
+        Car car = new Car("Toyota", 2022, 4);
+        car.Start();
+        
+        Motorcycle bike = new Motorcycle("Harley", 2021, true);
+        bike.Start();
+        
+        // Polymorphism in action
+        Vehicle[] vehicles = {
+            new Vehicle("Generic", 2020),
+            new Car("Honda", 2022, 2),
+            new Motorcycle("Yamaha", 2021, false)
+        };
+        
+        foreach (var v in vehicles) {
+            v.Start();
+            Console.WriteLine("---");
+        }
+    }
+}</code></pre>
+          </div>
+        </div>
+      </li>
+
+      <li>
+        <div class="concept">
+          <h2>Polymorphism</h2>
+          <div class="definition">
+            <p><b>Definition:</b> Same method name, different behavior.</p>
+            <p><b>Types:</b></p>
+            <ul>
+              <li><b>Compile-time (Overloading)</b> – Same method name, different parameters.</li>
+              <li><b>Runtime (Overriding)</b> – Derived class redefines base class method.</li>
+            </ul>
+          </div>
+          
+          <div class="code-header">
+            <span class="code-title">Basic Example:</span>
+            <button class="expand-btn" onclick="toggleCode('polymorphism-basic')">Show More</button>
+          </div>
+          <pre><code class="language-csharp">// Method overloading (compile-time polymorphism)
+class Calculator {
+    public int Add(int a, int b) {
+        return a + b;
+    }
+    
+    public double Add(double a, double b) {
+        return a + b;
+    }
+    
+    public int Add(int a, int b, int c) {
+        return a + b + c;
+    }
+    
+    public string Add(string a, string b) {
+        return a + b;
+    }
+}
+
+// Method overriding (runtime polymorphism)
+class Animal {
+    public virtual void Speak() {
+        Console.WriteLine("Animal makes a sound");
+    }
+}
+
+class Dog : Animal {
+    public override void Speak() {
+        Console.WriteLine("Dog barks: Woof woof!");
+    }
+}
+
+class Cat : Animal {
+    public override void Speak() {
+        Console.WriteLine("Cat meows: Meow meow!");
+    }
+}
+
+class Program {
+    static void Main() {
+        // Overloading example
+        Calculator calc = new Calculator();
+        Console.WriteLine(calc.Add(5, 10));
+        Console.WriteLine(calc.Add(5.5, 2.3));
+        Console.WriteLine(calc.Add(1, 2, 3));
+        Console.WriteLine(calc.Add("Hello, ", "World!"));
+        
+        // Overriding example
+        Animal animal = new Animal();
+        Animal dog = new Dog();
+        Animal cat = new Cat();
+        
+        animal.Speak();
+        dog.Speak();
+        cat.Speak();
+        
+        // Polymorphism in action
+        Animal[] animals = {
+            new Animal(),
+            new Dog(),
+            new Cat()
+        };
+        
+        foreach (Animal a in animals) {
+            a.Speak();
+        }
+    }
+}</code></pre>
+          
+          <div id="polymorphism-basic" class="extra-code">
+            <div class="code-header">
+              <span class="code-title">Advanced Example with Abstract Class:</span>
+            </div>
+            <pre><code class="language-csharp">abstract class Shape {
+    public abstract double Area();
+    public abstract double Perimeter();
+    
+    public void Display() {
+        Console.WriteLine($"Shape Area: {Area():F2}, Perimeter: {Perimeter():F2}");
+    }
+}
+
+class Circle : Shape {
+    public double Radius { get; set; }
+    
+    public Circle(double radius) {
+        Radius = radius;
+    }
+    
+    public override double Area() {
+        return Math.PI * Radius * Radius;
+    }
+    
+    public override double Perimeter() {
+        return 2 * Math.PI * Radius;
+    }
+}
+
+class Rectangle : Shape {
+    public double Width { get; set; }
+    public double Height { get; set; }
+    
+    public Rectangle(double width, double height) {
+        Width = width;
+        Height = height;
+    }
+    
+    public override double Area() {
+        return Width * Height;
+    }
+    
+    public override double Perimeter() {
+        return 2 * (Width + Height);
+    }
+}
+
+class Triangle : Shape {
+    public double SideA { get; set; }
+    public double SideB { get; set; }
+    public double SideC { get; set; }
+    
+    public Triangle(double a, double b, double c) {
+        SideA = a;
+        SideB = b;
+        SideC = c;
+    }
+    
+    public override double Area() {
+        // Using Heron's formula
+        double s = (SideA + SideB + SideC) / 2;
+        return Math.Sqrt(s * (s - SideA) * (s - SideB) * (s - SideC));
+    }
+    
+    public override double Perimeter() {
+        return SideA + SideB + SideC;
+    }
+}
+
+class Program {
+    static void Main() {
+        Shape[] shapes = {
+            new Circle(5),
+            new Rectangle(4, 6),
+            new Triangle(3, 4, 5)
+        };
+        
+        foreach (Shape shape in shapes) {
+            shape.Display();
+        }
+    }
+}</code></pre>
+          </div>
+        </div>
+      </li>
+
+      <li>
+        <div class="concept">
+          <h2>Abstraction</h2>
+          <div class="definition">
+            <p><b>Definition:</b> Hiding implementation, showing only important details.</p>
+            <p><b>Types:</b></p>
+            <ul>
+              <li><b>Abstract Classes</b> – Can have abstract + concrete methods.</li>
+              <li><b>Interfaces</b> – Only method signatures (no implementation).</li>
+            </ul>
+          </div>
+          
+          <div class="code-header">
+            <span class="code-title">Basic Example:</span>
+            <button class="expand-btn" onclick="toggleCode('abstraction-basic')">Show More</button>
+          </div>
+          <pre><code class="language-csharp">// Abstract Class example
+abstract class Shape {
+    public abstract void Draw();
+    
+    public void Display() {
+        Console.WriteLine("Displaying shape:");
+        Draw();
+    }
+}
+
+class Circle : Shape {
+    public override void Draw() {
+        Console.WriteLine("Drawing a circle");
+    }
+}
+
+class Square : Shape {
+    public override void Draw() {
+        Console.WriteLine("Drawing a square");
+    }
+}
+
+// Interface example
+interface IDatabase {
+    void Connect();
+    void Disconnect();
+    void ExecuteQuery(string query);
+}
+
+class MySQLDatabase : IDatabase {
+    public void Connect() {
+        Console.WriteLine("Connecting to MySQL database...");
+    }
+    
+    public void Disconnect() {
+        Console.WriteLine("Disconnecting from MySQL database...");
+    }
+    
+    public void ExecuteQuery(string query) {
+        Console.WriteLine($"Executing MySQL query: {query}");
+    }
+}
+
+class SQLServerDatabase : IDatabase {
+    public void Connect() {
+        Console.WriteLine("Connecting to SQL Server database...");
+    }
+    
+    public void Disconnect() {
+        Console.WriteLine("Disconnecting from SQL Server database...");
+    }
+    
+    public void ExecuteQuery(string query) {
+        Console.WriteLine($"Executing SQL Server query: {query}");
+    }
+}
+
+class Program {
+    static void Main() {
+        // Abstract class usage
+        Shape circle = new Circle();
+        Shape square = new Square();
+        
+        circle.Display();
+        square.Display();
+        
+        // Interface usage
+        IDatabase mysql = new MySQLDatabase();
+        IDatabase sqlserver = new SQLServerDatabase();
+        
+        mysql.Connect();
+        mysql.ExecuteQuery("SELECT * FROM users");
+        mysql.Disconnect();
+        
+        Console.WriteLine();
+        
+        sqlserver.Connect();
+        sqlserver.ExecuteQuery("SELECT * FROM products");
+        sqlserver.Disconnect();
+    }
+}</code></pre>
+          
+          <div id="abstraction-basic" class="extra-code">
+            <div class="code-header">
+              <span class="code-title">Advanced Example with Multiple Interfaces:</span>
+            </div>
+            <pre><code class="language-csharp">interface IPrintable {
+    void Print();
+}
+
+interface IScannable {
+    void Scan();
+}
+
+interface IFaxable {
+    void Fax();
+}
+
+// Basic printer implements only IPrintable
+class BasicPrinter : IPrintable {
+    public void Print() {
+        Console.WriteLine("Printing document...");
+    }
+}
+
+// Advanced printer implements multiple interfaces
+class AdvancedPrinter : IPrintable, IScannable, IFaxable {
+    public void Print() {
+        Console.WriteLine("High-quality printing...");
+    }
+    
+    public void Scan() {
+        Console.WriteLine("Scanning document...");
+    }
+    
+    public void Fax() {
+        Console.WriteLine("Sending fax...");
+    }
+}
+
+// Multi-function device
+class MultiFunctionDevice : IPrintable, IScannable {
+    public void Print() {
+        Console.WriteLine("Multi-function device printing...");
+    }
+    
+    public void Scan() {
+        Console.WriteLine("Multi-function device scanning...");
+    }
+    
+    public void Copy() {
+        Console.WriteLine("Copying document...");
+        Scan();
+        Print();
+    }
+}
+
+class Program {
+    static void Main() {
+        Console.WriteLine("Basic Printer:");
+        BasicPrinter basic = new BasicPrinter();
+        basic.Print();
+        
+        Console.WriteLine("\nAdvanced Printer:");
+        AdvancedPrinter advanced = new AdvancedPrinter();
+        advanced.Print();
+        advanced.Scan();
+        advanced.Fax();
+        
+        Console.WriteLine("\nMulti-Function Device:");
+        MultiFunctionDevice mfd = new MultiFunctionDevice();
+        mfd.Copy();
+        
+        // Using interfaces as types
+        IPrintable[] printers = {
+            new BasicPrinter(),
+            new AdvancedPrinter(),
+            new MultiFunctionDevice()
+        };
+        
+        Console.WriteLine("\nAll printers printing:");
+        foreach (IPrintable printer in printers) {
+            printer.Print();
+        }
+    }
+}</code></pre>
+          </div>
+        </div>
+      </li>
+
+      <li>
+        <div class="concept">
+          <h2>Constructor</h2>
+          <div class="definition">
+            <p><b>Definition:</b> Special method called at object creation to initialize values.</p>
+            <p><b>Types:</b></p>
+            <ul>
+              <li><b>Default Constructor</b> - No parameters</li>
+              <li><b>Parameterized Constructor</b> - With parameters</li>
+              <li><b>Copy Constructor</b> - Creates object from another object</li>
+              <li><b>Static Constructor</b> - Initializes static members</li>
+              <li><b>Private Constructor</b> - Used in singleton pattern</li>
+            </ul>
+          </div>
+          
+          <div class="code-header">
+            <span class="code-title">Basic Example:</span>
+            <button class="expand-btn" onclick="toggleCode('constructor-basic')">Show More</button>
+          </div>
+          <pre><code class="language-csharp">class Person {
+    public string Name;
+    public int Age;
+    public string City;
+    
+    // Default constructor
+    public Person() {
+        Name = "Unknown";
+        Age = 0;
+        City = "Unknown";
+    }
+    
+    // Parameterized constructor
+    public Person(string name, int age) {
+        Name = name;
+        Age = age;
+        City = "Unknown";
+    }
+    
+    // Parameterized constructor with all parameters
+    public Person(string name, int age, string city) {
+        Name = name;
+        Age = age;
+        City = city;
+    }
+    
+    // Copy constructor
+    public Person(Person other) {
+        Name = other.Name;
+        Age = other.Age;
+        City = other.City;
+    }
+    
+    public void Display() {
+        Console.WriteLine($"Name: {Name}, Age: {Age}, City: {City}");
+    }
+}
+
+class Program {
+    static void Main() {
+        // Using different constructors
+        Person person1 = new Person(); // Default
+        Person person2 = new Person("John", 25); // Parameterized
+        Person person3 = new Person("Alice", 30, "New York"); // Parameterized
+        Person person4 = new Person(person3); // Copy constructor
+        
+        person1.Display();
+        person2.Display();
+        person3.Display();
+        person4.Display();
+    }
+}</code></pre>
+          
+          <div id="constructor-basic" class="extra-code">
+            <div class="code-header">
+              <span class="code-title">Advanced Example with Static and Private Constructors:</span>
+            </div>
+            <pre><code class="language-csharp">class Configuration {
+    private static Configuration instance;
+    private static readonly object lockObject = new object();
+    public string DatabaseConnection { get; set; }
+    public string AppName { get; set; }
+    public int MaxConnections { get; set; }
+    
+    // Private constructor for singleton pattern
+    private Configuration() {
+        // Load configuration from file or environment
+        DatabaseConnection = "Server=localhost;Database=myDB;User=admin;";
+        AppName = "My Application";
+        MaxConnections = 100;
+    }
+    
+    // Static constructor
+    static Configuration() {
+        Console.WriteLine("Configuration class initialized");
+    }
+    
+    // Public method to get singleton instance
+    public static Configuration GetInstance() {
+        lock (lockObject) {
+            if (instance == null) {
+                instance = new Configuration();
+            }
+            return instance;
+        }
+    }
+    
+    public void DisplayConfig() {
+        Console.WriteLine($"App: {AppName}");
+        Console.WriteLine($"DB Connection: {DatabaseConnection}");
+        Console.WriteLine($"Max Connections: {MaxConnections}");
+    }
+}
+
+class Logger {
+    // Static field
+    private static int instanceCount = 0;
+    
+    // Static constructor
+    static Logger() {
+        Console.WriteLine("Logger class initialized");
+    }
+    
+    // Instance constructor
+    public Logger() {
+        instanceCount++;
+        Console.WriteLine($"Logger instance created. Total instances: {instanceCount}");
+    }
+    
+    public void Log(string message) {
+        Console.WriteLine($"[LOG] {message}");
+    }
+}
+
+class Program {
+    static void Main() {
+        Console.WriteLine("Starting application...");
+        
+        // Singleton usage
+        Configuration config = Configuration.GetInstance();
+        config.DisplayConfig();
+        
+        Configuration config2 = Configuration.GetInstance();
+        Console.WriteLine($"Are both configurations the same instance? {config == config2}");
+        
+        // Logger with static constructor
+        Logger logger1 = new Logger();
+        logger1.Log("First message");
+        
+        Logger logger2 = new Logger();
+        logger2.Log("Second message");
+    }
+}</code></pre>
+          </div>
+        </div>
+      </li>
+
+      <li>
+        <div class="concept">
+          <h2>Properties</h2>
+          <div class="definition">
+            <p><b>Definition:</b> Safe way to access private fields with get and set accessors.</p>
+            <p><b>Types:</b></p>
+            <ul>
+              <li><b>Read-Write Properties</b> - Both get and set accessors</li>
+              <li><b>Read-Only Properties</b> - Only get accessor</li>
+              <li><b>Write-Only Properties</b> - Only set accessor</li>
+              <li><b>Auto-Implemented Properties</b> - Simplified syntax</li>
+              <li><b>Computed Properties</b> - Value calculated on the fly</li>
+            </ul>
+          </div>
+          
+          <div class="code-header">
+            <span class="code-title">Basic Example:</span>
+            <button class="expand-btn" onclick="toggleCode('properties-basic')">Show More</button>
+          </div>
+          <pre><code class="language-csharp">class Person {
+    // Field-backed property with validation
+    private string name;
+    public string Name {
+        get { return name; }
+        set {
+            if (!string.IsNullOrWhiteSpace(value))
+                name = value;
+            else
+                throw new ArgumentException("Name cannot be empty");
+        }
+    }
+    
+    // Field-backed property with validation
+    private int age;
+    public int Age {
+        get { return age; }
+        set {
+            if (value >= 0 && value <= 120)
+                age = value;
+            else
+                throw new ArgumentException("Age must be between 0 and 120");
+        }
+    }
+    
+    // Auto-implemented property
+    public string City { get; set; }
+    
+    // Read-only property
+    public bool IsAdult {
+        get { return Age >= 18; }
+    }
+    
+    // Computed property
+    public string Description {
+        get {
+            return $"{Name}, {Age} years old, from {City}";
+        }
+    }
+    
+    // Write-only property (rarely used)
+    private string secret;
+    public string Secret {
+        set { secret = value; }
+    }
+}
+
+class Program {
+    static void Main() {
+        Person person = new Person();
+        person.Name = "John Doe";
+        person.Age = 25;
+        person.City = "New York";
+        // person.Secret = "My secret"; // Can set but not get
+        
+        Console.WriteLine(person.Name);
+        Console.WriteLine(person.Age);
+        Console.WriteLine(person.City);
+        Console.WriteLine($"Is adult: {person.IsAdult}");
+        Console.WriteLine(person.Description);
+        
+        try {
+            person.Age = 150; // This will throw an exception
+        } catch (ArgumentException ex) {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+    }
+}</code></pre>
+          
+          <div id="properties-basic" class="extra-code">
+            <div class="code-header">
+              <span class="code-title">Advanced Example with Indexers:</span>
+            </div>
+            <pre><code class="language-csharp">class Team {
+    private string[] players = new string[11];
+    
+    // Indexer property
+    public string this[int index] {
+        get {
+            if (index >= 0 && index < players.Length)
+                return players[index];
+            else
+                throw new IndexOutOfRangeException();
+        }
+        set {
+            if (index >= 0 && index < players.Length)
+                players[index] = value;
+            else
+                throw new IndexOutOfRangeException();
+        }
+    }
+    
+    // Another indexer with different parameter type
+    public string this[string position] {
+        get {
+            switch (position.ToLower()) {
+                case "goalkeeper": return players[0];
+                case "defender": return players[1];
+                case "midfielder": return players[5];
+                case "forward": return players[9];
+                default: return "Unknown position";
+            }
+        }
+        set {
+            switch (position.ToLower()) {
+                case "goalkeeper": players[0] = value; break;
+                case "defender": players[1] = value; break;
+                case "midfielder": players[5] = value; break;
+                case "forward": players[9] = value; break;
+                default: throw new ArgumentException("Unknown position");
+            }
+        }
+    }
+    
+    public void ListPlayers() {
+        for (int i = 0; i < players.Length; i++) {
+            if (!string.IsNullOrEmpty(players[i]))
+                Console.WriteLine($"Player {i}: {players[i]}");
+        }
+    }
+}
+
+class Rectangle {
+    public double Length { get; set; }
+    public double Width { get; set; }
+    
+    // Computed property
+    public double Area {
+        get { return Length * Width; }
+    }
+    
+    // Computed property
+    public double Perimeter {
+        get { return 2 * (Length + Width); }
+    }
+    
+    // Method that returns a computed value
+    public double Diagonal {
+        get { return Math.Sqrt(Length * Length + Width * Width); }
+    }
+}
+
+class Program {
+    static void Main() {
+        // Indexer example
+        Team team = new Team();
+        team[0] = "John (Goalkeeper)";
+        team[1] = "Mike (Defender)";
+        team[5] = "Steve (Midfielder)";
+        team[9] = "Alex (Forward)";
+        
+        team.ListPlayers();
+        
+        Console.WriteLine($"Goalkeeper: {team["goalkeeper"]}");
+        Console.WriteLine($"Forward: {team["forward"]}");
+        
+        // Computed properties example
+        Rectangle rect = new Rectangle { Length = 10, Width = 5 };
+        Console.WriteLine($"Rectangle: {rect.Length}x{rect.Width}");
+        Console.WriteLine($"Area: {rect.Area}");
+        Console.WriteLine($"Perimeter: {rect.Perimeter}");
+        Console.WriteLine($"Diagonal: {rect.Diagonal:F2}");
+    }
+}</code></pre>
+          </div>
+        </div>
+      </li>
+    </ul>
+
+    <footer>
+      <p>C# OOP Concepts Tree Diagram | Created with HTML, CSS, and Prism.js for code highlighting</p>
+    </footer>
+  </div>
+
+  <script>
+    function toggleCode(id) {
+      const element = document.getElementById(id);
+      const button = element.previousElementSibling.querySelector('.expand-btn');
+      
+      if (element.style.display === 'block') {
+        element.style.display = 'none';
+        button.textContent = 'Show More';
+      } else {
+        element.style.display = 'block';
+        button.textContent = 'Show Less';
+      }
+    }
+  </script>
+</body>
+</html>

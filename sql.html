@@ -1,0 +1,873 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>SQL & T-SQL Guide</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body { background:#0f172a; color:#f9fafb; font-family:ui-sans-serif,system-ui,sans-serif; }
+    .section-card { background:#1e293b; border-radius:.75rem; padding:1.25rem; margin-bottom:1.5rem; }
+    .section-title { font-size:1.25rem; font-weight:600; margin-bottom:.5rem; color:#f1f5f9; }
+    .tree ul { padding-left:1.25rem; list-style:none; }
+    .tree li { margin:.4rem 0; position:relative; }
+    .tree li::before { content:""; position:absolute; top:0; left:-1rem; border-left:1px solid #475569; border-bottom:1px solid #475569; width:1rem; height:1rem; }
+    .tree li:first-child::before { border-top:1px solid #475569; }
+    .tree span { cursor:pointer; display:inline-flex; align-items:center; }
+    .tree i { margin-right:.5rem; color:#38bdf8; }
+    
+    /* Improved tree structure */
+    .tree-container ul {
+      list-style-type: none;
+      padding-left: 20px;
+      position: relative;
+    }
+    .tree-container li {
+      position: relative;
+      padding: 5px 0;
+    }
+    .tree-container > ul > li:first-child::before {
+      top: 15px;
+    }
+    .tree-container li::before,
+    .tree-container li::after {
+      content: '';
+      position: absolute;
+      left: -15px;
+    }
+    .tree-container li::before {
+      top: 0;
+      width: 15px;
+      height: 15px;
+      border-left: 2px solid #38bdf8;
+      border-bottom: 2px solid #38bdf8;
+    }
+    .tree-container li::after {
+      top: 15px;
+      height: 100%;
+      border-left: 2px solid #38bdf8;
+    }
+    .tree-container li:last-child::after {
+      display: none;
+    }
+    .tree-container .tree-node {
+      display: inline-block;
+      background: #1e293b;
+      color: #38bdf8;
+      border: 2px solid #38bdf8;
+      border-radius: 8px;
+      padding: 6px 16px;
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 0.2rem;
+    }
+    .tree-container .category {
+      background: #0f172a;
+      color: #7dd3fc;
+      border-color: #7dd3fc;
+    }
+    .tree-container .subcategory {
+      background: #0f172a;
+      color: #bae6fd;
+      border-color: #bae6fd;
+    }
+    .tree-container .item {
+      background: #0f172a;
+      color: #f0f9ff;
+      border-color: #f0f9ff;
+    }
+  </style>
+</head>
+<body>
+  <!-- Scroll to Top Button -->
+  <button id="toTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'});" title="Go to top" style="display:none;position:fixed;bottom:32px;right:32px;z-index:50;background:#1e293b;border:none;border-radius:50%;padding:0.75rem 0.9rem;box-shadow:0 2px 8px #0004;cursor:pointer;transition:background 0.2s;">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="#38bdf8" class="w-7 h-7">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
+    </svg>
+  </button>
+  <script>
+    // ...existing code...
+    // Show/hide scroll-to-top button
+    window.addEventListener('scroll', function() {
+      const btn = document.getElementById('toTopBtn');
+      if (window.scrollY > 200) {
+        btn.style.display = 'block';
+      } else {
+        btn.style.display = 'none';
+      }
+    });
+  </script>
+  <!-- Search Navigation -->
+  <div class="max-w-5xl mx-auto p-6">
+    <div class="mb-4">
+      <input id="sectionSearch" type="text" placeholder="Search sections..." class="w-full p-2 rounded-lg bg-slate-800 text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-400" oninput="filterSections()">
+    </div>
+    <ul id="sectionNav" class="flex flex-wrap gap-2 mb-2">
+      <li><a href="#data-types" class="nav-link bg-slate-700 hover:bg-blue-700 text-slate-200 px-3 py-1 rounded transition">SQL Server Data Types</a></li>
+      <li><a href="#sql-commands" class="nav-link bg-slate-700 hover:bg-blue-700 text-slate-200 px-3 py-1 rounded transition">SQL Commands Categories</a></li>
+      <li><a href="#constraints" class="nav-link bg-slate-700 hover:bg-blue-700 text-slate-200 px-3 py-1 rounded transition">Constraints</a></li>
+      <li><a href="#ddl" class="nav-link bg-slate-700 hover:bg-blue-700 text-slate-200 px-3 py-1 rounded transition">DDL</a></li>
+      <li><a href="#crud" class="nav-link bg-slate-700 hover:bg-blue-700 text-slate-200 px-3 py-1 rounded transition">CRUD</a></li>
+      <li><a href="#joins" class="nav-link bg-slate-700 hover:bg-blue-700 text-slate-200 px-3 py-1 rounded transition">Joins</a></li>
+      <li><a href="#set-operations" class="nav-link bg-slate-700 hover:bg-blue-700 text-slate-200 px-3 py-1 rounded transition">Set Operations</a></li>
+      <li><a href="#filtering" class="nav-link bg-slate-700 hover:bg-blue-700 text-slate-200 px-3 py-1 rounded transition">Filtering</a></li>
+      <li><a href="#subquery" class="nav-link bg-slate-700 hover:bg-blue-700 text-slate-200 px-3 py-1 rounded transition">Subquery</a></li>
+      <li><a href="#view" class="nav-link bg-slate-700 hover:bg-blue-700 text-slate-200 px-3 py-1 rounded transition">View</a></li>
+      <li><a href="#index" class="nav-link bg-slate-700 hover:bg-blue-700 text-slate-200 px-3 py-1 rounded transition">Index</a></li>
+      <li><a href="#functions" class="nav-link bg-slate-700 hover:bg-blue-700 text-slate-200 px-3 py-1 rounded transition">Functions</a></li>
+      <li><a href="#stored-procedure" class="nav-link bg-slate-700 hover:bg-blue-700 text-slate-200 px-3 py-1 rounded transition">Stored Procedure</a></li>
+      <li><a href="#ifelse" class="nav-link bg-slate-700 hover:bg-blue-700 text-slate-200 px-3 py-1 rounded transition">IF...ELSE</a></li>
+      <li><a href="#exception" class="nav-link bg-slate-700 hover:bg-blue-700 text-slate-200 px-3 py-1 rounded transition">Exception Handling</a></li>
+      <li><a href="#cursor" class="nav-link bg-slate-700 hover:bg-blue-700 text-slate-200 px-3 py-1 rounded transition">Cursor</a></li>
+      <li><a href="#triggers" class="nav-link bg-slate-700 hover:bg-blue-700 text-slate-200 px-3 py-1 rounded transition">Triggers</a></li>
+      <li><a href="#transactions" class="nav-link bg-slate-700 hover:bg-blue-700 text-slate-200 px-3 py-1 rounded transition">Transactions & ACID</a></li>
+      <li><a href="#normalization" class="nav-link bg-slate-700 hover:bg-blue-700 text-slate-200 px-3 py-1 rounded transition">Normalization</a></li>
+      <li><a href="#denormalization" class="nav-link bg-slate-700 hover:bg-blue-700 text-slate-200 px-3 py-1 rounded transition">Denormalization</a></li>
+    </ul>
+  </div>
+  <header class="max-w-5xl mx-auto p-6">
+  <script>
+    // Filter section navigation links
+    function filterSections() {
+      const input = document.getElementById('sectionSearch').value.toLowerCase();
+      const nav = document.getElementById('sectionNav');
+      Array.from(nav.children).forEach(li => {
+        const text = li.textContent.toLowerCase();
+        li.style.display = text.includes(input) ? '' : 'none';
+      });
+    }
+    // Smooth scroll for nav links
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+          const href = this.getAttribute('href');
+          if (href.startsWith('#')) {
+            e.preventDefault();
+            const target = document.querySelector(href);
+            if (target) {
+              window.scrollTo({
+                top: target.getBoundingClientRect().top + window.scrollY - 20,
+                behavior: 'smooth'
+              });
+            }
+          }
+        });
+      });
+    });
+  </script>
+    <h1 class="text-3xl font-extrabold mb-2">SQL & T-SQL Beginner's Guide</h1>
+    <p class="text-slate-400 text-sm">Structured Query Language (SQL) is used to manage databases.  
+      <span class="text-slate-200">T-SQL (Transact-SQL)</span> is Microsoft's extension of SQL, adding features like procedures, functions, transactions, and error handling.</p>
+  </header>
+
+  <main class="max-w-5xl mx-auto p-6 space-y-8">
+
+   
+<!-- SQL Server Data Types -->
+<div class="section-card">
+  <h2 class="section-title" id="data-types">2. SQL Server Data Types</h2>
+  <p class="text-slate-400 text-sm mb-3">SQL Server data types grouped by category.</p>
+
+  <div class="flex flex-col items-center space-y-6">
+
+    <!-- Root -->
+    <div class="bg-blue-800 text-white font-bold px-8 py-3 rounded-lg shadow-lg">
+      Data Types
+    </div>
+
+    <!-- Categories -->
+    <div class="flex flex-wrap justify-center gap-8">
+      <div class="bg-gray-700 text-white font-semibold px-6 py-2 rounded-lg shadow-lg">
+        Numeric
+      </div>
+      <div class="bg-gray-700 text-white font-semibold px-6 py-2 rounded-lg shadow-lg">
+        String
+      </div>
+      <div class="bg-gray-700 text-white font-semibold px-6 py-2 rounded-lg shadow-lg">
+        Date/Time
+      </div>
+      <div class="bg-gray-700 text-white font-semibold px-6 py-2 rounded-lg shadow-lg">
+        Binary
+      </div>
+      <div class="bg-gray-700 text-white font-semibold px-6 py-2 rounded-lg shadow-lg">
+        Other
+      </div>
+    </div>
+
+    <!-- Sub Types Grid -->
+    <div class="grid grid-cols-5 gap-6 w-full">
+
+      <!-- Numeric -->
+      <div class="flex flex-col items-center space-y-2">
+        <div class="bg-gray-800 text-white font-medium px-5 py-2 rounded-lg shadow-lg">Numeric</div>
+        <div class="bg-gray-700 text-white px-4 py-1 rounded-md">INT</div>
+        <div class="bg-gray-700 text-white px-4 py-1 rounded-md">SMALLINT</div>
+        <div class="bg-gray-700 text-white px-4 py-1 rounded-md">TINYINT</div>
+        <div class="bg-gray-700 text-white px-4 py-1 rounded-md">BIGINT</div>
+        <div class="bg-gray-700 text-white px-4 py-1 rounded-md">DECIMAL</div>
+        <div class="bg-gray-700 text-white px-4 py-1 rounded-md">NUMERIC</div>
+        <div class="bg-gray-700 text-white px-4 py-1 rounded-md">FLOAT</div>
+        <div class="bg-gray-700 text-white px-4 py-1 rounded-md">REAL</div>
+      </div>
+
+      <!-- String -->
+      <div class="flex flex-col items-center space-y-2">
+        <div class="bg-gray-800 text-white font-medium px-5 py-2 rounded-lg shadow-lg">String</div>
+        <div class="bg-gray-700 text-white px-4 py-1 rounded-md">CHAR</div>
+        <div class="bg-gray-700 text-white px-4 py-1 rounded-md">VARCHAR</div>
+        <div class="bg-gray-700 text-white px-4 py-1 rounded-md">NCHAR</div>
+        <div class="bg-gray-700 text-white px-4 py-1 rounded-md">NVARCHAR</div>
+        <div class="bg-gray-700 text-white px-4 py-1 rounded-md">TEXT</div>
+      </div>
+
+      <!-- Date/Time -->
+      <div class="flex flex-col items-center space-y-2">
+        <div class="bg-gray-800 text-white font-medium px-5 py-2 rounded-lg shadow-lg">Date/Time</div>
+        <div class="bg-gray-700 text-white px-4 py-1 rounded-md">DATE</div>
+        <div class="bg-gray-700 text-white px-4 py-1 rounded-md">TIME</div>
+        <div class="bg-gray-700 text-white px-4 py-1 rounded-md">DATETIME</div>
+        <div class="bg-gray-700 text-white px-4 py-1 rounded-md">DATETIME2</div>
+        <div class="bg-gray-700 text-white px-4 py-1 rounded-md">SMALLDATETIME</div>
+        <div class="bg-gray-700 text-white px-4 py-1 rounded-md">DATETIMEOFFSET</div>
+      </div>
+
+      <!-- Binary -->
+      <div class="flex flex-col items-center space-y-2">
+        <div class="bg-gray-800 text-white font-medium px-5 py-2 rounded-lg shadow-lg">Binary</div>
+        <div class="bg-gray-700 text-white px-4 py-1 rounded-md">BINARY</div>
+        <div class="bg-gray-700 text-white px-4 py-1 rounded-md">VARBINARY</div>
+        <div class="bg-gray-700 text-white px-4 py-1 rounded-md">IMAGE</div>
+      </div>
+
+      <!-- Other -->
+      <div class="flex flex-col items-center space-y-2">
+        <div class="bg-gray-800 text-white font-medium px-5 py-2 rounded-lg shadow-lg">Other</div>
+        <div class="bg-gray-700 text-white px-4 py-1 rounded-md">BIT</div>
+        <div class="bg-gray-700 text-white px-4 py-1 rounded-md">XML</div>
+        <div class="bg-gray-700 text-white px-4 py-1 rounded-md">UNIQUEIDENTIFIER</div>
+        <div class="bg-gray-700 text-white px-4 py-1 rounded-md">SQL_VARIANT</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+<!-- SQL Commands Org Chart -->
+<div class="section-card">
+  <h2 class="section-title" id="sql-commands">3. SQL Commands Categories</h2>
+  <p class="text-slate-400 text-sm mb-3">SQL commands are grouped into 5 categories.</p>
+
+  <div class="flex flex-col items-center space-y-6">
+
+    <!-- Root -->
+    <div class="bg-green-700 text-white font-bold px-8 py-3 rounded-lg shadow-lg">
+      SQL Commands
+    </div>
+
+    <!-- Categories -->
+    <div class="flex flex-wrap justify-center gap-8">
+      <div class="bg-gray-700 text-white font-semibold px-6 py-2 rounded-lg shadow-lg">
+        DDL
+      </div>
+      <div class="bg-gray-700 text-white font-semibold px-6 py-2 rounded-lg shadow-lg">
+        DML
+      </div>
+      <div class="bg-gray-700 text-white font-semibold px-6 py-2 rounded-lg shadow-lg">
+        DQL
+      </div>
+      <div class="bg-gray-700 text-white font-semibold px-6 py-2 rounded-lg shadow-lg">
+        DCL
+      </div>
+      <div class="bg-gray-700 text-white font-semibold px-6 py-2 rounded-lg shadow-lg">
+        TCL
+      </div>
+    </div>
+
+    <!-- Sub Commands Grid -->
+    <div class="grid grid-cols-5 gap-6 w-full">
+
+      <!-- DDL -->
+      <div class="flex flex-col items-center space-y-2">
+        <div class="bg-gray-800 text-white font-medium px-5 py-2 rounded-lg shadow-lg">DDL</div>
+        <div class="bg-gray-700 text-white px-4 py-1 rounded-md">CREATE</div>
+        <div class="bg-gray-700 text-white px-4 py-1 rounded-md">ALTER</div>
+        <div class="bg-gray-700 text-white px-4 py-1 rounded-md">DROP</div>
+        <div class="bg-gray-700 text-white px-4 py-1 rounded-md">TRUNCATE</div>
+      </div>
+
+      <!-- DML -->
+      <div class="flex flex-col items-center space-y-2">
+        <div class="bg-gray-800 text-white font-medium px-5 py-2 rounded-lg shadow-lg">DML</div>
+        <div class="bg-gray-700 text-white px-4 py-1 rounded-md">INSERT</div>
+        <div class="bg-gray-700 text-white px-4 py-1 rounded-md">UPDATE</div>
+        <div class="bg-gray-700 text-white px-4 py-1 rounded-md">DELETE</div>
+      </div>
+
+      <!-- DQL -->
+      <div class="flex flex-col items-center space-y-2">
+        <div class="bg-gray-800 text-white font-medium px-5 py-2 rounded-lg shadow-lg">DQL</div>
+        <div class="bg-gray-700 text-white px-4 py-1 rounded-md">SELECT</div>
+      </div>
+
+      <!-- DCL -->
+      <div class="flex flex-col items-center space-y-2">
+        <div class="bg-gray-800 text-white font-medium px-5 py-2 rounded-lg shadow-lg">DCL</div>
+        <div class="bg-gray-700 text-white px-4 py-1 rounded-md">GRANT</div>
+        <div class="bg-gray-700 text-white px-4 py-1 rounded-md">REVOKE</div>
+      </div>
+
+      <!-- TCL -->
+      <div class="flex flex-col items-center space-y-2">
+        <div class="bg-gray-800 text-white font-medium px-5 py-2 rounded-lg shadow-lg">TCL</div>
+        <div class="bg-gray-700 text-white px-4 py-1 rounded-md">COMMIT</div>
+        <div class="bg-gray-700 text-white px-4 py-1 rounded-md">ROLLBACK</div>
+        <div class="bg-gray-700 text-white px-4 py-1 rounded-md">SAVEPOINT</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+    <!-- Constraints -->
+    <div class="section-card">
+  <h2 class="section-title" id="constraints">4. Constraints</h2>
+      <p class="text-slate-400 text-sm mb-3">Constraints enforce rules on data in tables.</p>
+      <ul class="list-disc pl-5 text-slate-300">
+        <li><span class="font-semibold">PRIMARY KEY:</span> Uniquely identifies each row.</li>
+        <li><span class="font-semibold">FOREIGN KEY:</span> Links two tables.</li>
+        <li><span class="font-semibold">UNIQUE:</span> Ensures all values are unique.</li>
+        <li><span class="font-semibold">NOT NULL:</span> Column cannot be NULL.</li>
+        <li><span class="font-semibold">CHECK:</span> Ensures condition is true.</li>
+        <li><span class="font-semibold">DEFAULT:</span> Assigns a default value.</li>
+      </ul>
+      <div class="mt-4 bg-slate-900 p-4 rounded-lg overflow-x-auto">
+        <pre class="text-slate-200 text-sm">
+CREATE TABLE Employees (
+  EmpID INT PRIMARY KEY,
+  Name NVARCHAR(50) NOT NULL,
+  Email NVARCHAR(100) UNIQUE,
+  Age INT CHECK (Age >= 18),
+  DeptID INT FOREIGN KEY REFERENCES Departments(DeptID),
+  JoinDate DATE DEFAULT GETDATE()
+);
+        </pre>
+      </div>
+    </div>
+
+
+    <!-- DDL (Data Definition Language) -->
+    <div class="section-card">
+  <h2 class="section-title" id="ddl">5. DDL (Data Definition Language) Commands</h2>
+      <p class="text-slate-400 text-sm mb-3">DDL commands are used to define and modify the structure of database objects such as tables, schemas, and more.</p>
+      <ul class="list-disc pl-6 mb-4">
+        <li><span class="font-semibold text-blue-300">CREATE</span>: Creates a new table, view, or other database object.</li>
+        <li><span class="font-semibold text-blue-300">ALTER</span>: Modifies an existing database object, such as adding or dropping a column.</li>
+        <li><span class="font-semibold text-blue-300">DROP</span>: Deletes an existing database object from the database.</li>
+        <li><span class="font-semibold text-blue-300">TRUNCATE</span>: Removes all rows from a table, but keeps its structure for future use.</li>
+      </ul>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <div class="font-semibold text-blue-200 mb-1">CREATE Example</div>
+          <div class="bg-slate-900 p-3 rounded-lg overflow-x-auto mb-2">
+            <pre class="text-slate-200 text-sm">CREATE TABLE Departments (
+  DeptID INT PRIMARY KEY,
+  DeptName NVARCHAR(50)
+);</pre>
+          </div>
+        </div>
+        <div>
+          <div class="font-semibold text-blue-200 mb-1">ALTER Example</div>
+          <div class="bg-slate-900 p-3 rounded-lg overflow-x-auto mb-2">
+            <pre class="text-slate-200 text-sm">ALTER TABLE Departments
+ADD Location NVARCHAR(100);</pre>
+          </div>
+        </div>
+        <div>
+          <div class="font-semibold text-blue-200 mb-1">DROP Example</div>
+          <div class="bg-slate-900 p-3 rounded-lg overflow-x-auto mb-2">
+            <pre class="text-slate-200 text-sm">DROP TABLE Departments;</pre>
+          </div>
+        </div>
+        <div>
+          <div class="font-semibold text-blue-200 mb-1">TRUNCATE Example</div>
+          <div class="bg-slate-900 p-3 rounded-lg overflow-x-auto mb-2">
+            <pre class="text-slate-200 text-sm">TRUNCATE TABLE Departments;</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CRUD -->
+    <div class="section-card">
+  <h2 class="section-title" id="crud">6. CRUD Operations</h2>
+      <p class="text-slate-400 text-sm mb-3">Insert, read, update, and delete records.</p>
+      <div class="bg-slate-900 p-4 rounded-lg overflow-x-auto">
+        <pre class="text-slate-200 text-sm">
+-- Insert
+INSERT INTO Employees VALUES (1, 'Alice', 'a@example.com', 25, 1, DEFAULT);
+
+-- Select
+SELECT * FROM Employees;
+
+-- Update
+UPDATE Employees SET Age = 26 WHERE EmpID = 1;
+
+-- Delete
+DELETE FROM Employees WHERE EmpID = 1;
+        </pre>
+      </div>
+    </div>
+
+    <!-- Joins -->
+    <div class="section-card">
+  <h2 class="section-title" id="joins">7. Joins</h2>
+      <p class="text-slate-400 text-sm mb-3">Combine rows from multiple tables. Joins are used to retrieve data from two or more tables based on a related column.</p>
+      <ul class="list-disc pl-6 mb-4 text-slate-300">
+        <li><span class="font-semibold text-blue-300">INNER JOIN</span>: Returns records that have matching values in both tables.</li>
+        <li><span class="font-semibold text-blue-300">LEFT JOIN</span>: Returns all records from the left table, and the matched records from the right table. Unmatched right table records are NULL.</li>
+        <li><span class="font-semibold text-blue-300">RIGHT JOIN</span>: Returns all records from the right table, and the matched records from the left table. Unmatched left table records are NULL.</li>
+        <li><span class="font-semibold text-blue-300">FULL JOIN</span>: Returns all records when there is a match in either left or right table. Unmatched records from both tables are NULL.</li>
+        <li><span class="font-semibold text-blue-300">CROSS JOIN</span>: Returns the Cartesian product of both tables (every row of the first table with every row of the second table).</li>
+        <li><span class="font-semibold text-blue-300">NATURAL JOIN</span>: Returns records with matching column values in both tables, based on all columns with the same name.</li>
+      </ul>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <div class="font-semibold text-blue-200 mb-1">INNER JOIN Example</div>
+          <div class="bg-slate-900 p-3 rounded-lg overflow-x-auto mb-2">
+            <pre class="text-slate-200 text-sm">SELECT e.Name, d.DeptName
+FROM Employees e
+INNER JOIN Departments d ON e.DeptID = d.DeptID;</pre>
+          </div>
+        </div>
+        <div>
+          <div class="font-semibold text-blue-200 mb-1">LEFT JOIN Example</div>
+          <div class="bg-slate-900 p-3 rounded-lg overflow-x-auto mb-2">
+            <pre class="text-slate-200 text-sm">SELECT e.Name, d.DeptName
+FROM Employees e
+LEFT JOIN Departments d ON e.DeptID = d.DeptID;</pre>
+          </div>
+        </div>
+        <div>
+          <div class="font-semibold text-blue-200 mb-1">RIGHT JOIN Example</div>
+          <div class="bg-slate-900 p-3 rounded-lg overflow-x-auto mb-2">
+            <pre class="text-slate-200 text-sm">SELECT e.Name, d.DeptName
+FROM Employees e
+RIGHT JOIN Departments d ON e.DeptID = d.DeptID;</pre>
+          </div>
+        </div>
+        <div>
+          <div class="font-semibold text-blue-200 mb-1">FULL JOIN Example</div>
+          <div class="bg-slate-900 p-3 rounded-lg overflow-x-auto mb-2">
+            <pre class="text-slate-200 text-sm">SELECT e.Name, d.DeptName
+FROM Employees e
+FULL JOIN Departments d ON e.DeptID = d.DeptID;</pre>
+          </div>
+        </div>
+        <div>
+          <div class="font-semibold text-blue-200 mb-1">CROSS JOIN Example</div>
+          <div class="bg-slate-900 p-3 rounded-lg overflow-x-auto mb-2">
+            <pre class="text-slate-200 text-sm">SELECT e.Name, d.DeptName
+FROM Employees e
+CROSS JOIN Departments d;</pre>
+          </div>
+        </div>
+        <div>
+          <div class="font-semibold text-blue-200 mb-1">NATURAL JOIN Example</div>
+          <div class="bg-slate-900 p-3 rounded-lg overflow-x-auto mb-2">
+            <pre class="text-slate-200 text-sm">SELECT e.Name, d.DeptName
+FROM Employees e
+NATURAL JOIN Departments d;</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Joins -->
+
+    <!-- Set Operations -->
+    <div class="section-card">
+  <h2 class="section-title" id="set-operations">8. Set Operations</h2>
+      <p class="text-slate-400 text-sm mb-3">Set operations combine the results of two or more SELECT queries. The tables must have the same number and type of columns.</p>
+      <ul class="list-disc pl-6 mb-4 text-slate-300">
+        <li><span class="font-semibold text-blue-300">UNION</span>: Combines the result sets of two queries and removes duplicates.</li>
+        <li><span class="font-semibold text-blue-300">UNION ALL</span>: Combines the result sets of two queries and includes duplicates.</li>
+        <li><span class="font-semibold text-blue-300">INTERSECT</span>: Returns only the rows that are present in both queries.</li>
+        <li><span class="font-semibold text-blue-300">EXCEPT</span>: Returns rows from the first query that are not present in the second query.</li>
+      </ul>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <div class="font-semibold text-blue-200 mb-1">UNION Example</div>
+          <div class="bg-slate-900 p-3 rounded-lg overflow-x-auto mb-2">
+            <pre class="text-slate-200 text-sm">SELECT Name FROM Employees
+UNION
+SELECT DeptName FROM Departments;</pre>
+          </div>
+        </div>
+        <div>
+          <div class="font-semibold text-blue-200 mb-1">UNION ALL Example</div>
+          <div class="bg-slate-900 p-3 rounded-lg overflow-x-auto mb-2">
+            <pre class="text-slate-200 text-sm">SELECT Name FROM Employees
+UNION ALL
+SELECT DeptName FROM Departments;</pre>
+          </div>
+        </div>
+        <div>
+          <div class="font-semibold text-blue-200 mb-1">INTERSECT Example</div>
+          <div class="bg-slate-900 p-3 rounded-lg overflow-x-auto mb-2">
+            <pre class="text-slate-200 text-sm">SELECT Name FROM Employees
+INTERSECT
+SELECT DeptName FROM Departments;</pre>
+          </div>
+        </div>
+        <div>
+          <div class="font-semibold text-blue-200 mb-1">EXCEPT Example</div>
+          <div class="bg-slate-900 p-3 rounded-lg overflow-x-auto mb-2">
+            <pre class="text-slate-200 text-sm">SELECT Name FROM Employees
+EXCEPT
+SELECT DeptName FROM Departments;</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Set Operations -->
+
+    <!-- Filtering Concepts -->
+    <div class="section-card">
+  <h2 class="section-title" id="filtering">10. Filtering Concepts</h2>
+      <p class="text-slate-400 text-sm mb-3">Filtering allows you to retrieve only the rows that match specific criteria using WHERE, LIKE, IN, BETWEEN, and more.</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <div class="font-semibold text-blue-200 mb-1">WHERE Example</div>
+          <div class="bg-slate-900 p-3 rounded-lg overflow-x-auto mb-2">
+            <pre class="text-slate-200 text-sm">SELECT * FROM Employees WHERE Age > 25;</pre>
+          </div>
+        </div>
+        <div>
+          <div class="font-semibold text-blue-200 mb-1">LIKE Example</div>
+          <div class="bg-slate-900 p-3 rounded-lg overflow-x-auto mb-2">
+            <pre class="text-slate-200 text-sm">SELECT * FROM Employees WHERE Name LIKE 'A%';</pre>
+          </div>
+        </div>
+        <div>
+          <div class="font-semibold text-blue-200 mb-1">IN Example</div>
+          <div class="bg-slate-900 p-3 rounded-lg overflow-x-auto mb-2">
+            <pre class="text-slate-200 text-sm">SELECT * FROM Employees WHERE DeptID IN (1, 2, 3);</pre>
+          </div>
+        </div>
+        <div>
+          <div class="font-semibold text-blue-200 mb-1">BETWEEN Example</div>
+          <div class="bg-slate-900 p-3 rounded-lg overflow-x-auto mb-2">
+            <pre class="text-slate-200 text-sm">SELECT * FROM Employees WHERE Age BETWEEN 20 AND 30;</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Subquery -->
+    <div class="section-card">
+  <h2 class="section-title" id="subquery">11. Subquery</h2>
+      <p class="text-slate-400 text-sm mb-3">A subquery is a query nested inside another query. It can be used in SELECT, INSERT, UPDATE, or DELETE statements.</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <div class="font-semibold text-blue-200 mb-1">Single-row Subquery</div>
+          <div class="bg-slate-900 p-3 rounded-lg overflow-x-auto mb-2">
+            <pre class="text-slate-200 text-sm">SELECT Name FROM Employees
+WHERE DeptID = (SELECT DeptID FROM Departments WHERE DeptName = 'HR');</pre>
+          </div>
+        </div>
+        <div>
+          <div class="font-semibold text-blue-200 mb-1">Multi-row Subquery</div>
+          <div class="bg-slate-900 p-3 rounded-lg overflow-x-auto mb-2">
+            <pre class="text-slate-200 text-sm">SELECT Name FROM Employees
+WHERE DeptID IN (SELECT DeptID FROM Departments WHERE Location = 'NY');</pre>
+          </div>
+        </div>
+        <div>
+          <div class="font-semibold text-blue-200 mb-1">Correlated Subquery</div>
+          <div class="bg-slate-900 p-3 rounded-lg overflow-x-auto mb-2">
+            <pre class="text-slate-200 text-sm">SELECT Name FROM Employees e
+WHERE Age = (SELECT MAX(Age) FROM Employees WHERE DeptID = e.DeptID);</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- View Concept -->
+    <div class="section-card">
+  <h2 class="section-title" id="view">12. View Concept</h2>
+      <p class="text-slate-400 text-sm mb-3">A view is a virtual table based on the result of a SELECT query. It can simplify complex queries and enhance security.</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <div class="font-semibold text-blue-200 mb-1">Simple View</div>
+          <div class="bg-slate-900 p-3 rounded-lg overflow-x-auto mb-2">
+            <pre class="text-slate-200 text-sm">CREATE VIEW EmployeeNames AS
+SELECT Name FROM Employees;</pre>
+          </div>
+        </div>
+        <div>
+          <div class="font-semibold text-blue-200 mb-1">Complex View</div>
+          <div class="bg-slate-900 p-3 rounded-lg overflow-x-auto mb-2">
+            <pre class="text-slate-200 text-sm">CREATE VIEW EmpDept AS
+SELECT e.Name, d.DeptName
+FROM Employees e
+JOIN Departments d ON e.DeptID = d.DeptID;</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Index Concepts -->
+    <div class="section-card">
+  <h2 class="section-title" id="index">13. Index Concepts</h2>
+      <p class="text-slate-400 text-sm mb-3">Indexes improve the speed of data retrieval operations on a table at the cost of additional space and maintenance.</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <div class="font-semibold text-blue-200 mb-1">Clustered Index</div>
+          <div class="bg-slate-900 p-3 rounded-lg overflow-x-auto mb-2">
+            <pre class="text-slate-200 text-sm">CREATE CLUSTERED INDEX idx_emp_id
+ON Employees(EmpID);</pre>
+          </div>
+        </div>
+        <div>
+          <div class="font-semibold text-blue-200 mb-1">Non-Clustered Index</div>
+          <div class="bg-slate-900 p-3 rounded-lg overflow-x-auto mb-2">
+            <pre class="text-slate-200 text-sm">CREATE NONCLUSTERED INDEX idx_emp_name
+ON Employees(Name);</pre>
+          </div>
+        </div>
+        <div>
+          <div class="font-semibold text-blue-200 mb-1">Unique Index</div>
+          <div class="bg-slate-900 p-3 rounded-lg overflow-x-auto mb-2">
+            <pre class="text-slate-200 text-sm">CREATE UNIQUE INDEX idx_emp_email
+ON Employees(Email);</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Index Concepts -->
+
+    <!-- Functions -->
+    <div class="section-card">
+  <h2 class="section-title" id="functions">14. Functions</h2>
+      <p class="text-slate-400 text-sm mb-3">SQL functions perform operations on data and return a value. They can be used in SELECT, WHERE, and other clauses.</p>
+      <ul class="list-disc pl-6 mb-4 text-slate-300">
+        <li><span class="font-semibold text-blue-300">Scalar Functions</span>: Return a single value (e.g., <code>UPPER()</code>, <code>LEN()</code>, <code>GETDATE()</code>).</li>
+        <li><span class="font-semibold text-blue-300">Aggregate Functions</span>: Operate on a set of values and return a single value (e.g., <code>COUNT()</code>, <code>SUM()</code>, <code>AVG()</code>, <code>MIN()</code>, <code>MAX()</code>).</li>
+        <li><span class="font-semibold text-blue-300">String Functions</span>: Manipulate string values (e.g., <code>CONCAT()</code>, <code>SUBSTRING()</code>, <code>REPLACE()</code>).</li>
+        <li><span class="font-semibold text-blue-300">Date Functions</span>: Work with date and time values (e.g., <code>GETDATE()</code>, <code>DATEADD()</code>, <code>DATEDIFF()</code>).</li>
+        <li><span class="font-semibold text-blue-300">Conversion Functions</span>: Convert data from one type to another (e.g., <code>CAST()</code>, <code>CONVERT()</code>).</li>
+      </ul>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <div>
+          <div class="font-semibold text-blue-200 mb-1">Scalar Function Example</div>
+          <div class="bg-slate-900 p-3 rounded-lg overflow-x-auto mb-2">
+            <pre class="text-slate-200 text-sm">SELECT UPPER(Name) FROM Employees;</pre>
+          </div>
+        </div>
+        <div>
+          <div class="font-semibold text-blue-200 mb-1">Aggregate Function Example</div>
+          <div class="bg-slate-900 p-3 rounded-lg overflow-x-auto mb-2">
+            <pre class="text-slate-200 text-sm">SELECT AVG(Age) AS AvgAge FROM Employees;</pre>
+          </div>
+        </div>
+        <div>
+          <div class="font-semibold text-blue-200 mb-1">String Function Example</div>
+          <div class="bg-slate-900 p-3 rounded-lg overflow-x-auto mb-2">
+            <pre class="text-slate-200 text-sm">SELECT CONCAT(Name, ' - ', Email) FROM Employees;</pre>
+          </div>
+        </div>
+        <div>
+          <div class="font-semibold text-blue-200 mb-1">Date Function Example</div>
+          <div class="bg-slate-900 p-3 rounded-lg overflow-x-auto mb-2">
+            <pre class="text-slate-200 text-sm">SELECT GETDATE() AS Today, DATEDIFF(year, JoinDate, GETDATE()) AS YearsWithCompany FROM Employees;</pre>
+          </div>
+        </div>
+        <div>
+          <div class="font-semibold text-blue-200 mb-1">Conversion Function Example</div>
+          <div class="bg-slate-900 p-3 rounded-lg overflow-x-auto mb-2">
+            <pre class="text-slate-200 text-sm">SELECT CAST(Age AS VARCHAR) + ' years' AS AgeText FROM Employees;</pre>
+          </div>
+        </div>
+      </div>
+      <div class="font-semibold text-blue-200 mb-1">SQL Expressions Example</div>
+      <div class="bg-slate-900 p-3 rounded-lg overflow-x-auto mb-2 mb-4">
+        <pre class="text-slate-200 text-sm">SELECT Name, Age * 12 AS AgeInMonths, Salary + 1000 AS NewSalary
+FROM Employees
+WHERE Age > 25 AND Salary < 50000;</pre>
+      </div>
+    </div>
+
+    <!-- Stored Procedure -->
+    <div class="section-card">
+  <h2 class="section-title" id="stored-procedure">15. Stored Procedure</h2>
+      <p class="text-slate-400 text-sm mb-3">A stored procedure is a saved collection of SQL statements that can be executed as a program. It can accept parameters, contain logic, and return results.</p>
+      <div class="font-semibold text-blue-200 mb-1">Simple Stored Procedure Example</div>
+      <div class="bg-slate-900 p-3 rounded-lg overflow-x-auto mb-4">
+        <pre class="text-slate-200 text-sm">CREATE PROCEDURE GetEmployees
+AS
+BEGIN
+  SELECT * FROM Employees;
+END;
+
+EXEC GetEmployees;</pre>
+      </div>
+      <div class="font-semibold text-blue-200 mb-1">Complex Stored Procedure Example</div>
+      <div class="bg-slate-900 p-3 rounded-lg overflow-x-auto mb-2">
+        <pre class="text-slate-200 text-sm">CREATE PROCEDURE UpdateEmployeeSalary
+  @EmpID INT,
+  @Increment INT
+AS
+BEGIN
+  UPDATE Employees
+  SET Salary = Salary + @Increment
+  WHERE EmpID = @EmpID;
+
+  SELECT * FROM Employees WHERE EmpID = @EmpID;
+END;
+
+EXEC UpdateEmployeeSalary @EmpID = 1, @Increment = 2000;</pre>
+      </div>
+    </div>
+    <!-- Stored Procedure -->
+
+    <!-- IF...ELSE -->
+    <div class="section-card">
+  <h2 class="section-title" id="ifelse">16. IF...ELSE</h2>
+      <p class="text-slate-400 text-sm mb-3">IF...ELSE is used to execute code conditionally in T-SQL. It helps you run different SQL statements based on a condition.</p>
+      <div class="bg-slate-900 p-3 rounded-lg overflow-x-auto mb-2">
+        <pre class="text-slate-200 text-sm">IF EXISTS (SELECT * FROM Employees WHERE Age < 18)
+  PRINT 'There are underage employees.';
+ELSE
+  PRINT 'All employees are adults.';
+</pre>
+      </div>
+    </div>
+
+    <!-- Exception Handling -->
+    <div class="section-card">
+  <h2 class="section-title" id="exception">17. Exception Handling (TRY...CATCH)</h2>
+      <p class="text-slate-400 text-sm mb-3">TRY...CATCH is used to handle errors in T-SQL. Code in the TRY block runs first; if an error occurs, control moves to the CATCH block.</p>
+      <div class="bg-slate-900 p-3 rounded-lg overflow-x-auto mb-2">
+        <pre class="text-slate-200 text-sm">BEGIN TRY
+  -- Code that might cause an error
+  INSERT INTO Employees VALUES (NULL, 'Bob', 'b@example.com', 22, 1, DEFAULT);
+END TRY
+BEGIN CATCH
+  PRINT 'An error occurred: ' + ERROR_MESSAGE();
+END CATCH;
+</pre>
+      </div>
+    </div>
+
+    <!-- Cursor -->
+    <div class="section-card">
+  <h2 class="section-title" id="cursor">18. Cursor</h2>
+      <p class="text-slate-400 text-sm mb-3">A cursor lets you process each row returned by a query one at a time. Useful for row-by-row operations.</p>
+      <div class="bg-slate-900 p-3 rounded-lg overflow-x-auto mb-2">
+        <pre class="text-slate-200 text-sm">DECLARE emp_cursor CURSOR FOR
+SELECT Name FROM Employees;
+
+OPEN emp_cursor;
+DECLARE @empName NVARCHAR(50);
+
+FETCH NEXT FROM emp_cursor INTO @empName;
+WHILE @@FETCH_STATUS = 0
+BEGIN
+  PRINT @empName;
+  FETCH NEXT FROM emp_cursor INTO @empName;
+END
+
+CLOSE emp_cursor;
+DEALLOCATE emp_cursor;
+</pre>
+      </div>
+    </div>
+
+    <!-- Triggers -->
+    <div class="section-card">
+  <h2 class="section-title" id="triggers">19. Triggers</h2>
+      <p class="text-slate-400 text-sm mb-3">A trigger is a special procedure that runs automatically when an event (INSERT, UPDATE, DELETE) happens on a table.</p>
+      <div class="bg-slate-900 p-3 rounded-lg overflow-x-auto mb-2">
+        <pre class="text-slate-200 text-sm">CREATE TRIGGER trg_AfterInsert
+ON Employees
+AFTER INSERT
+AS
+BEGIN
+  PRINT 'A new employee was added.';
+END;
+</pre>
+      </div>
+    </div>
+
+    <!-- Transactions & ACID -->
+    <div class="section-card">
+  <h2 class="section-title" id="transactions">20. Transactions & ACID Properties</h2>
+      <p class="text-slate-400 text-sm mb-3">A transaction is a group of SQL statements that are executed together. ACID properties ensure data reliability:</p>
+      <ul class="list-disc pl-6 mb-4 text-slate-300">
+        <li><span class="font-semibold text-blue-300">Atomicity</span>: All steps succeed or none do.</li>
+        <li><span class="font-semibold text-blue-300">Consistency</span>: Data remains valid before and after the transaction.</li>
+        <li><span class="font-semibold text-blue-300">Isolation</span>: Transactions do not affect each other.</li>
+        <li><span class="font-semibold text-blue-300">Durability</span>: Once committed, changes are permanent.</li>
+      </ul>
+      <div class="bg-slate-900 p-3 rounded-lg overflow-x-auto mb-2">
+        <pre class="text-slate-200 text-sm">BEGIN TRANSACTION;
+UPDATE Employees SET Age = Age + 1 WHERE EmpID = 1;
+
+IF @@ERROR <> 0
+   ROLLBACK;
+ELSE
+   COMMIT;
+</pre>
+      </div>
+    </div>
+
+    <!-- Normalization -->
+    <div class="section-card">
+  <h2 class="section-title" id="normalization">21. Normalization</h2>
+      <p class="text-slate-400 text-sm mb-3">Normalization is the process of organizing data to reduce redundancy and improve data integrity. Data is split into related tables.</p>
+      <ul class="list-disc pl-6 mb-4 text-slate-300">
+        <li><span class="font-semibold text-blue-300">1NF (First Normal Form):</span> Each column contains only atomic (indivisible) values, and each row is unique.</li>
+        <li><span class="font-semibold text-blue-300">2NF (Second Normal Form):</span> In 1NF, and all non-key columns are fully dependent on the whole primary key (no partial dependency).</li>
+        <li><span class="font-semibold text-blue-300">3NF (Third Normal Form):</span> In 2NF, and all columns are only dependent on the primary key (no transitive dependency).</li>
+        <li><span class="font-semibold text-blue-300">4NF (Fourth Normal Form):</span> In 3NF, and there are no multi-valued dependencies (no column contains two or more independent sets of data).</li>
+        <li><span class="font-semibold text-blue-300">5NF (Fifth Normal Form):</span> In 4NF, and every join dependency is implied by candidate keys (table cannot be further decomposed without losing data).</li>
+      </ul>
+      <div class="bg-slate-900 p-3 rounded-lg overflow-x-auto mb-2">
+        <pre class="text-slate-200 text-sm">-- Example: Splitting employee and department info
+CREATE TABLE Departments (
+  DeptID INT PRIMARY KEY,
+  DeptName NVARCHAR(50)
+);
+
+CREATE TABLE Employees (
+  EmpID INT PRIMARY KEY,
+  Name NVARCHAR(50),
+  DeptID INT FOREIGN KEY REFERENCES Departments(DeptID)
+);
+</pre>
+      </div>
+    </div>
+
+    <!-- Denormalization -->
+    <div class="section-card">
+  <h2 class="section-title" id="denormalization">22. Denormalization</h2>
+      <p class="text-slate-400 text-sm mb-3">Denormalization is the process of combining tables to improve read performance, even if it means some data is repeated.</p>
+      <div class="bg-slate-900 p-3 rounded-lg overflow-x-auto mb-2">
+        <pre class="text-slate-200 text-sm">-- Example: Combining employee and department info in one table
+CREATE TABLE EmployeeInfo (
+  EmpID INT PRIMARY KEY,
+  Name NVARCHAR(50),
+  DeptID INT,
+  DeptName NVARCHAR(50)
+);
+</pre>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Learning Guide</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #252526;
+            --text-primary: #e1e1e1;
+            --text-secondary: #a0a0a0;
+            --accent-primary: #e34f26;
+            --accent-secondary: #f06529;
+            --accent-tertiary: #ebebeb;
+            --border-color: #3c3c3c;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            color: var(--accent-primary);
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+        }
+
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        .logo {
+            font-size: 3.5rem;
+            color: var(--accent-primary);
+        }
+
+        .card {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+        }
+
+        h2 {
+            color: var(--accent-secondary);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        h3 {
+            color: var(--accent-primary);
+            margin: 20px 0 10px;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        .code-block {
+            background-color: var(--bg-tertiary);
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            overflow-x: auto;
+            border-left: 4px solid var(--accent-primary);
+        }
+
+        code {
+            font-family: 'Fira Code', monospace;
+            color: var(--accent-tertiary);
+            display: block;
+            line-height: 1.5;
+        }
+
+        .code-comment {
+            color: #6a9955;
+        }
+
+        .code-tag {
+            color: #569cd6;
+        }
+
+        .code-attribute {
+            color: #9cdcfe;
+        }
+
+        .code-value {
+            color: #ce9178;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .step-card {
+            background-color: var(--bg-tertiary);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid var(--accent-secondary);
+            transition: transform 0.3s ease;
+        }
+
+        .step-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .step-number {
+            background-color: var(--accent-secondary);
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .features-list {
+            list-style-type: none;
+        }
+
+        .features-list li {
+            margin-bottom: 10px;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .features-list li:before {
+            content: "➤";
+            color: var(--accent-primary);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        .elements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .element-card {
+            background-color: var(--bg-tertiary);
+            padding: 15px;
+            border-radius: 5px;
+            border-top: 3px solid var(--accent-primary);
+        }
+
+        .element-name {
+            color: var(--accent-secondary);
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .element-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 40px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        .nav-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .nav-tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+        }
+
+        .nav-tab.active {
+            border-bottom: 3px solid var(--accent-primary);
+            color: var(--accent-primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--accent-primary);
+            color: white;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #c13d1b;
+        }
+
+        .btn-secondary {
+            background-color: var(--accent-secondary);
+        }
+
+        .btn-secondary:hover {
+            background-color: #cc5530;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: var(--bg-tertiary);
+            color: var(--accent-secondary);
+        }
+
+        tr:hover {
+            background-color: var(--bg-tertiary);
+        }
+
+        @media (max-width: 768px) {
+            .steps, .elements-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .logo-container {
+                flex-wrap: wrap;
+            }
+            
+            .nav-tabs {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>HTML Learning Guide</h1>
+            <p class="subtitle">The foundation of web development</p>
+            <div class="logo-container">
+                <i class="fab fa-html5 logo"></i>
+                <i class="fab fa-css3-alt logo" style="color: #1572b6"></i>
+                <i class="fab fa-js-square logo" style="color: #f7df1e"></i>
+            </div>
+        </header>
+
+        <div class="card">
+            <h2>What is HTML?</h2>
+            <p>HTML (HyperText Markup Language) is the standard markup language for documents designed to be displayed in a web browser. It defines the structure and content of web pages.</p>
+            
+            <h3>Key Features of HTML:</h3>
+            <ul class="features-list">
+                <li>Describes the structure of a web page</li>
+                <li>Consists of a series of elements</li>
+                <li>Elements tell the browser how to display the content</li>
+                <li>Elements label pieces of content such as "this is a heading", "this is a paragraph", etc.</li>
+            </ul>
+            
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML" class="btn" target="_blank">MDN HTML Documentation</a>
+        </div>
+
+        <div class="card">
+            <h2>Basic HTML Structure</h2>
+            <p>Every HTML document follows a basic structure. Here's a simple template:</p>
+            
+            <div class="code-block">
+                <code><span class="code-comment">&lt;!DOCTYPE html&gt;</span> <span class="code-comment">- Defines the document type</span></code>
+                <code><span class="code-tag">&lt;html</span> <span class="code-attribute">lang</span>=<span class="code-value">"en"</span><span class="code-tag">&gt;</span> <span class="code-comment">- The root element of an HTML page</span></code>
+                <code><span class="code-tag">&lt;head&gt;</span> <span class="code-comment">- Contains meta information about the document</span></code>
+                <code>  <span class="code-tag">&lt;title&gt;</span>Page Title<span class="code-tag">&lt;/title&gt;</span> <span class="code-comment">- Specifies a title for the document</span></code>
+                <code><span class="code-tag">&lt;/head&gt;</span></code>
+                <code><span class="code-tag">&lt;body&gt;</span> <span class="code-comment">- Contains the visible page content</span></code>
+                <code>  <span class="code-tag">&lt;h1&gt;</span>My First Heading<span class="code-tag">&lt;/h1&gt;</span> <span class="code-comment">- Defines a large heading</span></code>
+                <code>  <span class="code-tag">&lt;p&gt;</span>My first paragraph.<span class="code-tag">&lt;/p&gt;</span> <span class="code-comment">- Defines a paragraph</span></code>
+                <code><span class="code-tag">&lt;/body&gt;</span></code>
+                <code><span class="code-tag">&lt;/html&gt;</span></code>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Getting Started with HTML</h2>
+            
+            <div class="nav-tabs">
+                <div class="nav-tab active" onclick="switchTab(event, 'step1')">Step 1: Setup</div>
+                <div class="nav-tab" onclick="switchTab(event, 'step2')">Step 2: Basic Page</div>
+                <div class="nav-tab" onclick="switchTab(event, 'step3')">Step 3: View in Browser</div>
+            </div>
+            
+            <div id="step1" class="tab-content active">
+                <h3>Set Up Your Environment</h3>
+                <p>You don't need any special tools to write HTML. You can start with:</p>
+                <ol>
+                    <li>A text editor (VS Code, Sublime Text, or even Notepad)</li>
+                    <li>A web browser (Chrome, Firefox, Edge, etc.)</li>
+                </ol>
+                
+                <div class="code-block">
+                    <code><span class="code-comment">// Install VS Code (optional but recommended)</span></code>
+                    <code><span class="code-comment">// Download from: https://code.visualstudio.com/</span></code>
+                </div>
+            </div>
+            
+            <div id="step2" class="tab-content">
+                <h3>Create Your First HTML File</h3>
+                <p>Create a new file named "index.html" with the following content:</p>
+                
+                <div class="code-block">
+                    <code><span class="code-tag">&lt;!DOCTYPE html&gt;</span></code>
+                    <code><span class="code-tag">&lt;html</span> <span class="code-attribute">lang</span>=<span class="code-value">"en"</span><span class="code-tag">&gt;</span></code>
+                    <code><span class="code-tag">&lt;head&gt;</span></code>
+                    <code>  <span class="code-tag">&lt;meta</span> <span class="code-attribute">charset</span>=<span class="code-value">"UTF-8"</span><span class="code-tag">&gt;</span></code>
+                    <code>  <span class="code-tag">&lt;meta</span> <span class="code-attribute">name</span>=<span class="code-value">"viewport"</span> <span class="code-attribute">content</span>=<span class="code-value">"width=device-width, initial-scale=1.0"</span><span class="code-tag">&gt;</span></code>
+                    <code>  <span class="code-tag">&lt;title&gt;</span>My First HTML Page<span class="code-tag">&lt;/title&gt;</span></code>
+                    <code><span class="code-tag">&lt;/head&gt;</span></code>
+                    <code><span class="code-tag">&lt;body&gt;</span></code>
+                    <code>  <span class="code-tag">&lt;h1&gt;</span>Hello World!<span class="code-tag">&lt;/h1&gt;</span></code>
+                    <code>  <span class="code-tag">&lt;p&gt;</span>This is my first HTML page.<span class="code-tag">&lt;/p&gt;</span></code>
+                    <code><span class="code-tag">&lt;/body&gt;</span></code>
+                    <code><span class="code-tag">&lt;/html&gt;</span></code>
+                </div>
+            </div>
+            
+            <div id="step3" class="tab-content">
+                <h3>View Your Page</h3>
+                <p>To view your HTML page:</p>
+                <ol>
+                    <li>Save your file with a .html extension (e.g., index.html)</li>
+                    <li>Double-click the file to open it in your default web browser</li>
+                    <li>Alternatively, right-click the file and choose "Open with" to select a specific browser</li>
+                </ol>
+                
+                <p>You can also use live server extensions in VS Code to automatically reload changes.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Essential HTML Elements</h2>
+            <p>HTML consists of many elements that define the structure and content of a web page. Here are some of the most important ones:</p>
+            
+            <div class="elements-grid">
+                <div class="element-card">
+                    <div class="element-name">Headings</div>
+                    <div class="element-desc">&lt;h1&gt; to &lt;h6&gt; - Define HTML headings</div>
+                </div>
+                <div class="element-card">
+                    <div class="element-name">Paragraph</div>
+                    <div class="element-desc">&lt;p&gt; - Defines a paragraph</div>
+                </div>
+                <div class="element-card">
+                    <div class="element-name">Links</div>
+                    <div class="element-desc">&lt;a&gt; - Defines a hyperlink</div>
+                </div>
+                <div class="element-card">
+                    <div class="element-name">Images</div>
+                    <div class="element-desc">&lt;img&gt; - Defines an image</div>
+                </div>
+                <div class="element-card">
+                    <div class="element-name">Lists</div>
+                    <div class="element-desc">&lt;ul&gt;, &lt;ol&gt;, &lt;li&gt; - Define lists</div>
+                </div>
+                <div class="element-card">
+                    <div class="element-name">Divisions</div>
+                    <div class="element-desc">&lt;div&gt; - Defines a section</div>
+                </div>
+                <div class="element-card">
+                    <div class="element-name">Span</div>
+                    <div class="element-desc">&lt;span&gt; - Defines an inline section</div>
+                </div>
+                <div class="element-card">
+                    <div class="element-name">Forms</div>
+                    <div class="element-desc">&lt;form&gt;, &lt;input&gt; - Create interactive controls</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>HTML5 Semantic Elements</h2>
+            <p>HTML5 introduced semantic elements that clearly define their content:</p>
+            
+            <table>
+                <tr>
+                    <th>Element</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>&lt;header&gt;</td>
+                    <td>Defines a header for a document or section</td>
+                </tr>
+                <tr>
+                    <td>&lt;nav&gt;</td>
+                    <td>Defines navigation links</td>
+                </tr>
+                <tr>
+                    <td>&lt;section&gt;</td>
+                    <td>Defines a section in a document</td>
+                </tr>
+                <tr>
+                    <td>&lt;article&gt;</td>
+                    <td>Defines an independent, self-contained content</td>
+                </tr>
+                <tr>
+                    <td>&lt;aside&gt;</td>
+                    <td>Defines content aside from the page content</td>
+                </tr>
+                <tr>
+                    <td>&lt;footer&gt;</td>
+                    <td>Defines a footer for a document or section</td>
+                </tr>
+                <tr>
+                    <td>&lt;main&gt;</td>
+                    <td>Specifies the main content of a document</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="card">
+            <h2>Learning Resources</h2>
+            
+            <div class="steps">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3>MDN Web Docs</h3>
+                    <p>Comprehensive resource for HTML, CSS, and JavaScript documentation.</p>
+                    <a href="https://developer.mozilla.org/en-US/docs/Web/HTML" class="btn" target="_blank">Visit MDN</a>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3>W3Schools</h3>
+                    <p>Beginner-friendly tutorials and references for web technologies.</p>
+                    <a href="https://www.w3schools.com/html/" class="btn" target="_blank">Visit W3Schools</a>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h3>FreeCodeCamp</h3>
+                    <p>Free interactive coding courses including HTML and CSS.</p>
+                    <a href="https://www.freecodecamp.org/learn/responsive-web-design/" class="btn" target="_blank">Start Learning</a>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>HTML Learning Guide - The foundation of web development</p>
+            <p>Practice regularly and build projects to strengthen your HTML skills!</p>
+        </footer>
+    </div>
+
+    <script>
+        function switchTab(event, tabId) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(tab => tab.classList.remove('active'));
+            
+            // Show the selected tab content
+            document.getElementById(tabId).classList.add('active');
+            
+            // Update active tab
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+        }
+    </script>
+</body>
+</html>

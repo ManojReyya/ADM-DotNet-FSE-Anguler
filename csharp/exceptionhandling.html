@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C# Exception Handling Guide</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            color: #00b4d8;
+            margin-bottom: 10px;
+            text-shadow: 0 0 15px rgba(0, 180, 216, 0.4);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #90e0ef;
+            margin-bottom: 20px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .dashboard-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #00b4d8;
+            color: #121212;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .dashboard-link:hover {
+            background: #0077b6;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 180, 216, 0.4);
+        }
+        
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        @media (max-width: 900px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .card {
+            background: #1e1e2e;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card h2 {
+            color: #90e0ef;
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+            border-bottom: 2px solid #00b4d8;
+            padding-bottom: 10px;
+        }
+        
+        .card h3 {
+            color: #90e0ef;
+            margin: 15px 0 10px;
+        }
+        
+        .card p {
+            margin-bottom: 15px;
+        }
+        
+        .card ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .card li {
+            margin-bottom: 8px;
+        }
+        
+        .code-container {
+            background: #2d2d3f;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            overflow-x: auto;
+            border-left: 4px solid #00b4d8;
+        }
+        
+        pre {
+            margin: 0;
+            white-space: pre-wrap;
+        }
+        
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            color: #f8f8f2;
+        }
+        
+        .keyword {
+            color: #ff79c6;
+        }
+        
+        .comment {
+            color: #6272a4;
+        }
+        
+        .type {
+            color: #8be9fd;
+        }
+        
+        .string {
+            color: #f1fa8c;
+        }
+        
+        .output {
+            color: #50fa7b;
+            font-weight: bold;
+            margin-top: 10px;
+            display: block;
+        }
+        
+        .exception-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .exception-table th, .exception-table td {
+            border: 1px solid #00b4d8;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        .exception-table th {
+            background-color: rgba(0, 180, 216, 0.2);
+            color: #90e0ef;
+        }
+        
+        .exception-table tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        
+        .analogy {
+            background: rgba(0, 180, 216, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #90e0ef;
+        }
+        
+        .analogy h3 {
+            color: #90e0ef;
+            margin-top: 0;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            color: #90e0ef;
+            border-top: 1px solid #2d2d3f;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .exception-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-bug"></i> C# Exception Handling</h1>
+            <p class="subtitle">Learn how to handle errors and exceptions in C# with simple explanations and code examples</p>
+            <a href="index.html" class="dashboard-link"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+        </header>
+        
+        <div class="content">
+            <div class="card">
+                <h2>What is Exception Handling?</h2>
+                <p>Exception handling is like a safety net for your code. It's a way to deal with unexpected errors that might happen when your program is running.</p>
+                
+                <div class="analogy">
+                    <h3>Real-life Analogy</h3>
+                    <p>Think of exception handling like wearing a helmet while biking. You hope you won't fall, but if you do, the helmet protects you from serious injury.</p>
+                </div>
+                
+                <h3>Why We Need It:</h3>
+                <ul>
+                    <li>Prevents program crashes</li>
+                    <li>Provides helpful error messages</li>
+                    <li>Allows graceful recovery from errors</li>
+                    <li>Helps with debugging</li>
+                </ul>
+                
+                <h3>Basic Try-Catch Structure</h3>
+                <div class="code-container">
+                    <pre><code><span class="keyword">try</span>
+{
+    <span class="comment">// Code that might cause an error</span>
+    <span class="type">int</span> result = Divide(10, 0);
+}
+<span class="keyword">catch</span> (<span class="type">Exception</span> ex)
+{
+    <span class="comment">// What to do if an error happens</span>
+    <span class="type">Console</span>.WriteLine(<span class="string">$"Error: {ex.Message}"</span>);
+}</code></pre>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>Common Exception Types</h2>
+                
+                <table class="exception-table">
+                    <tr>
+                        <th>Exception Type</th>
+                        <th>When It Occurs</th>
+                    </tr>
+                    <tr>
+                        <td>DivideByZeroException</td>
+                        <td>Dividing a number by zero</td>
+                    </tr>
+                    <tr>
+                        <td>NullReferenceException</td>
+                        <td>Trying to use a null object</td>
+                    </tr>
+                    <tr>
+                        <td>FileNotFoundException</td>
+                        <td>Trying to open a file that doesn't exist</td>
+                    </tr>
+                    <tr>
+                        <td>IndexOutOfRangeException</td>
+                        <td>Accessing an array element that doesn't exist</td>
+                    </tr>
+                    <tr>
+                        <td>FormatException</td>
+                        <td>Invalid format when converting data</td>
+                    </tr>
+                </table>
+                
+                <h3>Example of Handling Different Exceptions</h3>
+                <div class="code-container">
+                    <pre><code><span class="keyword">try</span>
+{
+    <span class="type">int</span>[] numbers = {1, 2, 3};
+    <span class="type">Console</span>.WriteLine(numbers[5]); <span class="comment">// This will cause an error</span>
+}
+<span class="keyword">catch</span> (<span class="type">IndexOutOfRangeException</span> ex)
+{
+    <span class="type">Console</span>.WriteLine(<span class="string">"You tried to access an invalid array index"</span>);
+}
+<span class="keyword">catch</span> (<span class="type">Exception</span> ex)
+{
+    <span class="type">Console</span>.WriteLine(<span class="string">$"Some other error occurred: {ex.Message}"</span>);
+}</code></pre>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>Finally Block</h2>
+                <p>The <code>finally</code> block contains code that will always run, whether an exception occurs or not. It's perfect for cleanup tasks.</p>
+                
+                <div class="code-container">
+                    <pre><code><span class="keyword">try</span>
+{
+    <span class="comment">// Code that might cause an error</span>
+    <span class="type">File</span>.OpenRead(<span class="string">"nonexistent.txt"</span>);
+}
+<span class="keyword">catch</span> (<span class="type">FileNotFoundException</span> ex)
+{
+    <span class="type">Console</span>.WriteLine(<span class="string">"File not found: "</span> + ex.Message);
+}
+<span class="keyword">finally</span>
+{
+    <span class="comment">// This code always runs</span>
+    <span class="type">Console</span>.WriteLine(<span class="string">"Cleanup completed"</span>);
+}</code></pre>
+                </div>
+                
+                <div class="analogy">
+                    <h3>Real-life Analogy</h3>
+                    <p>Think of the finally block like cleaning up after cooking. Whether your meal was successful or you burned it, you still need to wash the dishes and put things away.</p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>Throwing Exceptions</h2>
+                <p>You can also create your own exceptions when something goes wrong in your code.</p>
+                
+                <div class="code-container">
+                    <pre><code><span class="keyword">public</span> <span class="type">int</span> Divide(<span class="type">int</span> a, <span class="type">int</span> b)
+{
+    <span class="keyword">if</span> (b == 0)
+    {
+        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="type">DivideByZeroException</span>(<span class="string">"Cannot divide by zero"</span>);
+    }
+    <span class="keyword">return</span> a / b;
+}
+
+<span class="comment">// Using the method</span>
+<span class="keyword">try</span>
+{
+    <span class="type">int</span> result = Divide(10, 0);
+}
+<span class="keyword">catch</span> (<span class="type">DivideByZeroException</span> ex)
+{
+    <span class="type">Console</span>.WriteLine(ex.Message);
+}</code></pre>
+                </div>
+                
+                <h3>When to Throw Exceptions:</h3>
+                <ul>
+                    <li>When method receives invalid arguments</li>
+                    <li>When an operation cannot be completed</li>
+                    <li>When an object is in an invalid state</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>Best Practices</h2>
+            
+            <h3>Do's and Don'ts</h3>
+            <table class="exception-table">
+                <tr>
+                    <th>Do</th>
+                    <th>Don't</th>
+                </tr>
+                <tr>
+                    <td>Use specific exception types</td>
+                    <td>Use empty catch blocks</td>
+                </tr>
+                <tr>
+                    <td>Provide meaningful error messages</td>
+                    <td>Catch exceptions you can't handle</td>
+                </tr>
+                <tr>
+                    <td>Clean up resources in finally blocks</td>
+                    <td>Use exceptions for normal flow control</td>
+                </tr>
+                <tr>
+                    <td>Log exceptions for debugging</td>
+                    <td>Throw exceptions for minor issues</td>
+                </tr>
+            </table>
+            
+            <h3>Example of Good Exception Handling</h3>
+            <div class="code-container">
+                <pre><code><span class="keyword">public</span> <span class="type">void</span> ProcessFile(<span class="type">string</span> filePath)
+{
+    <span class="type">StreamReader</span> reader = <span class="keyword">null</span>;
+    <span class="keyword">try</span>
+    {
+        reader = <span class="keyword">new</span> <span class="type">StreamReader</span>(filePath);
+        <span class="type">string</span> content = reader.ReadToEnd();
+        <span class="type">Console</span>.WriteLine(<span class="string">"File processed successfully"</span>);
+    }
+    <span class="keyword">catch</span> (<span class="type">FileNotFoundException</span>)
+    {
+        <span class="type">Console</span>.WriteLine(<span class="string">$"The file {filePath} was not found"</span>);
+    }
+    <span class="keyword">catch</span> (<span class="type">IOException</span> ex)
+    {
+        <span class="type">Console</span>.WriteLine(<span class="string">$"An error occurred reading the file: {ex.Message}"</span>);
+    }
+    <span class="keyword">finally</span>
+    {
+        <span class="comment">// Always close the file</span>
+        reader?.Close();
+    }
+}</code></pre>
+            </div>
+        </div>
+        
+        <footer>
+            <p>C# Exception Handling Guide &copy; 2023 | Created with <i class="fas fa-heart" style="color: #ff79c6;"></i></p>
+        </footer>
+    </div>
+</body>
+</html>

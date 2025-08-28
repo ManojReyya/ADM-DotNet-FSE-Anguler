@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C# Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                        dark: {
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-text {
+            background: linear-gradient(90deg, #38bdf8 0%, #818cf8 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #38bdf8;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-item:hover::after {
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <header class="flex flex-col md:flex-row justify-between items-center mb-12">
+            <div class="flex items-center mb-6 md:mb-0">
+                <i class="fas fa-code text-4xl text-blue-400 mr-4"></i>
+                <div>
+                    <h1 class="text-4xl font-bold gradient-text">C# Dashboard</h1>
+                    <p class="text-gray-400">Master the C# programming language</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <div class="relative">
+                    <input type="text" placeholder="Search topics..." class="bg-gray-800 rounded-full py-2 px-4 pl-10 focus:outline-none focus:ring-2 focus:ring-blue-500 w-64">
+                    <i class="fas fa-search absolute left-3 top-3 text-gray-500"></i>
+                </div>
+                <button class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-full transition duration-300">
+                    <i class="fas fa-user mr-2"></i> Login
+                </button>
+            </div>
+        </header>
+        
+        <!-- Main Content -->
+        <main>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- Card 1 -->
+                <a href="history.html" class="bg-gray-800 rounded-xl p-6 shadow-lg transition duration-300 card-hover border-l-4 border-blue-500">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-blue-500/20 p-3 rounded-full mr-4">
+                            <i class="fas fa-history text-blue-400 text-xl"></i>
+                        </div>
+                        <h2 class="text-xl font-semibold">C# History & Invention</h2>
+                    </div>
+                    <p class="text-gray-400">Explore the origins and evolution of C# from its creation by Microsoft to its current status as a versatile programming language.</p>
+                    <div class="mt-4 flex justify-between items-center">
+                        <span class="text-sm text-blue-400">Learn more →</span>
+                        <span class="text-xs bg-gray-700 text-gray-300 px-2 py-1 rounded">Beginner</span>
+                    </div>
+                </a>
+                
+                <!-- Card 2 -->
+                <a href="advantages.html" class="bg-gray-800 rounded-xl p-6 shadow-lg transition duration-300 card-hover border-l-4 border-purple-500">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-purple-500/20 p-3 rounded-full mr-4">
+                            <i class="fas fa-balance-scale text-purple-400 text-xl"></i>
+                        </div>
+                        <h2 class="text-xl font-semibold">Advantages & Disadvantages</h2>
+                    </div>
+                    <p class="text-gray-400">Understand the strengths and weaknesses of C# compared to other programming languages in various development scenarios.</p>
+                    <div class="mt-4 flex justify-between items-center">
+                        <span class="text-sm text-purple-400">Learn more →</span>
+                        <span class="text-xs bg-gray-700 text-gray-300 px-2 py-1 rounded">Beginner</span>
+                    </div>
+                </a>
+                
+                <!-- Card 3 -->
+                <a href="structure.html" class="bg-gray-800 rounded-xl p-6 shadow-lg transition duration-300 card-hover border-l-4 border-green-500">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-green-500/20 p-3 rounded-full mr-4">
+                            <i class="fas fa-project-diagram text-green-400 text-xl"></i>
+                        </div>
+                        <h2 class="text-xl font-semibold">C# Structure</h2>
+                    </div>
+                    <p class="text-gray-400">Learn about the fundamental building blocks of C# programs including namespaces, classes, methods, and statements.</p>
+                    <div class="mt-4 flex justify-between items-center">
+                        <span class="text-sm text-green-400">Learn more →</span>
+                        <span class="text-xs bg-gray-700 text-gray-300 px-2 py-1 rounded">Beginner</span>
+                    </div>
+                </a>
+                
+                <!-- Card 4 -->
+                <a href="datatypes.html" class="bg-gray-800 rounded-xl p-6 shadow-lg transition duration-300 card-hover border-l-4 border-yellow-500">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-yellow-500/20 p-3 rounded-full mr-4">
+                            <i class="fas fa-database text-yellow-400 text-xl"></i>
+                        </div>
+                        <h2 class="text-xl font-semibold">Data Types & Hierarchy</h2>
+                    </div>
+                    <p class="text-gray-400">Discover C#'s type system including value types, reference types, boxing/unboxing, and the object hierarchy.</p>
+                    <div class="mt-4 flex justify-between items-center">
+                        <span class="text-sm text-yellow-400">Learn more →</span>
+                        <span class="text-xs bg-gray-700 text-gray-300 px-2 py-1 rounded">Intermediate</span>
+                    </div>
+                </a>
+                
+                <!-- Card 5 -->
+                <a href="conditions.html" class="bg-gray-800 rounded-xl p-6 shadow-lg transition duration-300 card-hover border-l-4 border-red-500">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-red-500/20 p-3 rounded-full mr-4">
+                            <i class="fas fa-code-branch text-red-400 text-xl"></i>
+                        </div>
+                        <h2 class="text-xl font-semibold">Conditions</h2>
+                    </div>
+                    <p class="text-gray-400">Master conditional statements in C# including if-else, switch-case, and ternary operators for program flow control.</p>
+                    <div class="mt-4 flex justify-between items-center">
+                        <span class="text-sm text-red-400">Learn more →</span>
+                        <span class="text-xs bg-gray-700 text-gray-300 px-2 py-1 rounded">Beginner</span>
+                    </div>
+                </a>
+                
+                <!-- Card 6 -->
+                <a href="loops.html" class="bg-gray-800 rounded-xl p-6 shadow-lg transition duration-300 card-hover border-l-4 border-indigo-500">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-indigo-500/20 p-3 rounded-full mr-4">
+                            <i class="fas fa-redo text-indigo-400 text-xl"></i>
+                        </div>
+                        <h2 class="text-xl font-semibold">Loops</h2>
+                    </div>
+                    <p class="text-gray-400">Understand iteration in C# with for, while, do-while, and foreach loops, including loop control statements.</p>
+                    <div class="mt-4 flex justify-between items-center">
+                        <span class="text-sm text-indigo-400">Learn more →</span>
+                        <span class="text-xs bg-gray-700 text-gray-300 px-2 py-1 rounded">Beginner</span>
+                    </div>
+                </a>
+                
+                <!-- Card 7 -->
+                <a href="oops.html" class="bg-gray-800 rounded-xl p-6 shadow-lg transition duration-300 card-hover border-l-4 border-pink-500">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-pink-500/20 p-3 rounded-full mr-4">
+                            <i class="fas fa-cubes text-pink-400 text-xl"></i>
+                        </div>
+                        <h2 class="text-xl font-semibold">OOP Concepts</h2>
+                    </div>
+                    <p class="text-gray-400">Dive into Object-Oriented Programming with C#: classes, objects, inheritance, polymorphism, and encapsulation.</p>
+                    <div class="mt-4 flex justify-between items-center">
+                        <span class="text-sm text-pink-400">Learn more →</span>
+                        <span class="text-xs bg-gray-700 text-gray-300 px-2 py-1 rounded">Intermediate</span>
+                    </div>
+                </a>
+                
+                <!-- Card 8 -->
+                <a href="collections.html" class="bg-gray-800 rounded-xl p-6 shadow-lg transition duration-300 card-hover border-l-4 border-teal-500">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-teal-500/20 p-3 rounded-full mr-4">
+                            <i class="fas fa-layer-group text-teal-400 text-xl"></i>
+                        </div>
+                        <h2 class="text-xl font-semibold">Collections</h2>
+                    </div>
+                    <p class="text-gray-400">Learn about C# collection types like arrays, lists, dictionaries, and how to work with them effectively.</p>
+                    <div class="mt-4 flex justify-between items-center">
+                        <span class="text-sm text-teal-400">Learn more →</span>
+                        <span class="text-xs bg-gray-700 text-gray-300 px-2 py-1 rounded">Intermediate</span>
+                    </div>
+                </a>
+                
+                <!-- Card 9 -->
+                <a href="linq.html" class="bg-gray-800 rounded-xl p-6 shadow-lg transition duration-300 card-hover border-l-4 border-orange-500">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-orange-500/20 p-3 rounded-full mr-4">
+                            <i class="fas fa-filter text-orange-400 text-xl"></i>
+                        </div>
+                        <h2 class="text-xl font-semibold">LINQ</h2>
+                    </div>
+                    <p class="text-gray-400">Master Language Integrated Query (LINQ) for powerful data querying capabilities directly in your C# code.</p>
+                    <div class="mt-4 flex justify-between items-center">
+                        <span class="text-sm text-orange-400">Learn more →</span>
+                        <span class="text-xs bg-gray-700 text-gray-300 px-2 py-1 rounded">Advanced</span>
+                    </div>
+                </a>
+
+                <!-- Card 10 -->
+                <a href="dotnet.html" class="bg-gray-800 rounded-xl p-6 shadow-lg transition duration-300 card-hover border-l-4 border-blue-400">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-blue-400/20 p-3 rounded-full mr-4">
+                            <i class="fas fa-network-wired text-blue-300 text-xl"></i>
+                        </div>
+                        <h2 class="text-xl font-semibold">.NET Framework</h2>
+                    </div>
+                    <p class="text-gray-400">Explore the .NET ecosystem, CLR, BCL, and how C# integrates with the .NET platform for building applications.</p>
+                    <div class="mt-4 flex justify-between items-center">
+                        <span class="text-sm text-blue-300">Learn more →</span>
+                        <span class="text-xs bg-gray-700 text-gray-300 px-2 py-1 rounded">Intermediate</span>
+                    </div>
+                </a>
+
+                <!-- Card 11 -->
+                <a href="exceptionhandling.html" class="bg-gray-800 rounded-xl p-6 shadow-lg transition duration-300 card-hover border-l-4 border-red-400">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-red-400/20 p-3 rounded-full mr-4">
+                            <i class="fas fa-exclamation-triangle text-red-300 text-xl"></i>
+                        </div>
+                        <h2 class="text-xl font-semibold">Exception Handling</h2>
+                    </div>
+                    <p class="text-gray-400">Master try-catch-finally blocks, custom exceptions, and best practices for robust error handling in C#.</p>
+                    <div class="mt-4 flex justify-between items-center">
+                        <span class="text-sm text-red-300">Learn more →</span>
+                        <span class="text-xs bg-gray-700 text-gray-300 px-2 py-1 rounded">Intermediate</span>
+                    </div>
+                </a>
+
+                <!-- Card 12 -->
+                <a href="async.html" class="bg-gray-800 rounded-xl p-6 shadow-lg transition duration-300 card-hover border-l-4 border-green-400">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-green-400/20 p-3 rounded-full mr-4">
+                            <i class="fas fa-bolt text-green-300 text-xl"></i>
+                        </div>
+                        <h2 class="text-xl font-semibold">Async Programming</h2>
+                    </div>
+                    <p class="text-gray-400">Learn async/await pattern, Task Parallel Library, and writing non-blocking code in C#.</p>
+                    <div class="mt-4 flex justify-between items-center">
+                        <span class="text-sm text-green-300">Learn more →</span>
+                        <span class="text-xs bg-gray-700 text-gray-300 px-2 py-1 rounded">Advanced</span>
+                    </div>
+                </a>
+
+                <!-- Card 13 -->
+                <a href="thread.html" class="bg-gray-800 rounded-xl p-6 shadow-lg transition duration-300 card-hover border-l-4 border-purple-400">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-purple-400/20 p-3 rounded-full mr-4">
+                            <i class="fas fa-stream text-purple-300 text-xl"></i>
+                        </div>
+                        <h2 class="text-xl font-semibold">Threads & Multithreading</h2>
+                    </div>
+                    <p class="text-gray-400">Understand thread management, synchronization, and concurrent programming in C#.</p>
+                    <div class="mt-4 flex justify-between items-center">
+                        <span class="text-sm text-purple-300">Learn more →</span>
+                        <span class="text-xs bg-gray-700 text-gray-300 px-2 py-1 rounded">Advanced</span>
+                    </div>
+                </a>
+
+                <!-- Card 14 -->
+                <a href="deligateandevents.html" class="bg-gray-800 rounded-xl p-6 shadow-lg transition duration-300 card-hover border-l-4 border-yellow-400">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-yellow-400/20 p-3 rounded-full mr-4">
+                            <i class="fas fa-exchange-alt text-yellow-300 text-xl"></i>
+                        </div>
+                        <h2 class="text-xl font-semibold">Delegates & Events</h2>
+                    </div>
+                    <p class="text-gray-400">Learn about delegates, events, anonymous methods, and lambda expressions in C#.</p>
+                    <div class="mt-4 flex justify-between items-center">
+                        <span class="text-sm text-yellow-300">Learn more →</span>
+                        <span class="text-xs bg-gray-700 text-gray-300 px-2 py-1 rounded">Intermediate</span>
+                    </div>
+                </a>
+
+                <!-- Card 15 -->
+                <a href="task.html" class="bg-gray-800 rounded-xl p-6 shadow-lg transition duration-300 card-hover border-l-4 border-indigo-400">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-indigo-400/20 p-3 rounded-full mr-4">
+                            <i class="fas fa-tasks text-indigo-300 text-xl"></i>
+                        </div>
+                        <h2 class="text-xl font-semibold">Tasks & TPL</h2>
+                    </div>
+                    <p class="text-gray-400">Master Task-based Asynchronous Pattern (TAP) and the Task Parallel Library in .NET.</p>
+                    <div class="mt-4 flex justify-between items-center">
+                        <span class="text-sm text-indigo-300">Learn more →</span>
+                        <span class="text-xs bg-gray-700 text-gray-300 px-2 py-1 rounded">Advanced</span>
+                    </div>
+                </a>
+
+                <!-- Card 16 -->
+                <a href="soild.html" class="bg-gray-800 rounded-xl p-6 shadow-lg transition duration-300 card-hover border-l-4 border-pink-400">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-pink-400/20 p-3 rounded-full mr-4">
+                            <i class="fas fa-cube text-pink-300 text-xl"></i>
+                        </div>
+                        <h2 class="text-xl font-semibold">SOLID Principles</h2>
+                    </div>
+                    <p class="text-gray-400">Learn the five SOLID principles of object-oriented design and how to apply them in C#.</p>
+                    <div class="mt-4 flex justify-between items-center">
+                        <span class="text-sm text-pink-300">Learn more →</span>
+                        <span class="text-xs bg-gray-700 text-gray-300 px-2 py-1 rounded">Advanced</span>
+                    </div>
+                </a>
+
+                <!-- Card 17 -->
+                <a href="eagerandlazyloading.html" class="bg-gray-800 rounded-xl p-6 shadow-lg transition duration-300 card-hover border-l-4 border-teal-400">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-teal-400/20 p-3 rounded-full mr-4">
+                            <i class="fas fa-spinner text-teal-300 text-xl"></i>
+                        </div>
+                        <h2 class="text-xl font-semibold">Eager vs Lazy Loading</h2>
+                    </div>
+                    <p class="text-gray-400">Understand different data loading strategies in C# and when to use each approach.</p>
+                    <div class="mt-4 flex justify-between items-center">
+                        <span class="text-sm text-teal-300">Learn more →</span>
+                        <span class="text-xs bg-gray-700 text-gray-300 px-2 py-1 rounded">Intermediate</span>
+                    </div>
+                </a>
+            </div>
+        </main>
+        
+        <!-- Footer -->
+        <footer class="mt-16 pt-8 border-t border-gray-800">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <h3 class="text-xl font-bold gradient-text mb-2">C# Dashboard</h3>
+                    <p class="text-gray-400 text-sm">Your comprehensive guide to mastering C# programming</p>
+                </div>
+                
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-blue-400 transition duration-300">
+                        <i class="fab fa-github text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-blue-400 transition duration-300">
+                        <i class="fab fa-twitter text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-blue-400 transition duration-300">
+                        <i class="fab fa-linkedin text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-blue-400 transition duration-300">
+                        <i class="fab fa-discord text-xl"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="mt-8 text-center text-gray-500 text-sm">
+                <p>© 2023 C# Dashboard. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

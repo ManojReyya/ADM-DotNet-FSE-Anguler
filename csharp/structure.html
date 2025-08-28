@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C# Program Structure</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #8a2be2;
+            --secondary: #da70d6;
+            --accent: #00bcd4;
+            --dark-bg: #121212;
+            --dark-card: #1e1e1e;
+            --dark-border: #333;
+            --text-primary: #f0f0f0;
+            --text-secondary: #aaa;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+            --info: #2196f3;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            border-bottom: 1px solid var(--dark-border);
+        }
+
+        h1 {
+            color: var(--primary);
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        h2 {
+            color: var(--secondary);
+            margin: 25px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--dark-border);
+        }
+
+        h3 {
+            color: var(--accent);
+            margin: 20px 0 10px;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background-color: var(--dark-card);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-header i {
+            font-size: 24px;
+            margin-right: 15px;
+            color: var(--primary);
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 10px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        li:before {
+            content: "•";
+            color: var(--primary);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .code-container {
+            background-color: #2d2d30;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Consolas', monospace;
+            border-left: 4px solid var(--primary);
+            position: relative;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--dark-border);
+        }
+
+        .code-title {
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .copy-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.3s;
+        }
+
+        .copy-btn:hover {
+            background: var(--secondary);
+        }
+
+        .keyword {
+            color: #569cd6;
+        }
+
+        .type {
+            color: #4ec9b0;
+        }
+
+        .comment {
+            color: #57a64a;
+            font-style: italic;
+        }
+
+        .string {
+            color: #d69d85;
+        }
+
+        .namespace {
+            color: #86c4ed;
+        }
+
+        .method {
+            color: #dcdcaa;
+        }
+
+        .highlight {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 2px 4px;
+            border-radius: 3px;
+            border: 1px solid var(--accent);
+        }
+
+        .btn {
+            display: inline-block;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            padding: 12px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            border-top: 1px solid var(--dark-border);
+            color: var(--text-secondary);
+        }
+
+        .note {
+            background-color: rgba(255, 152, 0, 0.1);
+            border-left: 4px solid var(--warning);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .definition {
+            background-color: rgba(33, 150, 243, 0.1);
+            border-left: 4px solid var(--info);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .element-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .element-item {
+            background: linear-gradient(145deg, #2a2a2a, #1f1f1f);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .element-name {
+            font-weight: bold;
+            color: var(--accent);
+            margin-bottom: 5px;
+        }
+
+        .flow-chart {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .flow-img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--dark-border);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1><i class="fas fa-project-diagram"></i> C# Program Structure</h1>
+        <p>Understanding the building blocks of a C# application</p>
+    </header>
+
+    <div class="container">
+        <div>
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-cube"></i>
+                    <h2>Basic Structure</h2>
+                </div>
+                <p>Every C# program follows a specific structure that the compiler recognizes. The most basic C# program consists of a class with a Main method.</p>
+                
+                <div class="code-container">
+                    <div class="code-header">
+                        <div class="code-title">Basic C# Program Structure</div>
+                        <button class="copy-btn" onclick="copyCode('basic-code')">Copy Code</button>
+                    </div>
+                    <pre><code id="basic-code"><span class="keyword">using</span> System;
+
+<span class="keyword">namespace</span> <span class="namespace">HelloWorld</span>
+{
+    <span class="keyword">class</span> <span class="type">Program</span>
+    {
+        <span class="keyword">static</span> <span class="keyword">void</span> <span class="method">Main</span>(<span class="keyword">string</span>[] args)
+        {
+            Console.WriteLine(<span class="string">"Hello, World!"</span>);
+        }
+    }
+}</code></pre>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-cogs"></i>
+                    <h2>Key Components</h2>
+                </div>
+                
+                <div class="element-grid">
+                    <div class="element-item">
+                        <div class="element-name">Using Directives</div>
+                        <div>Import namespaces to use types without full qualification</div>
+                    </div>
+                    <div class="element-item">
+                        <div class="element-name">Namespace</div>
+                        <div>Organizes code and prevents naming conflicts</div>
+                    </div>
+                    <div class="element-item">
+                        <div class="element-name">Class</div>
+                        <div>Blueprint for objects containing data and methods</div>
+                    </div>
+                    <div class="element-item">
+                        <div class="element-name">Main Method</div>
+                        <div>Entry point of the application</div>
+                    </div>
+                    <div class="element-item">
+                        <div class="element-name">Statements</div>
+                        <div>Instructions that perform actions</div>
+                    </div>
+                    <div class="element-item">
+                        <div class="element-name">Comments</div>
+                        <div>Explanatory notes ignored by the compiler</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-info-circle"></i>
+                    <h2>Detailed Explanation</h2>
+                </div>
+                
+                <h3>1. Using Directives</h3>
+                <p>The <span class="highlight">using System;</span> directive allows you to use types from the System namespace without specifying the full namespace each time.</p>
+                
+                <h3>2. Namespace Declaration</h3>
+                <p>Namespaces help organize code and prevent naming collisions. The <span class="highlight">namespace HelloWorld</span> declaration defines a container for related types.</p>
+                
+                <h3>3. Class Declaration</h3>
+                <p>Classes are the fundamental building blocks of C# programs. <span class="highlight">class Program</span> defines a class named Program.</p>
+                
+                <h3>4. Main Method</h3>
+                <p>The <span class="highlight">Main</span> method is the entry point of a C# application. It must be static, and it's where the program starts execution.</p>
+                
+                <h3>5. Method Body</h3>
+                <p>The code between the curly braces <span class="highlight">{}</span> is the method body containing statements that execute when the program runs.</p>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h2>Important Notes</h2>
+                </div>
+                
+                <div class="note">
+                    <h3><i class="fas fa-lightbulb"></i> Entry Point Requirement</h3>
+                    <p>Every C# application must have exactly one Main method as its entry point. The compiler will generate an error if no Main method is found, or if multiple Main methods exist without specifying which to use.</p>
+                </div>
+                
+                <div class="note">
+                    <h3><i class="fas fa-lightbulb"></i> Case Sensitivity</h3>
+                    <p>C# is case-sensitive. "Main" is different from "main". The entry point method must be named "Main" with a capital M.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <i class="fas fa-code"></i>
+            <h2>Extended Example</h2>
+        </div>
+        
+        <div class="code-container">
+            <div class="code-header">
+                <div class="code-title">More Complete C# Program</div>
+                <button class="copy-btn" onclick="copyCode('extended-code')">Copy Code</button>
+            </div>
+            <pre><code id="extended-code"><span class="comment">// Using directives to import namespaces</span>
+<span class="keyword">using</span> System;
+<span class="keyword">using</span> System.Collections.Generic;
+
+<span class="comment">// Namespace declaration</span>
+<span class="keyword">namespace</span> <span class="namespace">CompanyApp</span>
+{
+    <span class="comment">// Class declaration</span>
+    <span class="keyword">class</span> <span class="type">Program</span>
+    {
+        <span class="comment">// Main method - entry point</span>
+        <span class="keyword">static</span> <span class="keyword">void</span> <span class="method">Main</span>(<span class="keyword">string</span>[] args)
+        {
+            <span class="comment">// Program execution starts here</span>
+            Console.WriteLine(<span class="string">"Application started!"</span>);
+            
+            <span class="comment">// Check command line arguments</span>
+            <span class="keyword">if</span> (args.Length > 0)
+            {
+                Console.WriteLine(<span class="string">$"Received {args.Length} arguments"</span>);
+            }
+            
+            <span class="comment">// Call another method</span>
+            DisplayMessage();
+            
+            <span class="comment">// Keep console window open</span>
+            Console.WriteLine(<span class="string">"Press any key to exit..."</span>);
+            Console.ReadKey();
+        }
+        
+        <span class="comment">// Custom method</span>
+        <span class="keyword">static</span> <span class="keyword">void</span> <span class="method">DisplayMessage</span>()
+        {
+            Console.WriteLine(<span class="string">"Hello from DisplayMessage method!"</span>);
+        }
+    }
+}</code></pre>
+        </div>
+    </div>
+
+    <div class="flow-chart">
+        <h2><i class="fas fa-sitemap"></i> Program Execution Flow</h2>
+        <p>Understanding how a C# program executes from start to finish</p>
+        <img src="https://dotnettutorials.net/wp-content/uploads/2022/07/Execution-Flow-of-a-C-Program.png" alt="C# Program Execution Flow" class="flow-img">
+        
+        <div class="definition">
+            <h3>Execution Steps:</h3>
+            <ol>
+                <li>CLR loads the assembly and looks for the Main method</li>
+                <li>Main method begins execution</li>
+                <li>Statements execute sequentially</li>
+                <li>Methods are called as encountered</li>
+                <li>Program runs until Main method completes or termination</li>
+            </ol>
+        </div>
+    </div>
+
+    <center>
+        <a href="index.html" class="btn"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+    </center>
+
+    <footer>
+        <p>C# Program Structure Reference &copy; 2023</p>
+        <p>Designed for educational purposes</p>
+    </footer>
+
+    <script>
+        function copyCode(elementId) {
+            const codeElement = document.getElementById(elementId);
+            const textArea = document.createElement('textarea');
+            textArea.value = codeElement.textContent;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            
+            // Visual feedback
+            const button = event.target;
+            const originalText = button.textContent;
+            button.textContent = 'Copied!';
+            setTimeout(() => {
+                button.textContent = originalText;
+            }, 1500);
+        }
+    </script>
+</body>
+</html>

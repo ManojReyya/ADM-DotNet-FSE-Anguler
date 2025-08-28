@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C# Multi-Threading Concepts Guide</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            color: #00c6ff;
+            margin-bottom: 10px;
+            text-shadow: 0 0 15px rgba(0, 198, 255, 0.4);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #89cff0;
+            margin-bottom: 20px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .dashboard-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #00c6ff;
+            color: #121212;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .dashboard-link:hover {
+            background: #0072ff;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 198, 255, 0.4);
+        }
+        
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        @media (max-width: 900px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .card {
+            background: #1e1e2e;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card h2 {
+            color: #89cff0;
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+            border-bottom: 2px solid #00c6ff;
+            padding-bottom: 10px;
+        }
+        
+        .card h3 {
+            color: #89cff0;
+            margin: 15px 0 10px;
+        }
+        
+        .card p {
+            margin-bottom: 15px;
+        }
+        
+        .card ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .card li {
+            margin-bottom: 8px;
+        }
+        
+        .code-container {
+            background: #2d2d3f;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            overflow-x: auto;
+            border-left: 4px solid #00c6ff;
+        }
+        
+        pre {
+            margin: 0;
+            white-space: pre-wrap;
+        }
+        
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            color: #f8f8f2;
+        }
+        
+        .keyword {
+            color: #ff79c6;
+        }
+        
+        .comment {
+            color: #6272a4;
+        }
+        
+        .type {
+            color: #8be9fd;
+        }
+        
+        .string {
+            color: #f1fa8c;
+        }
+        
+        .analogy {
+            background: rgba(0, 198, 255, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #89cff0;
+        }
+        
+        .analogy h3 {
+            color: #89cff0;
+            margin-top: 0;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .comparison-table th, .comparison-table td {
+            border: 1px solid #00c6ff;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        .comparison-table th {
+            background-color: rgba(0, 198, 255, 0.2);
+            color: #89cff0;
+        }
+        
+        .comparison-table tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        
+        .best-practices {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .best-practices {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .do, .dont {
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .do {
+            background: rgba(0, 198, 255, 0.1);
+            border-left: 4px solid #00c6ff;
+        }
+        
+        .dont {
+            background: rgba(255, 107, 107, 0.1);
+            border-left: 4px solid #ff6b6b;
+        }
+        
+        .do h3, .dont h3 {
+            margin-top: 0;
+        }
+        
+        .do h3 {
+            color: #00c6ff;
+        }
+        
+        .dont h3 {
+            color: #ff6b6b;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            color: #89cff0;
+            border-top: 1px solid #2d2d3f;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .comparison-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+        
+        .icon-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .flow-diagram {
+            background: #2d2d3f;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .flow-step {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            gap: 15px;
+        }
+        
+        .flow-number {
+            background: #00c6ff;
+            color: #1e1e2e;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .thread-visual {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+            height: 100px;
+            align-items: flex-end;
+        }
+        
+        .thread-bar {
+            width: 60px;
+            background: linear-gradient(to top, #00c6ff, #0072ff);
+            border-radius: 5px 5px 0 0;
+            position: relative;
+            text-align: center;
+            padding: 5px;
+            font-size: 12px;
+        }
+        
+        .thread-bar::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .thread-1 { height: 70%; }
+        .thread-2 { height: 40%; }
+        .thread-3 { height: 60%; }
+        .thread-4 { height: 30%; }
+        .thread-5 { height: 80%; }
+        
+        .multi-threading-types {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        @media (max-width: 900px) {
+            .multi-threading-types {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .thread-type {
+            background: rgba(0, 198, 255, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #00c6ff;
+        }
+        
+        .thread-type h4 {
+            color: #00c6ff;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-stream"></i> C# Multi-Threading Concepts</h1>
+            <p class="subtitle">Learn how to write efficient multi-threaded applications in C# with clear explanations and examples</p>
+            <a href="index.html" class="dashboard-link"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+        </header>
+        
+        <div class="content">
+            <div class="card">
+                <h2>What is Multi-Threading?</h2>
+                <p>Multi-threading allows your program to perform multiple operations concurrently, making better use of CPU resources and improving application responsiveness.</p>
+                
+                <div class="analogy">
+                    <h3>Real-life Analogy</h3>
+                    <p>Imagine a restaurant with multiple chefs (threads) in a kitchen. Each chef can work on a different dish (task) simultaneously. This allows the restaurant to serve multiple customers much faster than with just one chef.</p>
+                </div>
+                
+                <h3>Benefits of Multi-Threading:</h3>
+                <ul>
+                    <li>Improved responsiveness for UI applications</li>
+                    <li>Better utilization of multi-core processors</li>
+                    <li>Increased throughput for I/O-bound operations</li>
+                    <li>Simplified modeling of concurrent activities</li>
+                </ul>
+                
+                <h3>Basic Multi-Threading Example</h3>
+                <div class="code-container">
+                    <pre><code><span class="keyword">using</span> <span class="type">System</span>;
+<span class="keyword">using</span> <span class="type">System</span>.Threading;
+<span class="keyword">using</span> <span class="type">System</span>.Threading.Tasks;
+
+<span class="keyword">class</span> Program
+{
+    <span class="keyword">static</span> <span class="keyword">void</span> Main()
+    {
+        <span class="comment">// Create multiple threads</span>
+        <span class="type">Thread</span> thread1 = <span class="keyword">new</span> <span class="type">Thread</span>(Task1);
+        <span class="type">Thread</span> thread2 = <span class="keyword">new</span> <span class="type">Thread</span>(Task2);
+        
+        <span class="comment">// Start the threads</span>
+        thread1.Start();
+        thread2.Start();
+        
+        <span class="comment">// Main thread continues working</span>
+        <span class="keyword">for</span> (<span class="type">int</span> i = 0; i &lt; 5; i++)
+        {
+            <span class="type">Console</span>.WriteLine(<span class="string">$"Main thread: {i}"</span>);
+            <span class="type">Thread</span>.Sleep(100);
+        }
+        
+        <span class="comment">// Wait for threads to complete</span>
+        thread1.Join();
+        thread2.Join();
+        
+        <span class="type">Console</span>.WriteLine(<span class="string">"All threads completed"</span>);
+    }
+    
+    <span class="keyword">static</span> <span class="keyword">void</span> Task1()
+    {
+        <span class="keyword">for</span> (<span class="type">int</span> i = 0; i &lt; 5; i++)
+        {
+            <span class="type">Console</span>.WriteLine(<span class="string">$"Task1: {i}"</span>);
+            <span class="type">Thread</span>.Sleep(200);
+        }
+    }
+    
+    <span class="keyword">static</span> <span class="keyword">void</span> Task2()
+    {
+        <span class="keyword">for</span> (<span class="type">int</span> i = 0; i &lt; 5; i++)
+        {
+            <span class="type">Console</span>.WriteLine(<span class="string">$"Task2: {i}"</span>);
+            <span class="type">Thread</span>.Sleep(300);
+        }
+    }
+}</code></pre>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>Thread Visualization</h2>
+                
+                <div class="thread-visual">
+                    <div class="thread-bar thread-1">Main Thread</div>
+                    <div class="thread-bar thread-2">UI Thread</div>
+                    <div class="thread-bar thread-3">Worker 1</div>
+                    <div class="thread-bar thread-4">Worker 2</div>
+                    <div class="thread-bar thread-5">Background</div>
+                </div>
+                
+                <p>In a multi-threaded application, different threads can execute different parts of your code simultaneously, making your application more responsive and efficient.</p>
+                
+                <h3>Types of Multi-Threading</h3>
+                <div class="multi-threading-types">
+                    <div class="thread-type">
+                        <h4>1. Data Parallelism</h4>
+                        <p>Processing different pieces of data simultaneously across multiple threads</p>
+                    </div>
+                    <div class="thread-type">
+                        <h4>2. Task Parallelism</h4>
+                        <p>Executing different tasks or operations simultaneously</p>
+                    </div>
+                    <div class="thread-type">
+                        <h4>3. Pipeline Processing</h4>
+                        <p>Breaking work into stages with each stage handled by different threads</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>Thread Pool & TPL</h2>
+                <p>The Thread Pool and Task Parallel Library (TPL) provide higher-level abstractions for multi-threading.</p>
+                
+                <h3>Using ThreadPool for Multi-Threading</h3>
+                <div class="code-container">
+                    <pre><code><span class="keyword">using</span> <span class="type">System</span>;
+<span class="keyword">using</span> <span class="type">System</span>.Threading;
+
+<span class="keyword">class</span> Program
+{
+    <span class="keyword">static</span> <span class="keyword">void</span> Main()
+    {
+        <span class="comment">// Queue multiple work items to the thread pool</span>
+        <span class="keyword">for</span> (<span class="type">int</span> i = 0; i &lt; 5; i++)
+        {
+            <span class="type">int</span> taskNum = i; <span class="comment">// Capture the loop variable</span>
+            <span class="type">ThreadPool</span>.QueueUserWorkItem(state =&gt; 
+            {
+                <span class="type">Console</span>.WriteLine(<span class="string">$"ThreadPool task {taskNum} executing on thread {Thread.CurrentThread.ManagedThreadId}"</span>);
+                <span class="type">Thread</span>.Sleep(1000); <span class="comment">// Simulate work</span>
+                <span class="type">Console</span>.WriteLine(<span class="string">$"ThreadPool task {taskNum} completed"</span>);
+            });
+        }
+        
+        <span class="type">Console</span>.WriteLine(<span class="string">"Main thread continues working..."</span>);
+        <span class="type">Thread</span>.Sleep(3000); <span class="comment">// Wait for tasks to complete</span>
+    }
+}</code></pre>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>Task Parallel Library (TPL)</h2>
+                <p>The TPL is a modern approach to multi-threading that makes it easier to write parallel and concurrent code.</p>
+                
+                <h3>Using Parallel.For for Data Parallelism</h3>
+                <div class="code-container">
+                    <pre><code><span class="keyword">using</span> <span class="type">System</span>;
+<span class="keyword">using</span> <span class="type">System</span>.Threading.Tasks;
+
+<span class="keyword">class</span> Program
+{
+    <span class="keyword">static</span> <span class="keyword">void</span> Main()
+    {
+        <span class="type">int</span>[] numbers = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+        
+        <span class="comment">// Process array elements in parallel</span>
+        <span class="type">Parallel</span>.For(0, numbers.Length, i =&gt; 
+        {
+            <span class="type">Console</span>.WriteLine(<span class="string">$"Processing element {numbers[i]} on task {Task.CurrentId}"</span>);
+            <span class="comment">// Simulate CPU-intensive work</span>
+            <span class="type">Task</span>.Delay(100).Wait();
+            numbers[i] = numbers[i] * 2; <span class="comment">// Process the element</span>
+        });
+        
+        <span class="type">Console</span>.WriteLine(<span class="string">"Parallel processing completed"</span>);
+        <span class="type">Console</span>.WriteLine(<span class="string">"Results: "</span> + <span class="type">string</span>.Join(<span class="string">", "</span>, numbers));
+    }
+}</code></pre>
+                </div>
+                
+                <h3>Using Parallel.Invoke for Task Parallelism</h3>
+                <div class="code-container">
+                    <pre><code><span class="type">Parallel</span>.Invoke(
+    () =&gt; {
+        <span class="type">Console</span>.WriteLine(<span class="string">"Task 1 executing"</span>);
+        <span class="type">Task</span>.Delay(500).Wait();
+    },
+    () =&gt; {
+        <span class="type">Console</span>.WriteLine(<span class="string">"Task 2 executing"</span>);
+        <span class="type">Task</span>.Delay(300).Wait();
+    },
+    () =&gt; {
+        <span class="type">Console</span>.WriteLine(<span class="string">"Task 3 executing"</span>);
+        <span class="type">Task</span>.Delay(400).Wait();
+    }
+);</code></pre>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>Thread Synchronization</h2>
+            <p>When multiple threads access shared resources, we need synchronization to prevent conflicts and ensure data consistency.</p>
+            
+            <div class="analogy">
+                <h3>Real-life Analogy</h3>
+                <p>Think of synchronization like a traffic light at an intersection. Without it, cars (threads) from different directions might collide. With it, they take turns safely.</p>
+            </div>
+            
+            <h3>Using lock for Synchronization</h3>
+            <div class="code-container">
+                <pre><code><span class="keyword">using</span> <span class="type">System</span>;
+<span class="keyword">using</span> <span class="type">System</span>.Threading;
+<span class="keyword">using</span> <span class="type">System</span>.Threading.Tasks;
+
+<span class="keyword">class</span> Program
+{
+    <span class="keyword">static</span> <span class="type">int</span> counter = 0;
+    <span class="keyword">static</span> <span class="type">object</span> lockObject = <span class="keyword">new</span> <span class="type">object</span>();
+    
+    <span class="keyword">static</span> <span class="keyword">void</span> Main()
+    {
+        <span class="type">Task</span>[] tasks = <span class="keyword">new</span> <span class="type">Task</span>[10];
+        
+        <span class="keyword">for</span> (<span class="type">int</span> i = 0; i &lt; 10; i++)
+        {
+            tasks[i] = <span class="type">Task</span>.Run(IncrementCounter);
+        }
+        
+        <span class="type">Task</span>.WaitAll(tasks);
+        <span class="type">Console</span>.WriteLine(<span class="string">$"Final counter value: {counter}"</span>);
+    }
+    
+    <span class="keyword">static</span> <span class="keyword">void</span> IncrementCounter()
+    {
+        <span class="keyword">for</span> (<span class="type">int</span> i = 0; i &lt; 1000; i++)
+        {
+            <span class="comment">// Use lock to ensure only one thread can access at a time</span>
+            <span class="keyword">lock</span> (lockObject)
+            {
+                counter++;
+            }
+        }
+    }
+}</code></pre>
+            </div>
+            
+            <h3>Synchronization Techniques</h3>
+            <ul>
+                <li><strong>lock/Monitor</strong>: Basic mutual exclusion</li>
+                <li><strong>Mutex</strong>: Cross-process synchronization</li>
+                <li><strong>Semaphore/SemaphoreSlim</strong>: Limit number of threads accessing a resource</li>
+                <li><strong>ReaderWriterLockSlim</strong>: Multiple readers, single writer</li>
+                <li><strong>AutoResetEvent/ManualResetEvent</strong>: Signal between threads</li>
+                <li><strong>Barrier</strong>: Coordinate multiple threads</li>
+            </ul>
+        </div>
+        
+        <div class="card">
+            <h2>Advanced Multi-Threading Patterns</h2>
+            
+            <h3>Producer-Consumer Pattern</h3>
+            <div class="code-container">
+                <pre><code><span class="keyword">using</span> <span class="type">System</span>;
+<span class="keyword">using</span> <span class="type">System</span>.Collections.Concurrent;
+<span class="keyword">using</span> <span class="type">System</span>.Threading;
+<span class="keyword">using</span> <span class="type">System</span>.Threading.Tasks;
+
+<span class="keyword">class</span> ProducerConsumerExample
+{
+    <span class="keyword">private</span> <span class="type">BlockingCollection</span>&lt;<span class="type">int</span>&gt; queue = <span class="keyword">new</span> <span class="type">BlockingCollection</span>&lt;<span class="type">int</span>&gt;(5);
+    
+    <span class="keyword">public</span> <span class="keyword">void</span> Run()
+    {
+        <span class="comment">// Start producer and consumer tasks</span>
+        <span class="type">Task</span> producer = <span class="type">Task</span>.Run(Producer);
+        <span class="type">Task</span> consumer = <span class="type">Task</span>.Run(Consumer);
+        
+        <span class="type">Task</span>.WaitAll(producer, consumer);
+    }
+    
+    <span class="keyword">void</span> Producer()
+    {
+        <span class="keyword">for</span> (<span class="type">int</span> i = 0; i &lt; 10; i++)
+        {
+            queue.Add(i);
+            <span class="type">Console</span>.WriteLine(<span class="string">$"Produced: {i}"</span>);
+            <span class="type">Thread</span>.Sleep(100);
+        }
+        queue.CompleteAdding();
+    }
+    
+    <span class="keyword">void</span> Consumer()
+    {
+        <span class="keyword">foreach</span> (<span class="type">int</span> item <span class="keyword">in</span> queue.GetConsumingEnumerable())
+        {
+            <span class="type">Console</span>.WriteLine(<span class="string">$"Consumed: {item}"</span>);
+            <span class="type">Thread</span>.Sleep(200);
+        }
+    }
+}</code></pre>
+            </div>
+            
+            <h3>Parallel Pipeline Pattern</h3>
+            <div class="code-container">
+                <pre><code><span class="keyword">using</span> <span class="type">System</span>;
+<span class="keyword">using</span> <span class="type">System</span>.Threading.Tasks.Dataflow;
+
+<span class="keyword">class</span> PipelineExample
+{
+    <span class="keyword">public</span> <span class="keyword">void</span> Run()
+    {
+        <span class="comment">// Create pipeline blocks</span>
+        <span class="keyword">var</span> step1 = <span class="keyword">new</span> <span class="type">TransformBlock</span>&lt;<span class="type">int</span>, <span class="type">int</span>&gt;(x =&gt; x * 2);
+        <span class="keyword">var</span> step2 = <span class="keyword">new</span> <span class="type">TransformBlock</span>&lt;<span class="type">int</span>, <span class="type">string</span>&gt;(x =&gt; <span class="string">$"Value: {x}"</span>);
+        <span class="keyword">var</span> step3 = <span class="keyword">new</span> <span class="type">ActionBlock</span>&lt;<span class="type">string</span>&gt;(s =&gt; <span class="type">Console</span>.WriteLine(s));
+        
+        <span class="comment">// Link the blocks</span>
+        step1.LinkTo(step2, <span class="keyword">new</span> <span class="type">DataflowLinkOptions</span> { PropagateCompletion = <span class="keyword">true</span> });
+        step2.LinkTo(step3, <span class="keyword">new</span> <span class="type">DataflowLinkOptions</span> { PropagateCompletion = <span class="keyword">true</span> });
+        
+        <span class="comment">// Post data to the pipeline</span>
+        <span class="keyword">for</span> (<span class="type">int</span> i = 0; i &lt; 10; i++)
+        {
+            step1.Post(i);
+        }
+        
+        step1.Complete();
+        step3.Completion.Wait();
+    }
+}</code></pre>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>Best Practices & Common Issues</h2>
+            
+            <div class="best-practices">
+                <div class="do">
+                    <h3><i class="fas fa-check-circle"></i> Do</h3>
+                    <ul>
+                        <li>Use higher-level abstractions (TPL, Parallel class)</li>
+                        <li>Use thread pool for short-lived tasks</li>
+                        <li>Use synchronization when accessing shared resources</li>
+                        <li>Use CancellationToken for cancelable operations</li>
+                        <li>Consider using immutable data structures</li>
+                    </ul>
+                </div>
+                
+                <div class="dont">
+                    <h3><i class="fas fa-times-circle"></i> Don't</h3>
+                    <ul>
+                        <li>Create too many threads (causes overhead)</li>
+                        <li>Access UI elements from non-UI threads</li>
+                        <li>Ignore thread safety with shared data</li>
+                        <li>Use Thread.Abort() (it's deprecated)</li>
+                        <li>Forget to handle exceptions in threads</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h3>Common Multi-Threading Issues</h3>
+            <ul>
+                <li><strong>Race Conditions</strong>: When outcome depends on thread execution order</li>
+                <li><strong>Deadlocks</strong>: Two threads waiting for each other indefinitely</li>
+                <li><strong>Starvation</strong>: A thread doesn't get CPU time</li>
+                <li><strong>Priority Inversion</strong>: Low-priority thread holds resource needed by high-priority thread</li>
+                <li><strong>Thread Pool Starvation</strong>: Too many tasks queued, not enough threads</li>
+            </ul>
+        </div>
+        
+        <footer>
+            <p>C# Multi-Threading Concepts Guide &copy; 2023 | Created with <i class="fas fa-heart" style="color: #ff79c6;"></i></p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Swagger Guide</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {background:#0f172a;color:#f9fafb;font-family:ui-sans-serif,system-ui,sans-serif;}
+    .step-card {background:#1e293b;border-radius:.75rem;padding:1rem;margin-bottom:1.5rem;}
+    .step-title {font-size:1.125rem;font-weight:600;margin-bottom:.5rem;color:#f1f5f9;}
+    .step-desc {color:#cbd5e1;font-size:.9rem;}
+    .cmd-box {background:#0f172a;border:1px solid #334155;border-radius:.5rem;padding:.5rem .75rem;margin-top:.75rem;}
+    .cmd-line {display:flex;align-items:center;justify-content:space-between;}
+    .cmd-text {font-family:ui-monospace,monospace;color:#e2e8f0;font-size:.9rem;overflow-x:auto;}
+    .copy-btn {color:#94a3b8;cursor:pointer;transition:.2s;}
+    .copy-btn:hover {color:#f1f5f9;}
+  </style>
+</head>
+<body>
+  <header class="max-w-4xl mx-auto p-6 flex items-center space-x-3">
+    <img src="https://static1.smartbear.co/swagger/media/assets/images/swagger_logo.svg" alt="Swagger" class="w-12 h-12 bg-white rounded p-1">
+    <div>
+      <h1 class="text-3xl font-extrabold mb-1 text-white">Swagger - Getting Started</h1>
+      <p class="text-sm text-slate-400">Swagger provides an <span class="font-semibold text-slate-200">interactive API documentation UI</span> based on OpenAPI.</p>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto p-6 space-y-8">
+
+    <!-- Step 1 -->
+    <div class="step-card">
+      <h2 class="step-title">1. Install Swagger in ASP.NET Core</h2>
+      <p class="step-desc">In your Web API project, install the NuGet package:</p>
+      <div class="cmd-box">
+        <div class="cmd-line">
+          <span class="cmd-text">dotnet add package Swashbuckle.AspNetCore</span>
+          <i class="fa-regular fa-copy copy-btn" data-cmd="dotnet add package Swashbuckle.AspNetCore"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step-card">
+      <h2 class="step-title">2. Configure Swagger in Program.cs</h2>
+      <p class="step-desc">Enable Swagger middleware in your ASP.NET Core Web API:</p>
+      <div class="cmd-box">
+        <pre class="cmd-text whitespace-pre overflow-x-auto">
+// Program.cs
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+var app = builder.Build();
+
+// Enable Swagger
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.MapControllers();
+app.Run();
+        </pre>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="step-card">
+      <h2 class="step-title">3. Run and Access Swagger UI</h2>
+      <p class="step-desc">Start your API and navigate to the Swagger UI in your browser:</p>
+      <div class="cmd-box">
+        <div class="cmd-line">
+          <span class="cmd-text">https://localhost:5001/swagger</span>
+          <i class="fa-regular fa-copy copy-btn" data-cmd="https://localhost:5001/swagger"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="step-card">
+      <h2 class="step-title">4. Explore and Test Endpoints</h2>
+      <p class="step-desc">Swagger lists all available endpoints with HTTP methods, parameters, and request/response schemas. You can test them directly from the UI.</p>
+    </div>
+
+    <!-- Step 5 -->
+    <div class="step-card">
+      <h2 class="step-title">5. Deploy with Swagger</h2>
+      <p class="step-desc">Swagger UI is typically enabled in <span class="font-semibold">Development</span>.  
+      To expose it in production, configure authentication and restrict access before enabling it.</p>
+    </div>
+
+  </main>
+
+  <footer class="max-w-4xl mx-auto p-6 text-sm text-slate-500">Made with 📖 — Swagger Beginner’s Guide</footer>
+
+  <script>
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const cmd = btn.dataset.cmd;
+        try {
+          await navigator.clipboard.writeText(cmd);
+          btn.classList.remove('fa-copy');
+          btn.classList.add('fa-check');
+          btn.style.color = '#4ade80';
+          setTimeout(()=>{
+            btn.classList.remove('fa-check');
+            btn.classList.add('fa-copy');
+            btn.style.color = '';
+          },1200);
+        } catch (e) {
+          alert('Copy failed — ' + cmd);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

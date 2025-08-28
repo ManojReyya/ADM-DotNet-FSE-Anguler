@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>.NET Evolution</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -38px;
+            top: 0;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #4f46e5;
+            border: 4px solid #6366f1;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 32px;
+            top: 0;
+            height: 100%;
+            width: 2px;
+            background: #4f46e5;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        @media (max-width: 768px) {
+            .timeline-item::before {
+                left: -34px;
+            }
+            
+            .timeline::before {
+                left: 28px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-200 min-h-screen">
+    <header class="bg-gray-800 shadow-xl">
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center mb-6 md:mb-0">
+                    <i class="fas fa-code text-indigo-500 text-4xl mr-4"></i>
+                    <h1 class="text-3xl md:text-4xl font-bold bg-gradient-to-r from-indigo-400 to-purple-600 bg-clip-text text-transparent">
+                        .NET Evolution
+                    </h1>
+                </div>
+                <div class="flex space-x-2">
+                    <span class="px-3 py-1 bg-indigo-900 text-indigo-200 rounded-full text-sm">C# 12.0</span>
+                    <span class="px-3 py-1 bg-purple-900 text-purple-200 rounded-full text-sm">.NET 9.0</span>
+                </div>
+            </div>
+            <p class="mt-4 text-gray-400 max-w-3xl">
+                A comprehensive overview of Microsoft's .NET ecosystem, comparing Framework and Core implementations, 
+                their versions, and application types.
+            </p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <section class="mb-16">
+            <h2 class="text-2xl font-bold mb-6 text-indigo-300 flex items-center">
+                <i class="fas fa-layer-group mr-3"></i> .NET Platforms
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-gray-800 rounded-xl p-6 border-l-4 border-indigo-500 card-hover transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <i class="fab fa-windows text-2xl text-blue-400 mr-3"></i>
+                        <h3 class="text-xl font-semibold">.NET Framework</h3>
+                    </div>
+                    <p class="text-gray-400 mb-4">
+                        The original .NET implementation, designed specifically for Windows platform development.
+                    </p>
+                    <div class="flex items-center text-sm text-gray-500">
+                        <i class="fas fa-lock mr-2"></i>
+                        <span>Windows Only</span>
+                    </div>
+                </div>
+                <div class="bg-gray-800 rounded-xl p-6 border-l-4 border-purple-500 card-hover transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-network-wired text-2xl text-purple-400 mr-3"></i>
+                        <h3 class="text-xl font-semibold">.NET Core</h3>
+                    </div>
+                    <p class="text-gray-400 mb-4">
+                        Modern, modular, cross-platform implementation supporting Windows, Linux, and macOS.
+                    </p>
+                    <div class="flex items-center text-sm text-gray-500">
+                        <i class="fas fa-globe mr-2"></i>
+                        <span>Cross-Platform</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Application Models Section -->
+        <section class="mb-16">
+            <h2 class="text-2xl font-bold mb-6 text-indigo-300 flex items-center">
+                <i class="fas fa-cubes mr-3"></i> .NET Application Models
+            </h2>
+            <p class="text-gray-400 mb-6 max-w-3xl">
+                You can build many types of apps with .NET. To help you build apps faster, app models are built on top of the base libraries.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-gray-800 rounded-xl p-6 card-hover transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-globe text-2xl text-green-400 mr-3"></i>
+                        <h3 class="text-xl font-semibold">Web</h3>
+                    </div>
+                    <p class="text-gray-400">Build web apps and services for Windows, Linux, macOS, and Docker.</p>
+                </div>
+                <div class="bg-gray-800 rounded-xl p-6 card-hover transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-mobile-alt text-2xl text-red-400 mr-3"></i>
+                        <h3 class="text-xl font-semibold">Mobile</h3>
+                    </div>
+                    <p class="text-gray-400">Use a single codebase to build native mobile apps for iOS, Android, and more.</p>
+                </div>
+                <div class="bg-gray-800 rounded-xl p-6 card-hover transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-desktop text-2xl text-purple-400 mr-3"></i>
+                        <h3 class="text-xl font-semibold">Desktop</h3>
+                    </div>
+                    <p class="text-gray-400">Create native apps for Windows and macOS or build apps that run anywhere with web technologies.</p>
+                </div>
+                <div class="bg-gray-800 rounded-xl p-6 card-hover transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-robot text-2xl text-blue-400 mr-3"></i>
+                        <h3 class="text-xl font-semibold">Artificial Intelligence and ML</h3>
+                    </div>
+                    <p class="text-gray-400">Build smart apps with C#, OpenAI, and Azure.</p>
+                </div>
+                <div class="bg-gray-800 rounded-xl p-6 card-hover transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-cloud text-2xl text-indigo-400 mr-3"></i>
+                        <h3 class="text-xl font-semibold">Cloud</h3>
+                    </div>
+                    <p class="text-gray-400">Consume existing cloud services, or create and deploy your own.</p>
+                </div>
+                <div class="bg-gray-800 rounded-xl p-6 card-hover transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-cubes-stacked text-2xl text-yellow-400 mr-3"></i>
+                        <h3 class="text-xl font-semibold">Microservices</h3>
+                    </div>
+                    <p class="text-gray-400">Create independently deployable microservices that run on Docker containers.</p>
+                </div>
+                <div class="bg-gray-800 rounded-xl p-6 card-hover transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-gamepad text-2xl text-pink-400 mr-3"></i>
+                        <h3 class="text-xl font-semibold">Game Development</h3>
+                    </div>
+                    <p class="text-gray-400">Develop 2D and 3D games for the most popular desktops, phones, and consoles.</p>
+                </div>
+                <div class="bg-gray-800 rounded-xl p-6 card-hover transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-microchip text-2xl text-teal-400 mr-3"></i>
+                        <h3 class="text-xl font-semibold">Internet of Things</h3>
+                    </div>
+                    <p class="text-gray-400">Make IoT apps, with native support for the Raspberry Pi and other single-board computers.</p>
+                </div>
+            </div>
+            <div class="mt-8 bg-gray-900 rounded-xl p-6 border-l-4 border-indigo-500">
+                <h3 class="text-lg font-semibold text-indigo-300 mb-2">LTS and STS Releases</h3>
+                <p class="text-gray-400 mb-2">
+                    .NET releases are either LTS (Long-Term Support) or STS (Standard-Term Support). LTS releases are supported for at least 3 years and are recommended for most production apps. STS releases provide the latest features and improvements but have a shorter support window.
+                </p>
+                <ul class="list-disc list-inside text-gray-400">
+                    <li><span class="font-semibold text-indigo-200">LTS</span>: Long-Term Support, stable and supported for 3+ years.</li>
+                    <li><span class="font-semibold text-indigo-200">STS</span>: Standard-Term Support, latest features, supported for 18 months.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="mb-16">
+            <h2 class="text-2xl font-bold mb-6 text-indigo-300 flex items-center">
+                <i class="fas fa-code-branch mr-3"></i> Version Timeline
+            </h2>
+            <div class="relative pl-16 timeline">
+                <div class="mb-10 relative timeline-item">
+                    <h3 class="text-xl font-semibold text-indigo-400 mb-2">.NET Framework</h3>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="px-2 py-1 bg-gray-700 rounded text-xs">1.0</span>
+                        <span class="px-2 py-1 bg-gray-700 rounded text-xs">1.1</span>
+                        <span class="px-2 py-1 bg-gray-700 rounded text-xs">2.0</span>
+                        <span class="px-2 py-1 bg-gray-700 rounded text-xs">3.0</span>
+                        <span class="px-2 py-1 bg-gray-700 rounded text-xs">3.5</span>
+                        <span class="px-2 py-1 bg-gray-700 rounded text-xs">4.0</span>
+                        <span class="px-2 py-1 bg-gray-700 rounded text-xs">4.5</span>
+                        <span class="px-2 py-1 bg-gray-700 rounded text-xs">4.6</span>
+                        <span class="px-2 py-1 bg-indigo-700 rounded text-xs font-bold">4.8 (Latest)</span>
+                    </div>
+                </div>
+                
+                <div class="mb-10 relative timeline-item">
+                    <h3 class="text-xl font-semibold text-purple-400 mb-2">.NET Core</h3>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="px-2 py-1 bg-gray-700 rounded text-xs">1.0</span>
+                        <span class="px-2 py-1 bg-gray-700 rounded text-xs">1.1</span>
+                        <span class="px-2 py-1 bg-gray-700 rounded text-xs">2.0</span>
+                        <span class="px-2 py-1 bg-gray-700 rounded text-xs">3.0</span>
+                        <span class="px-2 py-1 bg-gray-700 rounded text-xs">5.0</span>
+                        <span class="px-2 py-1 bg-gray-700 rounded text-xs">6.0</span>
+                        <span class="px-2 py-1 bg-gray-700 rounded text-xs">7.0</span>
+                        <span class="px-2 py-1 bg-gray-700 rounded text-xs">8.0</span>
+                        <span class="px-2 py-1 bg-purple-700 rounded text-xs font-bold">9.0 (Latest)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-16">
+            <h2 class="text-2xl font-bold mb-6 text-indigo-300 flex items-center">
+                <i class="fas fa-laptop-code mr-3"></i> Application Types
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-gray-800 rounded-xl p-6 card-hover transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-terminal text-2xl text-blue-400 mr-3"></i>
+                        <h3 class="text-xl font-semibold">Console Apps</h3>
+                    </div>
+                    <p class="text-gray-400">
+                        Command-line applications that run in a terminal window.
+                    </p>
+                </div>
+                
+                <div class="bg-gray-800 rounded-xl p-6 card-hover transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-globe text-2xl text-green-400 mr-3"></i>
+                        <h3 class="text-xl font-semibold">Web Apps</h3>
+                    </div>
+                    <p class="text-gray-400">
+                        Built with ASP.NET Core (WebApp or MVC Framework).
+                    </p>
+                </div>
+                
+                <div class="bg-gray-800 rounded-xl p-6 card-hover transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-server text-2xl text-yellow-400 mr-3"></i>
+                        <h3 class="text-xl font-semibold">Service Apps</h3>
+                    </div>
+                    <p class="text-gray-400">
+                        REST APIs and WebAPI services for backend development.
+                    </p>
+                </div>
+                
+                <div class="bg-gray-800 rounded-xl p-6 card-hover transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-mobile-alt text-2xl text-red-400 mr-3"></i>
+                        <h3 class="text-xl font-semibold">Mobile Apps</h3>
+                    </div>
+                    <p class="text-gray-400">
+                        Cross-platform mobile development with Xamarin Framework.
+                    </p>
+                </div>
+                
+                <div class="bg-gray-800 rounded-xl p-6 card-hover transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-desktop text-2xl text-purple-400 mr-3"></i>
+                        <h3 class="text-xl font-semibold">Desktop Apps</h3>
+                    </div>
+                    <p class="text-gray-400">
+                        Windows applications using WinForms or WPF.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-16">
+            <h2 class="text-2xl font-bold mb-6 text-indigo-300 flex items-center">
+                <i class="fas fa-tools mr-3"></i> Environment Setup
+            </h2>
+            <div class="bg-gray-800 rounded-xl p-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="flex items-start">
+                        <i class="fab fa-windows text-3xl text-blue-400 mr-4 mt-1"></i>
+                        <div>
+                            <h3 class="text-lg font-semibold mb-2">Windows Platform</h3>
+                            <p class="text-gray-400 text-sm">
+                                Primary development environment for .NET Framework.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start">
+                        <i class="fas fa-code text-3xl text-green-400 mr-4 mt-1"></i>
+                        <div>
+                            <h3 class="text-lg font-semibold mb-2">Visual Studio 2022</h3>
+                            <p class="text-gray-400 text-sm">
+                                Community Edition for application development.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start">
+                        <i class="fas fa-database text-3xl text-yellow-400 mr-4 mt-1"></i>
+                        <div>
+                            <h3 class="text-lg font-semibold mb-2">SQL Server</h3>
+                            <p class="text-gray-400 text-sm">
+                                Primary data storage solution for .NET applications.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="text-2xl font-bold mb-6 text-indigo-300 flex items-center">
+                <i class="fas fa-star mr-3"></i> C#.NET Highlights
+            </h2>
+            <div class="bg-gray-800 rounded-xl p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <div class="flex items-center mb-4">
+                            <i class="fas fa-check-circle text-2xl text-green-400 mr-3"></i>
+                            <h3 class="text-xl font-semibold">Primary Language</h3>
+                        </div>
+                        <p class="text-gray-400">
+                            C# is the main language in .NET Framework (alongside VB.NET, VC++, F#.NET).
+                        </p>
+                    </div>
+                    
+                    <div>
+                        <div class="flex items-center mb-4">
+                            <i class="fas fa-project-diagram text-2xl text-blue-400 mr-3"></i>
+                            <h3 class="text-xl font-semibold">Object-Oriented</h3>
+                        </div>
+                        <p class="text-gray-400">
+                            C# is a modern object-oriented programming language.
+                        </p>
+                    </div>
+                    
+                    <div>
+                        <div class="flex items-center mb-4">
+                            <i class="fas fa-code text-2xl text-purple-400 mr-3"></i>
+                            <h3 class="text-xl font-semibold">Familiar Syntax</h3>
+                        </div>
+                        <p class="text-gray-400">
+                            C# syntax is similar to C++ and core Java, making it easy to learn.
+                        </p>
+                    </div>
+                    
+                    <div>
+                        <div class="flex items-center mb-4">
+                            <i class="fas fa-rocket text-2xl text-red-400 mr-3"></i>
+                            <h3 class="text-xl font-semibold">Current Version</h3>
+                        </div>
+                        <p class="text-gray-400">
+                            C# 11.0/12.0 with modern features and performance improvements.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 py-8 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex justify-center space-x-6 mb-6">
+                <a href="#" class="text-gray-400 hover:text-indigo-400">
+                    <i class="fab fa-github text-2xl"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-blue-400">
+                    <i class="fab fa-microsoft text-2xl"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-purple-400">
+                    <i class="fab fa-discord text-2xl"></i>
+                </a>
+            </div>
+            <p class="text-gray-500 text-sm">
+                &copy; 2023 .NET Evolution. All information provided is for educational purposes.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Simple animation for cards when they come into view
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card-hover');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            cards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(card);
+            });
+        });
+    </script>
+</body>
+</html>

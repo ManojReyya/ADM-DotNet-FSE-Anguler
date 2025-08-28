@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Learning Guide</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #252526;
+            --text-primary: #e1e1e1;
+            --text-secondary: #a0a0a0;
+            --accent-primary: #1572b6;
+            --accent-secondary: #3399ff;
+            --accent-tertiary: #ebebeb;
+            --border-color: #3c3c3c;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            color: var(--accent-primary);
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+        }
+
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        .logo {
+            font-size: 3.5rem;
+            color: var(--accent-primary);
+        }
+
+        .card {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+        }
+
+        h2 {
+            color: var(--accent-secondary);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        h3 {
+            color: var(--accent-primary);
+            margin: 20px 0 10px;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        .code-block {
+            background-color: var(--bg-tertiary);
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            overflow-x: auto;
+            border-left: 4px solid var(--accent-primary);
+        }
+
+        code {
+            font-family: 'Fira Code', monospace;
+            color: var(--accent-tertiary);
+            display: block;
+            line-height: 1.5;
+        }
+
+        .code-comment {
+            color: #6a9955;
+        }
+
+        .code-selector {
+            color: #d7ba7d;
+        }
+
+        .code-property {
+            color: #9cdcfe;
+        }
+
+        .code-value {
+            color: #ce9178;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .step-card {
+            background-color: var(--bg-tertiary);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid var(--accent-secondary);
+            transition: transform 0.3s ease;
+        }
+
+        .step-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .step-number {
+            background-color: var(--accent-secondary);
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .features-list {
+            list-style-type: none;
+        }
+
+        .features-list li {
+            margin-bottom: 10px;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .features-list li:before {
+            content: "➤";
+            color: var(--accent-primary);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        .elements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .element-card {
+            background-color: var(--bg-tertiary);
+            padding: 15px;
+            border-radius: 5px;
+            border-top: 3px solid var(--accent-primary);
+        }
+
+        .element-name {
+            color: var(--accent-secondary);
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .element-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 40px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        .nav-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .nav-tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+        }
+
+        .nav-tab.active {
+            border-bottom: 3px solid var(--accent-primary);
+            color: var(--accent-primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--accent-primary);
+            color: white;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #0e5c9d;
+        }
+
+        .btn-secondary {
+            background-color: var(--accent-secondary);
+        }
+
+        .btn-secondary:hover {
+            background-color: #1a7ccc;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: var(--bg-tertiary);
+            color: var(--accent-secondary);
+        }
+
+        tr:hover {
+            background-color: var(--bg-tertiary);
+        }
+
+        .example-container {
+            background-color: var(--bg-tertiary);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .example-preview {
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 15px;
+            min-height: 100px;
+        }
+
+        .example-box {
+            width: 100px;
+            height: 100px;
+            background-color: var(--accent-primary);
+            margin: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .flex-container {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .flex-item {
+            background-color: var(--accent-primary);
+            padding: 15px;
+            color: white;
+            border-radius: 4px;
+            flex: 1;
+            text-align: center;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .grid-item {
+            background-color: var(--accent-primary);
+            padding: 15px;
+            color: white;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .steps, .elements-grid, .grid-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .logo-container {
+                flex-wrap: wrap;
+            }
+            
+            .nav-tabs {
+                flex-direction: column;
+            }
+            
+            .flex-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>CSS Learning Guide</h1>
+            <p class="subtitle">Styling the web with Cascading Style Sheets</p>
+            <div class="logo-container">
+                <i class="fab fa-html5 logo" style="color: #e34f26"></i>
+                <i class="fab fa-css3-alt logo" style="color: var(--accent-primary)"></i>
+                <i class="fab fa-js-square logo" style="color: #f7df1e"></i>
+            </div>
+        </header>
+
+        <div class="card">
+            <h2>What is CSS?</h2>
+            <p>CSS (Cascading Style Sheets) is a stylesheet language used to describe the presentation of a document written in HTML or XML. CSS controls how elements are displayed on screen, paper, or in other media.</p>
+            
+            <h3>Key Features of CSS:</h3>
+            <ul class="features-list">
+                <li>Defines styles for web pages, including design, layout, and display variations</li>
+                <li>Saves time by controlling multiple web pages at once</li>
+                <li>Enables responsive design for different devices and screen sizes</li>
+                <li>Separates content from presentation for better maintainability</li>
+            </ul>
+            
+            <a href="https://developer.mozilla.org/en-US/docs/Web/CSS" class="btn" target="_blank">MDN CSS Documentation</a>
+        </div>
+
+        <div class="card">
+            <h2>CSS Syntax and Structure</h2>
+            <p>A CSS rule consists of a selector and a declaration block:</p>
+            
+            <div class="code-block">
+                <code><span class="code-comment">/* This is a CSS comment */</span></code>
+                <code><span class="code-selector">selector</span> {</code>
+                <code>  <span class="code-property">property</span>: <span class="code-value">value</span>; <span class="code-comment">/* Declaration */</span></code>
+                <code>}</code>
+            </div>
+            
+            <h3>Example:</h3>
+            <div class="code-block">
+                <code><span class="code-comment">/* Make all h1 elements blue and centered */</span></code>
+                <code><span class="code-selector">h1</span> {</code>
+                <code>  <span class="code-property">color</span>: <span class="code-value">blue</span>;</code>
+                <code>  <span class="code-property">text-align</span>: <span class="code-value">center</span>;</code>
+                <code>}</code>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Adding CSS to HTML</h2>
+            
+            <div class="nav-tabs">
+                <div class="nav-tab active" onclick="switchTab(event, 'inline')">Inline CSS</div>
+                <div class="nav-tab" onclick="switchTab(event, 'internal')">Internal CSS</div>
+                <div class="nav-tab" onclick="switchTab(event, 'external')">External CSS</div>
+            </div>
+            
+            <div id="inline" class="tab-content active">
+                <h3>Inline CSS</h3>
+                <p>Apply styles directly to HTML elements using the style attribute:</p>
+                
+                <div class="code-block">
+                    <code><span class="code-tag">&lt;h1</span> <span class="code-attribute">style</span>=<span class="code-value">"color: blue; text-align: center;"</span><span class="code-tag">&gt;</span></code>
+                    <code>  This is a heading</code>
+                    <code><span class="code-tag">&lt;/h1&gt;</span></code>
+                </div>
+                
+                <p class="warning">Note: Inline styles have the highest specificity and are hard to maintain. Use sparingly.</p>
+            </div>
+            
+            <div id="internal" class="tab-content">
+                <h3>Internal CSS</h3>
+                <p>Place CSS rules inside a &lt;style&gt; element in the HTML document's &lt;head&gt;:</p>
+                
+                <div class="code-block">
+                    <code><span class="code-tag">&lt;!DOCTYPE html&gt;</span></code>
+                    <code><span class="code-tag">&lt;html&gt;</span></code>
+                    <code><span class="code-tag">&lt;head&gt;</span></code>
+                    <code>  <span class="code-tag">&lt;style&gt;</span></code>
+                    <code>    <span class="code-selector">body</span> {</code>
+                    <code>      <span class="code-property">background-color</span>: <span class="code-value">#f0f0f0</span>;</code>
+                    <code>    }</code>
+                    <code>    <span class="code-selector">h1</span> {</code>
+                    <code>      <span class="code-property">color</span>: <span class="code-value">blue</span>;</code>
+                    <code>      <span class="code-property">text-align</span>: <span class="code-value">center</span>;</code>
+                    <code>    }</code>
+                    <code>  <span class="code-tag">&lt;/style&gt;</span></code>
+                    <code><span class="code-tag">&lt;/head&gt;</span></code>
+                    <code><span class="code-tag">&lt;body&gt;</span></code>
+                    <code>  <span class="code-tag">&lt;h1&gt;</span>This is a heading<span class="code-tag">&lt;/h1&gt;</span></code>
+                    <code><span class="code-tag">&lt;/body&gt;</span></code>
+                    <code><span class="code-tag">&lt;/html&gt;</span></code>
+                </div>
+            </div>
+            
+            <div id="external" class="tab-content">
+                <h3>External CSS</h3>
+                <p>Link to an external CSS file (recommended approach):</p>
+                
+                <div class="code-block">
+                    <code><span class="code-comment">/* In your HTML file */</span></code>
+                    <code><span class="code-tag">&lt;head&gt;</span></code>
+                    <code>  <span class="code-tag">&lt;link</span> <span class="code-attribute">rel</span>=<span class="code-value">"stylesheet"</span> <span class="code-attribute">href</span>=<span class="code-value">"styles.css"</span><span class="code-tag">&gt;</span></code>
+                    <code><span class="code-tag">&lt;/head&gt;</span></code>
+                    <code></code>
+                    <code><span class="code-comment">/* In styles.css */</span></code>
+                    <code><span class="code-selector">body</span> {</code>
+                    <code>  <span class="code-property">background-color</span>: <span class="code-value">#f0f0f0</span>;</code>
+                    <code>}</code>
+                    <code></code>
+                    <code><span class="code-selector">h1</span> {</code>
+                    <code>  <span class="code-property">color</span>: <span class="code-value">blue</span>;</code>
+                    <code>  <span class="code-property">text-align</span>: <span class="code-value">center</span>;</code>
+                    <code>}</code>
+                </div>
+                
+                <p>External CSS is the most maintainable approach as it separates content from presentation.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Essential CSS Concepts</h2>
+            <p>Master these fundamental CSS concepts to build effective styles:</p>
+            
+            <div class="elements-grid">
+                <div class="element-card">
+                    <div class="element-name">Selectors</div>
+                    <div class="element-desc">Target HTML elements by type, class, ID, attributes, or relationships</div>
+                </div>
+                <div class="element-card">
+                    <div class="element-name">Box Model</div>
+                    <div class="element-desc">Content, padding, border, and margin that make up element layout</div>
+                </div>
+                <div class="element-card">
+                    <div class="element-name">Positioning</div>
+                    <div class="element-desc">Static, relative, absolute, fixed, and sticky positioning schemes</div>
+                </div>
+                <div class="element-card">
+                    <div class="element-name">Flexbox</div>
+                    <div class="element-desc">One-dimensional layout model for efficient space distribution</div>
+                </div>
+                <div class="element-card">
+                    <div class="element-name">Grid</div>
+                    <div class="element-desc">Two-dimensional layout system for complex web layouts</div>
+                </div>
+                <div class="element-card">
+                    <div class="element-name">Responsive Design</div>
+                    <div class="element-desc">Media queries and flexible layouts for all screen sizes</div>
+                </div>
+                <div class="element-card">
+                    <div class="element-name">Specificity</div>
+                    <div class="element-desc">Rules that determine which CSS declarations are applied</div>
+                </div>
+                <div class="element-card">
+                    <div class="element-name">Variables</div>
+                    <div class="element-desc">Custom properties for reusable values throughout CSS</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>CSS Selectors</h2>
+            <p>Selectors define which HTML elements to style:</p>
+            
+            <table>
+                <tr>
+                    <th>Selector</th>
+                    <th>Example</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>Element</td>
+                    <td>p</td>
+                    <td>Selects all &lt;p&gt; elements</td>
+                </tr>
+                <tr>
+                    <td>Class</td>
+                    <td>.intro</td>
+                    <td>Selects all elements with class="intro"</td>
+                </tr>
+                <tr>
+                    <td>ID</td>
+                    <td>#header</td>
+                    <td>Selects the element with id="header"</td>
+                </tr>
+                <tr>
+                    <td>Attribute</td>
+                    <td>a[target]</td>
+                    <td>Selects all &lt;a&gt; elements with a target attribute</td>
+                </tr>
+                <tr>
+                    <td>Descendant</td>
+                    <td>div p</td>
+                    <td>Selects all &lt;p&gt; elements inside &lt;div&gt; elements</td>
+                </tr>
+                <tr>
+                    <td>Child</td>
+                    <td>div > p</td>
+                    <td>Selects all &lt;p&gt; elements where the parent is a &lt;div&gt;</td>
+                </tr>
+                <tr>
+                    <td>Pseudo-class</td>
+                    <td>a:hover</td>
+                    <td>Selects links on mouse hover</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="card">
+            <h2>CSS Box Model</h2>
+            <p>Every element is represented as a rectangular box with these properties:</p>
+            
+            <div class="example-container">
+                <div class="example-preview" style="display: flex; justify-content: center; align-items: center;">
+                    <div style="background-color: var(--accent-primary); color: white; padding: 20px; border: 5px solid var(--accent-secondary); margin: 30px;">
+                        Content Box
+                    </div>
+                </div>
+                
+                <div class="code-block">
+                    <code><span class="code-selector">.box</span> {</code>
+                    <code>  <span class="code-property">width</span>: <span class="code-value">200px</span>;          <span class="code-comment">/* Content width */</span></code>
+                    <code>  <span class="code-property">height</span>: <span class="code-value">100px</span>;         <span class="code-comment">/* Content height */</span></code>
+                    <code>  <span class="code-property">padding</span>: <span class="code-value">20px</span>;         <span class="code-comment">/* Space around content */</span></code>
+                    <code>  <span class="code-property">border</span>: <span class="code-value">5px solid blue</span>; <span class="code-comment">/* Border around padding */</span></code>
+                    <code>  <span class="code-property">margin</span>: <span class="code-value">30px</span>;         <span class="code-comment">/* Space outside border */</span></code>
+                    <code>  <span class="code-property">box-sizing</span>: <span class="code-value">border-box</span>; <span class="code-comment">/* Include padding/border in width/height */</span></code>
+                    <code>}</code>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>CSS Layout Techniques</h2>
+            
+            <h3>Flexbox Example</h3>
+            <div class="example-container">
+                <div class="example-preview">
+                    <div class="flex-container">
+                        <div class="flex-item">Item 1</div>
+                        <div class="flex-item">Item 2</div>
+                        <div class="flex-item">Item 3</div>
+                    </div>
+                </div>
+                
+                <div class="code-block">
+                    <code><span class="code-selector">.container</span> {</code>
+                    <code>  <span class="code-property">display</span>: <span class="code-value">flex</span>;</code>
+                    <code>  <span class="code-property">justify-content</span>: <span class="code-value">space-between</span>; <span class="code-comment">/* Horizontal alignment */</span></code>
+                    <code>  <span class="code-property">align-items</span>: <span class="code-value">center</span>;      <span class="code-comment">/* Vertical alignment */</span></code>
+                    <code>  <span class="code-property">gap</span>: <span class="code-value">10px</span>;            <span class="code-comment">/* Space between items */</span></code>
+                    <code>}</code>
+                </div>
+            </div>
+            
+            <h3>CSS Grid Example</h3>
+            <div class="example-container">
+                <div class="example-preview">
+                    <div class="grid-container">
+                        <div class="grid-item">Header</div>
+                        <div class="grid-item">Header</div>
+                        <div class="grid-item">Header</div>
+                        <div class="grid-item">Content</div>
+                        <div class="grid-item">Content</div>
+                        <div class="grid-item">Content</div>
+                    </div>
+                </div>
+                
+                <div class="code-block">
+                    <code><span class="code-selector">.container</span> {</code>
+                    <code>  <span class="code-property">display</span>: <span class="code-value">grid</span>;</code>
+                    <code>  <span class="code-property">grid-template-columns</span>: <span class="code-value">repeat(3, 1fr)</span>;</code>
+                    <code>  <span class="code-property">gap</span>: <span class="code-value">10px</span>;</code>
+                    <code>}</code>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Learning Resources</h2>
+            
+            <div class="steps">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3>MDN Web Docs</h3>
+                    <p>Comprehensive resource for CSS documentation and tutorials.</p>
+                    <a href="https://developer.mozilla.org/en-US/docs/Web/CSS" class="btn" target="_blank">Visit MDN</a>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3>CSS-Tricks</h3>
+                    <p>Excellent articles, guides, and reference for all things CSS.</p>
+                    <a href="https://css-tricks.com/" class="btn" target="_blank">Visit CSS-Tricks</a>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h3>Flexbox Froggy</h3>
+                    <p>A game for learning CSS flexbox in a fun, interactive way.</p>
+                    <a href="https://flexboxfroggy.com/" class="btn" target="_blank">Play Game</a>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>CSS Learning Guide - Styling the web with Cascading Style Sheets</p>
+            <p>Practice by creating your own styles and experimenting with different properties!</p>
+        </footer>
+    </div>
+
+    <script>
+        function switchTab(event, tabId) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(tab => tab.classList.remove('active'));
+            
+            // Show the selected tab content
+            document.getElementById(tabId).classList.add('active');
+            
+            // Update active tab
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+        }
+    </script>
+</body>
+</html>

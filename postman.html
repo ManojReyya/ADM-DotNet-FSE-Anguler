@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Postman Guide</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {background:#0f172a;color:#f9fafb;font-family:ui-sans-serif,system-ui,sans-serif;}
+    .step-card {background:#1e293b;border-radius:.75rem;padding:1rem;margin-bottom:1.5rem;}
+    .step-title {font-size:1.125rem;font-weight:600;margin-bottom:.5rem;color:#f1f5f9;}
+    .step-desc {color:#cbd5e1;font-size:.9rem;}
+    .cmd-box {background:#0f172a;border:1px solid #334155;border-radius:.5rem;padding:.5rem .75rem;margin-top:.75rem;}
+    .cmd-line {display:flex;align-items:center;justify-content:space-between;}
+    .cmd-text {font-family:ui-monospace,monospace;color:#e2e8f0;font-size:.9rem;overflow-x:auto;}
+    .copy-btn {color:#94a3b8;cursor:pointer;transition:.2s;}
+    .copy-btn:hover {color:#f1f5f9;}
+  </style>
+</head>
+<body>
+  <header class="max-w-4xl mx-auto p-6 flex items-center space-x-3">
+    <img src="https://www.vectorlogo.zone/logos/getpostman/getpostman-icon.svg" alt="Postman" class="w-12 h-12">
+    <div>
+      <h1 class="text-3xl font-extrabold mb-1 text-white">Postman - Getting Started</h1>
+      <p class="text-sm text-slate-400">Postman is a popular tool for <span class="font-semibold text-slate-200">API development, testing, and collaboration</span>.</p>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto p-6 space-y-8">
+
+    <!-- Step 1 -->
+    <div class="step-card">
+      <h2 class="step-title">1. Install Postman</h2>
+      <p class="step-desc">Download Postman from the official website and install it on your machine.</p>
+      <div class="cmd-box">
+        <div class="cmd-line">
+          <span class="cmd-text">https://www.postman.com/downloads/</span>
+          <i class="fa-regular fa-copy copy-btn" data-cmd="https://www.postman.com/downloads/"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step-card">
+      <h2 class="step-title">2. Create a New Request</h2>
+      <p class="step-desc">Open Postman → Click <span class="font-semibold">New</span> → Select <span class="font-semibold">Request</span>. Choose HTTP method (GET, POST, PUT, DELETE) and enter the API URL.</p>
+      <div class="cmd-box">
+        <div class="cmd-line">
+          <span class="cmd-text">GET https://jsonplaceholder.typicode.com/posts/1</span>
+          <i class="fa-regular fa-copy copy-btn" data-cmd="GET https://jsonplaceholder.typicode.com/posts/1"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="step-card">
+      <h2 class="step-title">3. Add Headers & Body</h2>
+      <p class="step-desc">For POST/PUT requests, switch to the <span class="font-semibold">Body</span> tab, choose <span class="font-semibold">raw → JSON</span> and paste your payload.</p>
+      <div class="cmd-box">
+        <pre class="cmd-text">
+{
+  "title": "foo",
+  "body": "bar",
+  "userId": 1
+}
+        </pre>
+      </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="step-card">
+      <h2 class="step-title">4. Send Request & View Response</h2>
+      <p class="step-desc">Click <span class="font-semibold">Send</span> and Postman will display the response body, status code, and time.</p>
+    </div>
+
+    <!-- Step 5 -->
+    <div class="step-card">
+      <h2 class="step-title">5. Save to Collection</h2>
+      <p class="step-desc">Group related requests into <span class="font-semibold">Collections</span> for easier testing and sharing with teammates.</p>
+    </div>
+
+  </main>
+
+  <footer class="max-w-4xl mx-auto p-6 text-sm text-slate-500">Made with 💡 — Postman Beginner’s Guide</footer>
+
+  <script>
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const cmd = btn.dataset.cmd;
+        try {
+          await navigator.clipboard.writeText(cmd);
+          btn.classList.remove('fa-copy');
+          btn.classList.add('fa-check');
+          btn.style.color = '#4ade80';
+          setTimeout(()=>{
+            btn.classList.remove('fa-check');
+            btn.classList.add('fa-copy');
+            btn.style.color = '';
+          },1200);
+        } catch (e) {
+          alert('Copy failed — ' + cmd);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

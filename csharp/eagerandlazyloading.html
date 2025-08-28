@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eager vs Lazy Loading in C# — Dark Theme Guide</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
+  <style>
+    :root {
+      --bg: #0b0f14;
+      --panel: #111827;
+      --panel-2: #0f172a;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --accent: #60a5fa;
+      --border: #1f2937;
+      --shadow: 0 10px 25px rgba(0,0,0,.35);
+    }
+    body {
+      margin: 0;
+      font-family: Segoe UI, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .container { max-width: 950px; margin: 0 auto; padding: 2rem 1rem; }
+    h1 { font-size: 2rem; margin-bottom: 1rem; }
+    h2 { font-size: 1.5rem; margin-top: 1.5rem; color: var(--accent); }
+    p { line-height: 1.6; }
+    .card { background: linear-gradient(180deg, var(--panel), var(--panel-2)); border-radius: 16px; border: 1px solid var(--border); padding: 1.2rem; margin-top: 1rem; box-shadow: var(--shadow); }
+    pre { background: #111827 !important; border-radius: 12px; border: 1px solid var(--border); padding: 1rem; overflow: auto; }
+    footer { margin-top: 2rem; text-align: center; font-size: .9rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Eager vs Lazy Loading in C#</h1>
+    <p>When working with data (like in Entity Framework or any ORM), how objects are loaded from the database matters. There are two main strategies:</p>
+
+    <div class="card">
+      <h2>Eager Loading</h2>
+      <p><b>Definition:</b> Loads all related data at once, even if you don’t need it immediately.</p>
+      <p><b>Pros:</b> Less database round-trips. Good when you know you will need the data.</p>
+      <p><b>Cons:</b> Can load unnecessary data, making queries slower or heavier.</p>
+      <pre><code class="language-csharp">// Example using Entity Framework
+using (var context = new SchoolContext())
+{
+    // Eager loading with Include()
+    var students = context.Students
+                          .Include(s => s.Courses)
+                          .ToList();
+
+    // Here, Students and their Courses are loaded together
+}</code></pre>
+    </div>
+
+    <div class="card">
+      <h2>Lazy Loading</h2>
+      <p><b>Definition:</b> Loads related data <b>only when it is accessed</b>, not upfront.</p>
+      <p><b>Pros:</b> Saves memory and avoids loading unused data.</p>
+      <p><b>Cons:</b> Can cause multiple database calls (N+1 problem).</p>
+      <pre><code class="language-csharp">// Example using Entity Framework with Lazy Loading
+public class Student
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+
+    // virtual enables lazy loading
+    public virtual ICollection&lt;Course&gt; Courses { get; set; }
+}
+
+using (var context = new SchoolContext())
+{
+    var student = context.Students.First();
+
+    // Courses are not loaded yet
+    var courseList = student.Courses; // Now EF loads them when accessed
+}</code></pre>
+    </div>
+
+    <div class="card">
+      <h2>Quick Comparison</h2>
+      <ul>
+        <li><b>Eager:</b> Load everything upfront → fewer queries, heavier single query.</li>
+        <li><b>Lazy:</b> Load when needed → lighter initially, may cause many queries.</li>
+      </ul>
+    </div>
+
+    <footer>
+      Tip: Use <b>Eager Loading</b> when you know related data is always needed. Use <b>Lazy Loading</b> when related data is rarely accessed.
+    </footer>
+  </div>
+</body>
+</html>

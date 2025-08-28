@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Git Cheat Sheet (Dark)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {background:#0f172a;color:#f9fafb;font-family:ui-sans-serif,system-ui,sans-serif;}
+    .cmd-box {background:#1e293b;border-radius:.5rem;padding:.5rem .75rem;display:flex;align-items:center;justify-content:space-between;margin:.5rem 0;}
+    .cmd-text {font-family:ui-monospace,monospace;color:#e2e8f0;font-size:.9rem;overflow-x:auto;}
+    .copy-btn {color:#94a3b8;cursor:pointer;transition:.2s;}
+    .copy-btn:hover {color:#f1f5f9;}
+  </style>
+</head>
+<body>
+        <!-- Navigation Button -->
+<div class="w-full flex justify-start px-6 py-4">
+  <a href="index.html" 
+     class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white font-medium shadow-lg hover:scale-105 transition-transform">
+    <i class="fas fa-arrow-left"></i>
+    Back to Homepage
+  </a>
+</div>
+  <header class="max-w-4xl mx-auto p-6 flex items-center space-x-3">
+    <i class="fa-brands fa-git-alt text-red-500 text-3xl"></i>
+    <div>
+      <h1 class="text-3xl font-extrabold mb-1 text-white">Git Cheat Sheet</h1>
+      <p class="text-sm text-slate-400">Git is a <span class="font-semibold text-slate-200">distributed version control system</span> that tracks changes in source code and helps teams collaborate effectively.</p>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto p-6 space-y-8">
+
+    <section>
+      <h2 class="text-xl font-semibold mb-3 text-white">Repository Basics</h2>
+      <div class="cmd-box">
+        <span class="cmd-text">git init</span>
+        <i class="fa-regular fa-copy copy-btn" data-cmd="git init"></i>
+      </div>
+      <div class="cmd-box">
+        <span class="cmd-text">git clone &lt;repo-url&gt;</span>
+        <i class="fa-regular fa-copy copy-btn" data-cmd="git clone <repo-url>"></i>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="text-xl font-semibold mb-3 text-white">Staging & Commit</h2>
+      <div class="cmd-box">
+        <span class="cmd-text">git add .</span>
+        <i class="fa-regular fa-copy copy-btn" data-cmd="git add ."></i>
+      </div>
+      <div class="cmd-box">
+        <span class="cmd-text">git commit -m \"message\"</span>
+        <i class="fa-regular fa-copy copy-btn" data-cmd="git commit -m 'message'"></i>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="text-xl font-semibold mb-3 text-white">Branches</h2>
+      <div class="cmd-box">
+        <span class="cmd-text">git branch</span>
+        <i class="fa-regular fa-copy copy-btn" data-cmd="git branch"></i>
+      </div>
+      <div class="cmd-box">
+        <span class="cmd-text">git switch -c feature</span>
+        <i class="fa-regular fa-copy copy-btn" data-cmd="git switch -c feature"></i>
+      </div>
+      <div class="cmd-box">
+        <span class="cmd-text">git merge feature</span>
+        <i class="fa-regular fa-copy copy-btn" data-cmd="git merge feature"></i>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="text-xl font-semibold mb-3 text-white">Remote & Sync</h2>
+      <div class="cmd-box">
+        <span class="cmd-text">git remote -v</span>
+        <i class="fa-regular fa-copy copy-btn" data-cmd="git remote -v"></i>
+      </div>
+      <div class="cmd-box">
+        <span class="cmd-text">git remote add origin &lt;url&gt;</span>
+        <i class="fa-regular fa-copy copy-btn" data-cmd="git remote add origin <url>"></i>
+      </div>
+      <div class="cmd-box">
+        <span class="cmd-text">git remote set-url origin &lt;new-url&gt;</span>
+        <i class="fa-regular fa-copy copy-btn" data-cmd="git remote set-url origin <new-url>"></i>
+      </div>
+      <div class="cmd-box">
+        <span class="cmd-text">git push origin main</span>
+        <i class="fa-regular fa-copy copy-btn" data-cmd="git push origin main"></i>
+      </div>
+      <div class="cmd-box">
+        <span class="cmd-text">git pull</span>
+        <i class="fa-regular fa-copy copy-btn" data-cmd="git pull"></i>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="text-xl font-semibold mb-3 text-white">History</h2>
+      <div class="cmd-box">
+        <span class="cmd-text">git log --oneline --graph --decorate --all</span>
+        <i class="fa-regular fa-copy copy-btn" data-cmd="git log --oneline --graph --decorate --all"></i>
+      </div>
+      <div class="cmd-box">
+        <span class="cmd-text">git reset --hard HEAD~1</span>
+        <i class="fa-regular fa-copy copy-btn" data-cmd="git reset --hard HEAD~1"></i>
+      </div>
+      <div class="cmd-box">
+        <span class="cmd-text">git revert &lt;commit&gt;</span>
+        <i class="fa-regular fa-copy copy-btn" data-cmd="git revert <commit>"></i>
+      </div>
+    </section>
+
+  </main>
+  <script>
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const cmd = btn.dataset.cmd;
+        try {
+          await navigator.clipboard.writeText(cmd);
+          btn.classList.remove('fa-copy');
+          btn.classList.add('fa-check');
+          btn.style.color = '#4ade80';
+          setTimeout(()=>{
+            btn.classList.remove('fa-check');
+            btn.classList.add('fa-copy');
+            btn.style.color = '';
+          },1200);
+        } catch (e) {
+          alert('Copy failed — ' + cmd);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

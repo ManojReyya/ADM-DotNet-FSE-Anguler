@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>C# Tasks — Dark Theme Guide (Easy Words + Examples)</title>
+  <!-- Prism for syntax highlighting -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
+  <style>
+    :root{
+      --bg: #0b0f14;
+      --panel: #111827;
+      --panel-2:#0f172a;
+      --text:#e5e7eb;
+      --muted:#9ca3af;
+      --accent:#60a5fa;
+      --accent-2:#a78bfa;
+      --success:#22c55e;
+      --warning:#eab308;
+      --danger:#ef4444;
+      --code:#111827;
+      --border:#1f2937;
+      --shadow: 0 10px 25px rgba(0,0,0,.35);
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Helvetica Neue, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: radial-gradient(1200px 600px at 20% -10%, rgba(96,165,250,.08), transparent),
+                  radial-gradient(900px 500px at 100% 10%, rgba(167,139,250,.08), transparent),
+                  var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 1rem 5rem;
+    }
+    header {
+      display: grid;
+      gap: .75rem;
+      margin-bottom: 1.5rem;
+    }
+    .title {
+      font-size: clamp(1.6rem, 2.6vw + .5rem, 2.6rem);
+      font-weight: 800;
+      letter-spacing: .3px;
+    }
+    .subtitle { color: var(--muted); }
+
+    .grid { display: grid; gap: 1rem; }
+    @media (min-width: 900px){ .grid { grid-template-columns: 1.1fr .9fr; } }
+
+    .card {
+      background: linear-gradient(180deg, var(--panel), var(--panel-2));
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: 1rem 1.2rem;
+    }
+
+    h2 { font-size: 1.35rem; margin: .25rem 0 0.5rem; }
+    h3 { font-size: 1.05rem; margin: 1rem 0 .25rem; color: var(--accent); }
+    p { margin: .35rem 0; }
+    ul { margin: .4rem 0 0 .9rem; }
+    li { margin: .3rem 0; }
+
+    .badge { display: inline-block; padding: .2rem .5rem; border-radius: 999px; font-size: .78rem; border: 1px solid var(--border); color: var(--muted); }
+
+    .pill {
+      display: inline-flex; align-items: center; gap:.35rem; padding:.4rem .7rem; border:1px solid var(--border); border-radius:12px; font-size:.85rem; color:var(--muted);
+    }
+
+    .code-wrap { position: relative; margin-top:.6rem; }
+    .copy {
+      position: absolute; top:8px; right:8px; font-size:.8rem; background:transparent; border:1px solid var(--border); color:var(--text); padding:.25rem .5rem; border-radius:8px; cursor:pointer;
+    }
+    pre { background: var(--code) !important; border-radius: 12px; border: 1px solid var(--border); box-shadow: inset 0 0 0 1px rgba(255,255,255,.02); }
+
+    .two-col { display:grid; gap:1rem; grid-template-columns: 1fr; }
+    @media (min-width: 800px){ .two-col { grid-template-columns: 1fr 1fr; } }
+
+    .callout { border-left: 3px solid var(--accent); padding:.75rem .9rem; background: rgba(96,165,250,.08); border-radius: 10px; }
+    .callout.warn { border-left-color: var(--warning); background: rgba(234,179,8,.08); }
+
+    footer { margin-top: 2rem; text-align: center; color: var(--muted); font-size: .9rem; }
+    a { color: var(--accent-2); text-decoration: none; }
+    .toc a { color: var(--text); }
+    .toc li { border-left: 2px dashed var(--border); padding-left:.5rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="badge">C# / .NET • Tasks & async</div>
+      <div class="title">C# Tasks — Simple Guide with Examples</div>
+      <p class="subtitle">Understand <b>Task</b> in easy words: run work now or later, wait for it to finish, get a result, handle errors, cancel, and combine many tasks.</p>
+    </header>
+
+    <section class="grid">
+      <article class="card">
+        <h2>Quick Summary</h2>
+        <ul>
+          <li><b>Task</b> = a promise that some work will finish in the future.</li>
+          <li><b>async/await</b> = easy keywords to <i>wait</i> for a Task without blocking the thread.</li>
+          <li><b>CPU work</b> → use <code>Task.Run</code>. <b>I/O work</b> (file, db, web) → use the API's built‑in <code>async</code> methods.</li>
+          <li><b>Parallel</b> = many things at the same time. <b>Async</b> = don't block while waiting. They can be used together or separately.</li>
+        </ul>
+      </article>
+
+      <nav class="card toc">
+        <h2>On this page</h2>
+        <ol>
+          <li><a href="#basics">Task Basics</a></li>
+          <li><a href="#create">Create & Start Tasks</a></li>
+          <li><a href="#result">Return Values</a></li>
+          <li><a href="#await">async / await</a></li>
+          <li><a href="#combine">WhenAll / WhenAny</a></li>
+          <li><a href="#cancel">Cancellation</a></li>
+          <li><a href="#errors">Error Handling</a></li>
+          <li><a href="#compare">Task vs Thread</a></li>
+          <li><a href="#pitfalls">Common Pitfalls</a></li>
+          <li><a href="#snippets">Practice Snippets</a></li>
+        </ol>
+      </nav>
+    </section>
+
+    <section id="basics" class="card" style="margin-top:1rem;">
+      <h2>1) Task Basics</h2>
+      <div class="two-col">
+        <div>
+          <p><b>What is a Task?</b> A Task represents work that is happening or will happen. You can <i>await</i> it to get the result when it's done.</p>
+          <ul>
+            <li><code>Task</code> → no value, just completion.</li>
+            <li><code>Task&lt;T&gt;</code> → returns a value of type <code>T</code>.</li>
+            <li><code>ValueTask</code> → like Task, with less allocation in certain high‑perf cases.</li>
+          </ul>
+          <div class="callout"><b>Easy rule:</b> Library code may use <code>ValueTask</code>. App code can use <code>Task</code> 99% of the time.</div>
+        </div>
+        <div>
+          <h3>Minimal Example</h3>
+          <div class="code-wrap">
+            <button class="copy" data-copy="code1">Copy</button>
+<pre><code id="code1" class="language-csharp">using System;
+using System.Threading.Tasks;
+
+class Program
+{
+    static async Task Main()
+    {
+        Task work = Task.Delay(1000);   // pretend work (1 sec)
+        await work;                     // wait without blocking
+        Console.WriteLine("Done!");
+    }
+}
+</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="create" class="card">
+      <h2>2) Create & Start Tasks</h2>
+      <p>Prefer the <b>Task.Run</b> pattern for CPU-bound work. For I/O, use the API's own <code>Async</code> method (like <code>ReadAsync</code>, <code>GetAsync</code>).</p>
+
+      <h3>CPU-bound (use Task.Run)</h3>
+      <div class="code-wrap">
+        <button class="copy" data-copy="code2">Copy</button>
+<pre><code id="code2" class="language-csharp">using System;
+using System.Linq;
+using System.Threading.Tasks;
+
+class Program
+{
+    static async Task Main()
+    {
+        // Heavy calculation on a background thread
+        int sum = await Task.Run(() => Enumerable.Range(1, 10_000_000).Sum());
+        Console.WriteLine($"Sum = {sum}");
+    }
+}
+</code></pre>
+      </div>
+
+      <h3>I/O-bound (use native async APIs)</h3>
+      <div class="code-wrap">
+        <button class="copy" data-copy="code3">Copy</button>
+<pre><code id="code3" class="language-csharp">using System;
+using System.Net.Http;
+using System.Threading.Tasks;
+
+class Program
+{
+    static readonly HttpClient http = new HttpClient();
+
+    static async Task Main()
+    {
+        string html = await http.GetStringAsync("https://example.com");
+        Console.WriteLine($"Downloaded {html.Length} chars");
+    }
+}
+</code></pre>
+      </div>
+    </section>
+
+    <section id="result" class="card">
+      <h2>3) Returning Values</h2>
+      <p>Use <code>Task&lt;T&gt;</code> to return a value. Await it to get the value.</p>
+      <div class="code-wrap">
+        <button class="copy" data-copy="code4">Copy</button>
+<pre><code id="code4" class="language-csharp">using System;
+using System.Threading.Tasks;
+
+class Program
+{
+    static async Task Main()
+    {
+        int answer = await ComputeAsync(21);
+        Console.WriteLine($"Answer is {answer}");
+    }
+
+    static async Task&lt;int&gt; ComputeAsync(int x)
+    {
+        await Task.Delay(300); // simulate work
+        return x * 2;
+    }
+}
+</code></pre>
+      </div>
+    </section>
+
+    <section id="await" class="card">
+      <h2>4) async / await (the easy way to wait)</h2>
+      <ul>
+        <li><b>async</b> marks a method that returns <code>Task</code> or <code>Task&lt;T&gt;</code>.</li>
+        <li><b>await</b> pauses the method until the Task finishes, without blocking the thread.</li>
+        <li>Use <b>ConfigureAwait(false)</b> in library code to avoid capturing context (advanced).</li>
+      </ul>
+      <div class="code-wrap">
+        <button class="copy" data-copy="code5">Copy</button>
+<pre><code id="code5" class="language-csharp">using System;
+using System.IO;
+using System.Threading.Tasks;
+
+class Program
+{
+    static async Task Main()
+    {
+        await File.WriteAllTextAsync("out.txt", "Hello async!");
+        string text = await File.ReadAllTextAsync("out.txt");
+        Console.WriteLine(text);
+    }
+}
+</code></pre>
+      </div>
+    </section>
+
+    <section id="combine" class="card">
+      <h2>5) Combine Tasks: WhenAll / WhenAny</h2>
+      <div class="two-col">
+        <div>
+          <h3>Run in parallel and wait for all</h3>
+          <div class="code-wrap">
+            <button class="copy" data-copy="code6">Copy</button>
+<pre><code id="code6" class="language-csharp">using System;
+using System.Threading.Tasks;
+
+class Program
+{
+    static async Task Main()
+    {
+        Task t1 = Task.Delay(500);
+        Task t2 = Task.Delay(800);
+        Task t3 = Task.Delay(200);
+
+        await Task.WhenAll(t1, t2, t3);
+        Console.WriteLine("All finished!");
+    }
+}
+</code></pre>
+          </div>
+        </div>
+        <div>
+          <h3>Wait for the first one</h3>
+          <div class="code-wrap">
+            <button class="copy" data-copy="code7">Copy</button>
+<pre><code id="code7" class="language-csharp">using System;
+using System.Threading.Tasks;
+
+class Program
+{
+    static async Task Main()
+    {
+        Task t1 = Task.Delay(500);
+        Task t2 = Task.Delay(800);
+
+        Task first = await Task.WhenAny(t1, t2);
+        Console.WriteLine("The first task finished!");
+    }
+}
+</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="cancel" class="card">
+      <h2>6) Cancellation</h2>
+      <p>Use <code>CancellationToken</code> to stop work politely.</p>
+      <div class="code-wrap">
+        <button class="copy" data-copy="code8">Copy</button>
+<pre><code id="code8" class="language-csharp">using System;
+using System.Threading;
+using System.Threading.Tasks;
+
+class Program
+{
+    static async Task Main()
+    {
+        using var cts = new CancellationTokenSource();
+        var token = cts.Token;
+
+        var task = DoWorkAsync(token);
+        cts.CancelAfter(500); // cancel after 0.5s
+
+        try
+        {
+            await task;
+        }
+        catch (OperationCanceledException)
+        {
+            Console.WriteLine("Canceled!");
+        }
+    }
+
+    static async Task DoWorkAsync(CancellationToken token)
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            token.ThrowIfCancellationRequested();
+            await Task.Delay(200, token);
+            Console.WriteLine($"Step {i}");
+        }
+    }
+}
+</code></pre>
+      </div>
+    </section>
+
+    <section id="errors" class="card">
+      <h2>7) Error Handling</h2>
+      <p>Exceptions inside a Task are re-thrown when you <code>await</code> it. Wrap with <code>try/catch</code>.</p>
+      <div class="code-wrap">
+        <button class="copy" data-copy="code9">Copy</button>
+<pre><code id="code9" class="language-csharp">using System;
+using System.Threading.Tasks;
+
+class Program
+{
+    static async Task Main()
+    {
+        try
+        {
+            await MightFailAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Oops: {ex.Message}");
+        }
+    }
+
+    static async Task MightFailAsync()
+    {
+        await Task.Delay(200);
+        throw new InvalidOperationException("Something went wrong");
+    }
+}
+</code></pre>
+      </div>
+
+      <div class="callout warn"><b>Multiple tasks failing?</b> With <code>Task.WhenAll</code>, exceptions are wrapped in <code>AggregateException</code>. Catch it and inspect <code>InnerExceptions</code>.</div>
+    </section>
+
+    <section id="compare" class="card">
+      <h2>8) Task vs Thread (easy view)</h2>
+      <ul>
+        <li><b>Thread</b>: an OS worker you manage directly. Heavier, fewer per app.</li>
+        <li><b>Task</b>: a .NET <i>job</i> scheduled on the thread pool. Lighter, easier to compose.</li>
+        <li><b>async I/O</b>: often uses zero/very few threads while waiting.</li>
+      </ul>
+      <div class="two-col">
+        <div class="callout"><b>Use Task</b> for most app work, especially when you need to wait for I/O without blocking.</div>
+        <div class="callout"><b>Use Thread</b> only for special cases (thread affinity, STA, long-running dedicated worker).</div>
+      </div>
+    </section>
+
+    <section id="pitfalls" class="card">
+      <h2>9) Common Pitfalls</h2>
+      <ul>
+        <li>Blocking with <code>.Result</code> / <code>.Wait()</code> can deadlock in UI/ASP.NET. Prefer <code>await</code>.</li>
+        <li>Don't use <code>Task.Run</code> for I/O — it adds useless threads. Use the API's <code>Async</code> methods.</li>
+        <li>Avoid <code>async void</code> except for event handlers.</li>
+        <li>Remember to pass <code>CancellationToken</code> down to other methods.</li>
+      </ul>
+    </section>
+
+    <section id="snippets" class="card">
+      <h2>10) Practice Snippets</h2>
+
+      <h3>Download many URLs in parallel (WhenAll)</h3>
+      <div class="code-wrap">
+        <button class="copy" data-copy="code10">Copy</button>
+<pre><code id="code10" class="language-csharp">using System;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
+
+class Program
+{
+    static readonly HttpClient http = new HttpClient();
+
+    static async Task Main()
+    {
+        string[] urls = {
+            "https://example.com",
+            "https://www.microsoft.com",
+            "https://learn.microsoft.com"
+        };
+
+        Task&lt;int&gt;[] jobs = urls.Select(async u =>
+        {
+            string s = await http.GetStringAsync(u);
+            return s.Length;
+        }).ToArray();
+
+        int[] sizes = await Task.WhenAll(jobs);
+        Console.WriteLine(string.Join(", ", sizes));
+    }
+}
+</code></pre>
+      </div>
+
+      <h3>Progress reporting</h3>
+      <div class="code-wrap">
+        <button class="copy" data-copy="code11">Copy</button>
+<pre><code id="code11" class="language-csharp">using System;
+using System.Threading;
+using System.Threading.Tasks;
+
+class Program
+{
+    static async Task Main()
+    {
+        var progress = new Progress&lt;int&gt;(p => Console.WriteLine($"{p}%"));
+        await DoWorkAsync(progress);
+    }
+
+    static async Task DoWorkAsync(IProgress&lt;int&gt; progress)
+    {
+        for (int i = 1; i <= 5; i++)
+        {
+            await Task.Delay(250);
+            progress.Report(i * 20);
+        }
+    }
+}
+</code></pre>
+      </div>
+
+      <h3>Timeout with CancellationToken</h3>
+      <div class="code-wrap">
+        <button class="copy" data-copy="code12">Copy</button>
+<pre><code id="code12" class="language-csharp">using System;
+using System.Threading;
+using System.Threading.Tasks;
+
+class Program
+{
+    static async Task Main()
+    {
+        using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(1));
+        try
+        {
+            await SlowAsync(cts.Token);
+            Console.WriteLine("Completed");
+        }
+        catch (OperationCanceledException)
+        {
+            Console.WriteLine("Timed out");
+        }
+    }
+
+    static async Task SlowAsync(CancellationToken token)
+    {
+        await Task.Delay(3000, token);
+    }
+}
+</code></pre>
+      </div>
+
+    </section>
+
+    <footer>
+      Built for learners. Tip: run the samples in a <span class="pill">.NET 8 console app</span> using <span class="pill">dotnet run</span>.
+    </footer>
+  </div>
+
+  <script>
+    // Copy buttons
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('button.copy');
+      if(!btn) return;
+      const id = btn.getAttribute('data-copy');
+      const codeEl = document.getElementById(id);
+      if(!codeEl) return;
+      navigator.clipboard.writeText(codeEl.textContent).then(()=>{
+        const old = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(()=> btn.textContent = old, 1200);
+      });
+    });
+  </script>
+</body>
+</html>

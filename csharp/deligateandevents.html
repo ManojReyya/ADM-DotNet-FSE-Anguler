@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Delegates & Events in C# — Dark Theme Guide</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
+  <style>
+    :root {
+      --bg: #0b0f14;
+      --panel: #111827;
+      --panel-2: #0f172a;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --accent: #60a5fa;
+      --border: #1f2937;
+      --shadow: 0 10px 25px rgba(0,0,0,.35);
+    }
+    body {
+      margin: 0;
+      font-family: Segoe UI, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .container { max-width: 950px; margin: 0 auto; padding: 2rem 1rem; }
+    h1 { font-size: 2rem; margin-bottom: 1rem; }
+    h2 { font-size: 1.5rem; margin-top: 1.5rem; color: var(--accent); }
+    p { line-height: 1.6; }
+    .card { background: linear-gradient(180deg, var(--panel), var(--panel-2)); border-radius: 16px; border: 1px solid var(--border); padding: 1.2rem; margin-top: 1rem; box-shadow: var(--shadow); }
+    pre { background: #111827 !important; border-radius: 12px; border: 1px solid var(--border); padding: 1rem; overflow: auto; }
+    footer { margin-top: 2rem; text-align: center; font-size: .9rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Delegates & Events in C#</h1>
+    <p>Delegates and Events are powerful features in C#. They allow you to write flexible and loosely coupled code.</p>
+
+    <div class="card">
+      <h2>Delegates</h2>
+      <p><b>Definition:</b> A delegate is like a pointer to a method. It can reference any method with the same signature and return type.</p>
+      <p><b>Use Case:</b> Useful for callbacks and passing methods as parameters.</p>
+      <pre><code class="language-csharp">// Step 1: Define a delegate
+delegate void GreetDelegate(string name);
+
+class Program
+{
+    static void Main()
+    {
+        // Step 2: Assign a method to delegate
+        GreetDelegate greeter = SayHello;
+
+        // Step 3: Invoke delegate
+        greeter("Manoj");
+    }
+
+    static void SayHello(string name)
+    {
+        Console.WriteLine($"Hello, {name}!");
+    }
+}</code></pre>
+    </div>
+
+    <div class="card">
+      <h2>Events</h2>
+      <p><b>Definition:</b> Events are built on top of delegates. They provide a way for a class to notify other classes when something happens.</p>
+      <p><b>Use Case:</b> Useful for notification systems (e.g., button click, file download complete).</p>
+      <pre><code class="language-csharp">// Step 1: Define delegate for event
+delegate void Notify();
+
+class Process
+{
+    // Step 2: Declare event using delegate
+    public event Notify ProcessCompleted;
+
+    public void StartProcess()
+    {
+        Console.WriteLine("Process Started...");
+        // Do work here...
+
+        // Step 3: Raise event
+        ProcessCompleted?.Invoke();
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        Process process = new Process();
+
+        // Subscribe to event
+        process.ProcessCompleted += ProcessFinishedHandler;
+
+        process.StartProcess();
+    }
+
+    static void ProcessFinishedHandler()
+    {
+        Console.WriteLine("Process Finished!");
+    }
+}</code></pre>
+    </div>
+
+    <div class="card">
+      <h2>Quick Comparison</h2>
+      <ul>
+        <li><b>Delegate:</b> A reference type that can hold method(s).</li>
+        <li><b>Event:</b> A wrapper around delegate, provides <i>publish/subscribe</i> mechanism.</li>
+      </ul>
+    </div>
+
+    <footer>
+      Tip: Use <b>delegates</b> for method references and <b>events</b> when you want other classes to subscribe and react.
+    </footer>
+  </div>
+</body>
+</html>

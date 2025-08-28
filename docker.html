@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Docker Cheat Sheet (Dark)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {background:#0f172a;color:#f9fafb;font-family:ui-sans-serif,system-ui,sans-serif;}
+    .cmd-box {background:#1e293b;border-radius:.5rem;padding:.5rem .75rem;margin:.5rem 0;}
+    .cmd-line {display:flex;align-items:center;justify-content:space-between;}
+    .cmd-text {font-family:ui-monospace,monospace;color:#e2e8f0;font-size:.9rem;overflow-x:auto;}
+    .cmd-desc {font-size:.75rem;color:#94a3b8;margin-top:.25rem;}
+    .copy-btn {color:#94a3b8;cursor:pointer;transition:.2s;}
+    .copy-btn:hover {color:#f1f5f9;}
+  </style>
+</head>
+<body>
+  <header class="max-w-4xl mx-auto p-6 flex items-center space-x-3">
+    <i class="fa-brands fa-docker text-blue-400 text-3xl"></i>
+    <div>
+      <h1 class="text-3xl font-extrabold mb-1 text-white">Docker Cheat Sheet</h1>
+      <p class="text-sm text-slate-400">Docker is a <span class="font-semibold text-slate-200">containerization platform</span> that packages applications and dependencies into lightweight, portable containers.</p>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto p-6 space-y-8">
+
+    <section>
+      <h2 class="text-xl font-semibold mb-3 text-white">Basics</h2>
+      <div class="cmd-box">
+        <div class="cmd-line"><span class="cmd-text">docker --version</span><i class="fa-regular fa-copy copy-btn" data-cmd="docker --version"></i></div>
+        <p class="cmd-desc">Check installed Docker version.</p>
+      </div>
+      <div class="cmd-box">
+        <div class="cmd-line"><span class="cmd-text">docker info</span><i class="fa-regular fa-copy copy-btn" data-cmd="docker info"></i></div>
+        <p class="cmd-desc">Show system-wide information about Docker.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="text-xl font-semibold mb-3 text-white">Images</h2>
+      <div class="cmd-box">
+        <div class="cmd-line"><span class="cmd-text">docker images</span><i class="fa-regular fa-copy copy-btn" data-cmd="docker images"></i></div>
+        <p class="cmd-desc">List all downloaded images.</p>
+      </div>
+      <div class="cmd-box">
+        <div class="cmd-line"><span class="cmd-text">docker pull nginx</span><i class="fa-regular fa-copy copy-btn" data-cmd="docker pull nginx"></i></div>
+        <p class="cmd-desc">Download image from Docker Hub.</p>
+      </div>
+      <div class="cmd-box">
+        <div class="cmd-line"><span class="cmd-text">docker rmi nginx</span><i class="fa-regular fa-copy copy-btn" data-cmd="docker rmi nginx"></i></div>
+        <p class="cmd-desc">Remove an image from your system.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="text-xl font-semibold mb-3 text-white">Containers</h2>
+      <div class="cmd-box">
+        <div class="cmd-line"><span class="cmd-text">docker ps</span><i class="fa-regular fa-copy copy-btn" data-cmd="docker ps"></i></div>
+        <p class="cmd-desc">Show running containers.</p>
+      </div>
+      <div class="cmd-box">
+        <div class="cmd-line"><span class="cmd-text">docker ps -a</span><i class="fa-regular fa-copy copy-btn" data-cmd="docker ps -a"></i></div>
+        <p class="cmd-desc">Show all containers (running + stopped).</p>
+      </div>
+      <div class="cmd-box">
+        <div class="cmd-line"><span class="cmd-text">docker run -d -p 8080:80 nginx</span><i class="fa-regular fa-copy copy-btn" data-cmd="docker run -d -p 8080:80 nginx"></i></div>
+        <p class="cmd-desc">Run Nginx in background on port 8080.</p>
+      </div>
+      <div class="cmd-box">
+        <div class="cmd-line"><span class="cmd-text">docker stop &lt;container_id&gt;</span><i class="fa-regular fa-copy copy-btn" data-cmd="docker stop <container_id>"></i></div>
+        <p class="cmd-desc">Stop a running container.</p>
+      </div>
+      <div class="cmd-box">
+        <div class="cmd-line"><span class="cmd-text">docker rm &lt;container_id&gt;</span><i class="fa-regular fa-copy copy-btn" data-cmd="docker rm <container_id>"></i></div>
+        <p class="cmd-desc">Remove a stopped container.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="text-xl font-semibold mb-3 text-white">Volumes</h2>
+      <div class="cmd-box">
+        <div class="cmd-line"><span class="cmd-text">docker volume ls</span><i class="fa-regular fa-copy copy-btn" data-cmd="docker volume ls"></i></div>
+        <p class="cmd-desc">List all volumes.</p>
+      </div>
+      <div class="cmd-box">
+        <div class="cmd-line"><span class="cmd-text">docker volume create myvol</span><i class="fa-regular fa-copy copy-btn" data-cmd="docker volume create myvol"></i></div>
+        <p class="cmd-desc">Create a new volume named "myvol".</p>
+      </div>
+      <div class="cmd-box">
+        <div class="cmd-line"><span class="cmd-text">docker run -v myvol:/data nginx</span><i class="fa-regular fa-copy copy-btn" data-cmd="docker run -v myvol:/data nginx"></i></div>
+        <p class="cmd-desc">Run container and mount volume to /data.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="text-xl font-semibold mb-3 text-white">Networks</h2>
+      <div class="cmd-box">
+        <div class="cmd-line"><span class="cmd-text">docker network ls</span><i class="fa-regular fa-copy copy-btn" data-cmd="docker network ls"></i></div>
+        <p class="cmd-desc">List all Docker networks.</p>
+      </div>
+      <div class="cmd-box">
+        <div class="cmd-line"><span class="cmd-text">docker network create mynet</span><i class="fa-regular fa-copy copy-btn" data-cmd="docker network create mynet"></i></div>
+        <p class="cmd-desc">Create a new network named "mynet".</p>
+      </div>
+      <div class="cmd-box">
+        <div class="cmd-line"><span class="cmd-text">docker run -d --network=mynet nginx</span><i class="fa-regular fa-copy copy-btn" data-cmd="docker run -d --network=mynet nginx"></i></div>
+        <p class="cmd-desc">Run container inside "mynet" network.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="text-xl font-semibold mb-3 text-white">Docker Compose</h2>
+      <div class="cmd-box">
+        <div class="cmd-line"><span class="cmd-text">docker compose up -d</span><i class="fa-regular fa-copy copy-btn" data-cmd="docker compose up -d"></i></div>
+        <p class="cmd-desc">Start services in background from compose file.</p>
+      </div>
+      <div class="cmd-box">
+        <div class="cmd-line"><span class="cmd-text">docker compose down</span><i class="fa-regular fa-copy copy-btn" data-cmd="docker compose down"></i></div>
+        <p class="cmd-desc">Stop and remove all services.</p>
+      </div>
+      <div class="cmd-box">
+        <div class="cmd-line"><span class="cmd-text">docker compose ps</span><i class="fa-regular fa-copy copy-btn" data-cmd="docker compose ps"></i></div>
+        <p class="cmd-desc">List containers managed by compose.</p>
+      </div>
+    </section>
+        <section>
+      <h2 class="text-xl font-semibold mb-3 text-white">Sample Dockerfiles</h2>
+
+      <!-- ASP.NET Core Web API -->
+      <div class="cmd-box">
+        <div class="cmd-line">
+          <span class="cmd-text">ASP.NET Core Web API</span>
+        </div>
+        <pre class="cmd-text whitespace-pre overflow-x-auto">
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+WORKDIR /app
+EXPOSE 5000
+
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+COPY ["MyApi.csproj", "./"]
+RUN dotnet restore "MyApi.csproj"
+COPY . .
+RUN dotnet build "MyApi.csproj" -c Release -o /app/build
+
+FROM build AS publish
+RUN dotnet publish "MyApi.csproj" -c Release -o /app/publish
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "MyApi.dll"]
+        </pre>
+        <p class="cmd-desc">Dockerfile for an ASP.NET Core Web API project.</p>
+      </div>
+
+      <!-- Angular App -->
+      <div class="cmd-box">
+        <div class="cmd-line">
+          <span class="cmd-text">Angular App</span>
+        </div>
+        <pre class="cmd-text whitespace-pre overflow-x-auto">
+# Stage 1 - Build Angular App
+FROM node:18 AS build
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build --prod
+
+# Stage 2 - Nginx server
+FROM nginx:alpine
+COPY --from=build /app/dist/my-angular-app /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+        </pre>
+        <p class="cmd-desc">Dockerfile for building and serving Angular with Nginx.</p>
+      </div>
+
+      <!-- SQL Server -->
+      <div class="cmd-box">
+        <div class="cmd-line">
+          <span class="cmd-text">SQL Server</span>
+        </div>
+        <pre class="cmd-text whitespace-pre overflow-x-auto">
+FROM mcr.microsoft.com/mssql/server:2022-latest
+ENV ACCEPT_EULA=Y
+ENV SA_PASSWORD=YourStrong!Passw0rd
+EXPOSE 1433
+CMD ["/opt/mssql/bin/sqlservr"]
+        </pre>
+        <p class="cmd-desc">Dockerfile to run SQL Server container.</p>
+      </div>
+
+    </section>
+
+
+  </main>
+
+  <footer class="max-w-4xl mx-auto p-6 text-sm text-slate-500">Made with 🐳 — Dark Mode Docker Cheat Sheet</footer>
+
+  <script>
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const cmd = btn.dataset.cmd;
+        try {
+          await navigator.clipboard.writeText(cmd);
+          btn.classList.remove('fa-copy');
+          btn.classList.add('fa-check');
+          btn.style.color = '#4ade80';
+          setTimeout(()=>{
+            btn.classList.remove('fa-check');
+            btn.classList.add('fa-copy');
+            btn.style.color = '';
+          },1200);
+        } catch (e) {
+          alert('Copy failed — ' + cmd);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

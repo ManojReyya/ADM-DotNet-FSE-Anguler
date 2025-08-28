@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ADO.NET — Dark Theme Guide</title>
+  <style>
+    :root{
+      --bg:#0b1220;          /* page background */
+      --panel:#0f172a;       /* cards/panels */
+      --muted:#94a3b8;       /* secondary text */
+      --text:#e5e7eb;        /* main text */
+      --accent:#22d3ee;      /* cyan accent */
+      --accent-2:#60a5fa;    /* blue accent */
+      --border:#1f2a44;      /* borders */
+      --code-bg:#0a0f1a;     /* code blocks */
+      --code-border:#1c2a42; /* code border */
+      --success:#22c55e;
+      --warn:#f59e0b;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background:radial-gradient(1200px 1200px at 10% -10%, rgba(96,165,250,.12), transparent),
+                 radial-gradient(1000px 1000px at 110% 10%, rgba(34,211,238,.10), transparent),
+                 var(--bg);
+      color:var(--text);
+      line-height:1.6;
+    }
+    .container{max-width:980px; margin:0 auto; padding:32px 16px 80px}
+    header{padding:24px 0 8px; margin-bottom:16px; border-bottom:1px solid var(--border)}
+    h1{margin:0; font-size:2rem; letter-spacing:.2px}
+    header p{margin:6px 0 0; color:var(--muted)}
+    h2{margin-top:28px; margin-bottom:12px; font-size:1.35rem; color:#cfe7ff}
+    h3{margin-top:18px; margin-bottom:8px; font-size:1.05rem; color:#bfe0ff}
+    .grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:16px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.0)); border:1px solid var(--border); border-radius:12px; padding:16px}
+    .muted{color:var(--muted)}
+    code.inline{background:rgba(255,255,255,.06); border:1px solid var(--border); padding:.1rem .35rem; border-radius:6px; font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}
+    pre{margin:12px 0; background:var(--code-bg); border:1px solid var(--code-border); border-radius:12px; overflow:auto}
+    pre code{display:block; padding:14px; font-size:.92rem}
+    .k{color:#93c5fd}
+    .t{color:#c4b5fd}
+    .s{color:#86efac}
+    .fn{color:#fca5a5}
+    .n{color:#fcd34d}
+    .note{padding:10px 12px; border-left:3px solid var(--accent); background:rgba(34,211,238,.06); border-radius:8px; color:#d9f7ff}
+    a{color:var(--accent)}
+    .footer{margin-top:36px; border-top:1px solid var(--border); padding-top:16px; color:var(--muted); font-size:.9rem}
+    .badge{display:inline-block; padding:.15rem .5rem; font-size:.75rem; border:1px solid var(--border); border-radius:999px; background:rgba(255,255,255,.05); color:#a8b5d1}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>ADO.NET — Essentials</h1>
+      <p>Dark theme quick reference for definitions and a practical SQL Server connection example.</p>
+    </header>
+
+    <section class="card">
+      <h2>What is <span class="badge">ADO.NET</span>?</h2>
+      <ul>
+        <li><strong>Data access technology</strong> for .NET to connect to many databases (SQL Server, Oracle, MySQL, etc.).</li>
+        <li>Works in <strong>any .NET app</strong>: Console, Web, Desktop, services, and more.</li>
+        <li>Uses <strong>data providers</strong> (libraries) to talk to specific databases.</li>
+        <li><code class="inline">System.Data</code> is the <strong>base namespace</strong> that defines common ADO.NET types.</li>
+      </ul>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <h3>Common Data Providers</h3>
+        <ul>
+          <li><code class="inline">System.Data.SqlClient</code> or <code class="inline">Microsoft.Data.SqlClient</code> — SQL Server</li>
+          <li><code class="inline">System.Data.Odbc</code> — ODBC (MySQL, etc. via ODBC)</li>
+          <li class="muted"><em>Note:</em> <code class="inline">System.Data.OracleClient</code> is deprecated; prefer Oracle's <code class="inline">Oracle.ManagedDataAccess.Client</code>.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Core Classes (SQL Server)</h3>
+        <ul>
+          <li><strong>SqlConnection</strong> — opens/closes a database connection.</li>
+          <li><strong>SqlCommand</strong> — executes SQL queries and stored procedures.</li>
+          <li><strong>SqlDataReader</strong> — reads result sets forward-only/streaming.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Connection String (example)</h2>
+      <pre><code>Data Source=DESKTOP-4O1D65I\SQLEXPRESS;Initial Catalog=ADMDOTNET;Integrated Security=True;Trust Server Certificate=True</code></pre>
+      <p class="note"><strong>Tip:</strong> Use Trusted/Integrated Security for development. For production, store secrets in configuration (User Secrets, environment variables, or a vault) and avoid <code class="inline">Trust Server Certificate=True</code> unless you understand the security implications.</p>
+    </section>
+
+    <section class="card">
+      <h2>SqlCommand execution helpers</h2>
+      <ul>
+        <li><code class="inline">int ExecuteNonQuery()</code> — run DML (INSERT/UPDATE/DELETE); returns rows affected.</li>
+        <li><code class="inline">SqlDataReader ExecuteReader()</code> — run <code class="inline">SELECT</code>; stream rows.</li>
+        <li><code class="inline">object ExecuteScalar()</code> — get a single value from a query.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Quick start: Connect to SQL Server (.NET 6+ Console)</h2>
+      <ol>
+        <li>Add the provider package:
+          <pre><code>dotnet add package Microsoft.Data.SqlClient</code></pre>
+        </li>
+        <li>Create <code class="inline">Program.cs</code> and paste:</li>
+      </ol>
+
+      <pre><code class="language-csharp">// Program.cs
+// Demonstrates connecting to SQL Server and running sample commands using ADO.NET
+using System;
+using Microsoft.Data.SqlClient; // Prefer this package for new apps
+
+class Program
+{
+    static void Main()
+    {
+        // Use a safe way to load from configuration in real apps
+        var connectionString = "Data Source=DESKTOP-4O1D65I\\SQLEXPRESS;Initial Catalog=ADMDOTNET;Integrated Security=True;Trust Server Certificate=True";
+
+        using var connection = new SqlConnection(connectionString);
+        connection.Open();
+        Console.WriteLine($"Connected: {connection.State}");
+
+        // 1) ExecuteScalar - get a single value
+        using (var scalarCmd = new SqlCommand("SELECT COUNT(*) FROM sys.objects", connection))
+        {
+            var count = (int)scalarCmd.ExecuteScalar();
+            Console.WriteLine($"Objects in DB: {count}");
+        }
+
+        // 2) ExecuteNonQuery - DML example (create a demo table if not exists)
+        var ddl = @"
+IF OBJECT_ID('dbo.DemoPeople', 'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.DemoPeople(
+        Id INT IDENTITY(1,1) PRIMARY KEY,
+        FullName NVARCHAR(100) NOT NULL
+    );
+END";
+        using (var ddlCmd = new SqlCommand(ddl, connection))
+        {
+            ddlCmd.ExecuteNonQuery();
+            Console.WriteLine("Ensured table dbo.DemoPeople exists.");
+        }
+
+        // Insert a row
+        using (var insertCmd = new SqlCommand("INSERT INTO dbo.DemoPeople(FullName) VALUES (@name)", connection))
+        {
+            insertCmd.Parameters.AddWithValue("@name", "Ada Lovelace");
+            int rows = insertCmd.ExecuteNonQuery();
+            Console.WriteLine($"Inserted rows: {rows}");
+        }
+
+        // 3) ExecuteReader - read rows
+        using (var readCmd = new SqlCommand("SELECT TOP (5) Id, FullName FROM dbo.DemoPeople ORDER BY Id DESC", connection))
+        using (var reader = readCmd.ExecuteReader())
+        {
+            while (reader.Read())
+            {
+                int id = reader.GetInt32(0);
+                string name = reader.GetString(1);
+                Console.WriteLine($"Row => Id={id}, Name={name}");
+            }
+        }
+    }
+}
+</code></pre>
+
+      <h3>Optional: Minimal project file</h3>
+      <p>Example <code class="inline">.csproj</code> targeting modern .NET:</p>
+      <pre><code class="language-xml">&lt;Project Sdk="Microsoft.NET.Sdk"&gt;
+  &lt;PropertyGroup&gt;
+    &lt;OutputType&gt;Exe&lt;/OutputType&gt;
+    &lt;TargetFramework&gt;net8.0&lt;/TargetFramework&gt;
+    &lt;Nullable&gt;enable&lt;/Nullable&gt;
+    &lt;ImplicitUsings&gt;enable&lt;/ImplicitUsings&gt;
+  &lt;/PropertyGroup&gt;
+  &lt;ItemGroup&gt;
+    &lt;PackageReference Include="Microsoft.Data.SqlClient" Version="5.*" /&gt;
+  &lt;/ItemGroup&gt;
+&lt;/Project&gt;
+</code></pre>
+
+      <p class="note"><strong>Package choice:</strong> <code class="inline">Microsoft.Data.SqlClient</code> is the modern provider for SQL Server. <code class="inline">System.Data.SqlClient</code> remains for legacy frameworks but is not actively developed for new features.</p>
+    </section>
+
+    <section class="card">
+      <h2>Hands-on CRUD example: Doctors</h2>
+      <p>Below is your sample using <code class="inline">Microsoft.Data.SqlClient</code> with a simple CRUD class and a <code class="inline">Program</code> entry point.</p>
+
+      <h3>1) Create table</h3>
+      <pre><code class="language-sql">CREATE TABLE dbo.Doctors (
+    DoctorId INT IDENTITY(1,1) PRIMARY KEY,
+    Name NVARCHAR(100) NOT NULL,
+    Specialization NVARCHAR(100) NOT NULL,
+    Qualification NVARCHAR(150) NULL,
+    LicenseNumber NVARCHAR(50) NULL,
+    ExperienceYears INT NOT NULL,
+    PhoneNumber NVARCHAR(20) NULL,
+    AvailabilityStart TIME NOT NULL,
+    AvailabilityEnd TIME NOT NULL
+);
+</code></pre>
+
+      <h3>2) Program.cs</h3>
+      <pre><code class="language-csharp">using Microsoft.Data.SqlClient;
+namespace HandsOnAdo
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            CrudOperations crud = new CrudOperations();
+            // Insert a new doctor
+            crud.InsertDoctor(
+                "Dr. Satya Kumar", "Neurosurgeon", "MBBS, MCH Neuro", "LIC99887", 20, "9123456701",
+                new TimeSpan(10, 0, 0), new TimeSpan(15, 0, 0)
+            );
+            // Show all doctors
+            crud.GetAllDoctors();
+            // Update specialization of doctor with ID 10
+            crud.UpdateDoctor(10, "Dr. Harish Iyer", "Family Physician");
+            // Delete doctor with ID 9
+            crud.DeleteDoctor(9);
+        }
+    }
+}
+</code></pre>
+
+      <h3>3) CrudOperations.cs</h3>
+      <pre><code class="language-csharp">using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System;
+using Microsoft.Data.SqlClient;
+namespace HandsOnAdo
+{
+    internal class CrudOperations
+    {
+        private static string connectionString = "Data Source=ELIZA\\SQLEXPRESS; Initial Catalog=HealthcareSystem; Integrated Security=True; TrustServerCertificate=True";
+        // INSERT
+        public void InsertDoctor(string name, string specialization, string qualification, string license, int experience, string phone, TimeSpan start, TimeSpan end)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                string query = @"INSERT INTO Doctors (Name, Specialization, Qualification, LicenseNumber, ExperienceYears, PhoneNumber, AvailabilityStart, AvailabilityEnd)
+                                 VALUES (@Name, @Spec, @Qual, @License, @Exp, @Phone, @Start, @End)";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@Name", name);
+                cmd.Parameters.AddWithValue("@Spec", specialization);
+                cmd.Parameters.AddWithValue("@Qual", qualification);
+                cmd.Parameters.AddWithValue("@License", license);
+                cmd.Parameters.AddWithValue("@Exp", experience);
+                cmd.Parameters.AddWithValue("@Phone", phone);
+                cmd.Parameters.AddWithValue("@Start", start);
+                cmd.Parameters.AddWithValue("@End", end);
+                int rows = cmd.ExecuteNonQuery();
+                Console.WriteLine($"{rows} doctor(s) inserted.");
+            }
+        }
+        // READ
+        public void GetAllDoctors()
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                string query = "SELECT * FROM Doctors";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                SqlDataReader reader = cmd.ExecuteReader();
+                Console.WriteLine("\n--- Doctor List ---");
+                while (reader.Read())
+                {
+                    Console.WriteLine($@"ID: {reader[""DoctorId""]}, Name: {reader[""Name""]}, Specialization: {reader[""Specialization""]}, 
+Qualification: {reader[""Qualification""]}, License: {reader[""LicenseNumber""]}, Experience: {reader[""ExperienceYears""]}, 
+Phone: {reader[""PhoneNumber""]}, Start: {reader[""AvailabilityStart""]}, End: {reader[""AvailabilityEnd""]}");
+                }
+                reader.Close();
+            }
+        }
+        // UPDATE
+        public void UpdateDoctor(int id, string name, string specialization)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                string query = "UPDATE Doctors SET Name = @Name, Specialization = @Spec WHERE DoctorId = @Id";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@Name", name);
+                cmd.Parameters.AddWithValue("@Spec", specialization);
+                cmd.Parameters.AddWithValue("@Id", id);
+                int rows = cmd.ExecuteNonQuery();
+                Console.WriteLine($"{rows} doctor(s) updated.");
+            }
+        }
+        // DELETE
+        public void DeleteDoctor(int id)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                string query = "DELETE FROM Doctors WHERE DoctorId = @Id";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@Id", id);
+                int rows = cmd.ExecuteNonQuery();
+                Console.WriteLine($"{rows} doctor(s) deleted.");
+            }
+        }
+    }
+}
+</code></pre>
+
+      <p class="note"><strong>Build/run:</strong> Ensure the database <code class="inline">HealthcareSystem</code> exists on <code class="inline">ELIZA\\SQLEXPRESS</code>, install the provider (<code class="inline">dotnet add package Microsoft.Data.SqlClient</code>), then build and run your console app.</p>
+    </section>
+
+    <section class="card">
+      <h2>Troubleshooting tips</h2>
+      <ul>
+        <li>If connection fails, verify server name, instance (e.g., <code class="inline">\\SQLEXPRESS</code>), and that SQL Server is running.</li>
+        <li>For remote connections, ensure TCP/IP is enabled and firewall rules allow access.</li>
+        <li>Use <code class="inline">Trusted_Connection=True</code> on Windows for integrated auth, or provide <code class="inline">User ID</code>/<code class="inline">Password</code>.</li>
+      </ul>
+    </section>
+
+    <div class="footer">
+      <span>Need a related topic? See <a href="index.html">Index</a>.</span>
+    </div>
+  </div>
+</body>
+</html>
